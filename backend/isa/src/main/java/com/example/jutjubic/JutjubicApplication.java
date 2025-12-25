@@ -1,4 +1,4 @@
-package isa2026.isa;
+package com.example.jutjubic;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

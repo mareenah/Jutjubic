@@ -1,4 +1,4 @@
-package isa2026.isa;
+package com.example.jutjubic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
