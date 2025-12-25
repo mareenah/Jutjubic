@@ -1,7 +1,6 @@
 package com.example.jutjubic.model;
 
 import jakarta.persistence.*;
-import org.springframework.cache.annotation.EnableCaching;
 
 import java.util.UUID;
 
