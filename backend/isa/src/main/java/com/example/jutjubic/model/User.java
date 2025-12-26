@@ -10,16 +10,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
+    @GeneratedValue
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "email")
@@ -43,7 +43,6 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-
     @Override
     public boolean isEnabled() {
         return enabled;

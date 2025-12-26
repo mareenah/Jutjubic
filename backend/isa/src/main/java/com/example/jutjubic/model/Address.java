@@ -1,9 +1,13 @@
 package com.example.jutjubic.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -21,6 +25,4 @@ public class Address {
     @Column(name = "street")
     private String street;
 
-    @Column(name = "number")
-    private String number;
 }
