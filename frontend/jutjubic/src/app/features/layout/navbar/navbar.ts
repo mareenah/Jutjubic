@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {}
+export class Navbar {
+  constructor(public router: Router) {}
+
+  login(): void {
+    this.router.navigate(['./login']);
+  }
+}

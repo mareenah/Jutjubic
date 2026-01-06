@@ -1,0 +1,69 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem;
+}
+
+.center-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.login-input {
+  width: 100%;
+  flex: 1;
+}
+
+.login-password {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.login-password-eye {
+  font-size: 1.25rem;
+  color: #757575;
+  cursor: pointer;
+  transition: color 0.3s;
+  margin-left: 1rem;
+}
+
+.login-password-eye:hover {
+  color: #212121;
+}
+
+.login-submit {
+  background-color: #2196f3;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-submit:hover {
+  background-color: #0b7dda;
+}
+
+.login-submit-text {
+  font-family: var(--fnt-body);
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+
+.password-field {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.login-button {
+  text-align: center;
+}
