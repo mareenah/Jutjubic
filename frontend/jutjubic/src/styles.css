@@ -8,6 +8,6 @@ body {
 :root {
   --primary-color: #0f0f0f;
   --accent-color: #272727;
-  --dark-accent-color: #1e1815;
+  --hover-accent-color: #3f3f3f;
   --white: #ffffff;
 }
