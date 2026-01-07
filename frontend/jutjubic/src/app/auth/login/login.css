@@ -1,7 +1,8 @@
 .login-card {
   width: 22.5rem;
   padding: 2rem;
-  background-color: var(--accent-color);
+  background-color: transparent;
+  border: 2px solid var(--accent-color);
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
@@ -47,9 +48,9 @@
 }
 
 .login-submit {
-  background-color: transparent;
-  color: #ffffff;
-  border: 1px solid #ffffff;
+  background-color: var(--accent-color);
+  color: var(--white);
+  border: 1px solid var(--white);
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
