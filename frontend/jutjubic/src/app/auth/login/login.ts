@@ -7,12 +7,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Login } from '../../models/login.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { far } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   standalone: true,
   selector: 'app-login',
-  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, FontAwesomeModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, FontAwesomeModule, MatCardModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
