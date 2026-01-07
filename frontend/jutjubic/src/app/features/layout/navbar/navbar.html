@@ -1,13 +1,14 @@
 <div class="navbar">
   <div class="navbar-menu">
-    <div class="d-flex align-self-center align-items-center mx-1 cursor-pointer">
-      <img src="../../../../../assets/logo.svg" height="43" width="48" alt="Logo" />
-      <div class="navbar-logo mx-1">Jutjubic</div>
+    <div class="logo">
+      <img class="logo-image" alt="Logo" />
+      <div class="logo-text">Jutjubic</div>
     </div>
   </div>
   <div class="navbar-buttons">
-    <div class="navbar-button">
-      <button class="btn" (click)="login()">Login</button>
-    </div>
+    <button class="btn" (click)="login()">
+      <mat-icon>login</mat-icon>
+      <span class="btn-text">Login</span>
+    </button>
   </div>
 </div>
