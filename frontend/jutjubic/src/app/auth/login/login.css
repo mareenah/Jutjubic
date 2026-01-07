@@ -1,8 +1,8 @@
 .login-card {
   width: 22.5rem;
   padding: 2rem;
-  background-color: transparent;
-  border: 2px solid var(--accent-color);
+  background-color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
@@ -48,7 +48,7 @@
 }
 
 .login-submit {
-  background-color: var(--accent-color);
+  background-color: var(--secondary-color);
   color: var(--white);
   border: 1px solid var(--white);
   padding: 10px 20px;
@@ -58,7 +58,7 @@
 }
 
 .login-submit:hover {
-  background-color: var(--hover-accent-color);
+  background-color: #515151;
 }
 
 .login-submit-text {

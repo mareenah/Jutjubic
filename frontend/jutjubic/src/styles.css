@@ -7,7 +7,8 @@ body {
 
 :root {
   --primary-color: #0f0f0f;
-  --accent-color: #272727;
-  --hover-accent-color: #3f3f3f;
+  --secondary-color: #272727;
+  --accent-color: #3f3f3f;
+  --hover-accent-color: #515151;
   --white: #ffffff;
 }
