@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="navbar-buttons">
-    <button class="btn" (click)="login()">
+    <button class="btn" (click)="login()" *ngIf="!isLoginPage && !isRegisterPage">
       <mat-icon>login</mat-icon>
       <span class="btn-text">Login</span>
     </button>

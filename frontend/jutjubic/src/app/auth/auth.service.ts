@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Registration } from '../models/registration.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { RegistrationResponse } from '../models/registrationResponse.model';
 import { HttpClient } from '@angular/common/http';
