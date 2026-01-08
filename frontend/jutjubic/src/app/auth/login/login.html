@@ -1,7 +1,8 @@
 <div class="login">
   <mat-card class="login-card">
-    <form class="login-form" [formGroup]="loginForm">
-      <h2 class="login-title">Login</h2>
+    <form [formGroup]="loginForm">
+      <h2 class="login-title">Prijava</h2>
+
       <mat-form-field appearance="outline" class="login-input">
         <mat-label>Email</mat-label>
         <input matInput type="text" placeholder="Email" formControlName="email" />
@@ -25,9 +26,12 @@
         ></fa-icon>
       </div>
 
-      <div class="login-button">
-        <button class="login-submit" (click)="login()">Submit</button>
-      </div>
+      <button class="login-submit" (click)="login()">Submit</button>
     </form>
+
+    <div class="register">
+      <span>Not a member? </span>
+      <a class="register-link" (click)="register()">Register</a>
+    </div>
   </mat-card>
 </div>

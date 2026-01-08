@@ -14,6 +14,7 @@ public class RegistrationInfoDto {
     private String email;
     private String username;
     private String password;
+    private String repeatPassword;
     private String name;
     private String lastname;
     private AddressDto address;

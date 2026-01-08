@@ -24,6 +24,13 @@ export class AuthService {
     private router: Router
   ) {}
 
+  register(registration: Registration): Observable<RegistrationResponse> {
+    return this.http.post<RegistrationResponse>(
+      environment.apiHost + 'auth/customer/register',
+      registration
+    );
+  }
+
   login(login: Login): Observable<AuthenticationResponse> {
     return this.http.post<AuthenticationResponse>(environment.apiHost + 'auth/login', login).pipe(
       tap((authenticationResponse) => {

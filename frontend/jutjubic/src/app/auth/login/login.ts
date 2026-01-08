@@ -8,7 +8,6 @@ import { Login } from '../../models/login.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { far } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   standalone: true,
@@ -51,5 +50,9 @@ export class LoginComponent {
         },
       });
     }
+  }
+
+  register(): void {
+    this.router.navigate(['/register']);
   }
 }
