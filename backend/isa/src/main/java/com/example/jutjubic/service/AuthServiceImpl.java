@@ -36,25 +36,28 @@ public class AuthServiceImpl implements AuthService {
     private JwtUtil jwtUtil;
 
     public UserTokenState login(JwtAuthenticationRequest loginDto) {
-        Optional<User> userOpt = userRepository.findByUsername(loginDto.getUsername());
+        Optional<User> userOpt = userRepository.findByEmail(loginDto.getEmail());
         if (userOpt.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "message: Incorrect credentials!");
+            throw new UserNotFoundException("User does not exist!");
         }
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            userOpt.get().getUsername(),
+                            loginDto.getPassword()
+                    )
+            );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtil.generateJwtToken(authentication);
+            String jwt = jwtUtil.generateJwtToken(authentication);
 
-        UserTokenState tokenDTO = new UserTokenState();
-        tokenDTO.setAccessToken(jwt);
-        tokenDTO.setExpiresIn(10000000L);
+            UserTokenState tokenDTO = new UserTokenState();
+            tokenDTO.setAccessToken(jwt);
+            tokenDTO.setExpiresIn(10000000L);
 
-        return tokenDTO;
-    }
+            return tokenDTO;
 
     public User register(RegistrationInfoDto registrationInfo){
 

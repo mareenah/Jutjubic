@@ -46,8 +46,17 @@ export class LoginComponent {
           this.router.navigate(['']);
         },
         error: (error) => {
-          const message = error?.error?.message || 'Login failed';
-          alert(message);
+          switch (error.status) {
+            case 400:
+            case 401:
+            case 403:
+            case 429:
+              alert(error.error.message);
+              break;
+            default:
+              alert('Login failed due to an unexpected error.');
+              break;
+          }
         },
       });
     }
