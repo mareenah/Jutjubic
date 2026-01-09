@@ -27,7 +27,7 @@ export class AuthService {
 
   register(registration: Registration): Observable<RegistrationResponse> {
     return this.http.post<RegistrationResponse>(
-      environment.apiHost + 'auth/customer/register',
+      environment.apiHost + 'auth/register',
       registration
     );
   }
