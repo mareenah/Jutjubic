@@ -3,7 +3,7 @@ package com.example.jutjubic.service;
 import com.example.jutjubic.dto.JwtAuthenticationRequest;
 import com.example.jutjubic.dto.RegistrationInfoDto;
 import com.example.jutjubic.dto.UserTokenState;
-import com.example.jutjubic.exception.UsernameAlreadyExistsException;
+import com.example.jutjubic.exception.*;
 import com.example.jutjubic.model.Address;
 import com.example.jutjubic.model.User;
 import com.example.jutjubic.repository.UserRepository;
@@ -38,9 +38,10 @@ public class AuthServiceImpl implements AuthService {
     public UserTokenState login(JwtAuthenticationRequest loginDto) {
         Optional<User> userOpt = userRepository.findByEmail(loginDto.getEmail());
         if (userOpt.isEmpty()) {
-            throw new UserNotFoundException("User does not exist!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid input. Please check the fields.");        }
+        if(!userOpt.get().isEnabled()){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Your account is not verified yet.");
         }
-
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -59,10 +60,17 @@ public class AuthServiceImpl implements AuthService {
 
             return tokenDTO;
 
-    public User register(RegistrationInfoDto registrationInfo){
+        } catch (BadCredentialsException ex) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect credentials!");
+        }
+    }
 
+    @Override
+    public User register(RegistrationInfoDto registrationInfo) throws InterruptedException {
         if(userRepository.findByUsername(registrationInfo.getUsername()).isPresent())
-            throw new UsernameAlreadyExistsException("Username already exists: " + registrationInfo.getUsername());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists: " + registrationInfo.getUsername());
+        if (userRepository.findByEmail(registrationInfo.getEmail()).isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already exists: " + registrationInfo.getEmail());
 
         Address a = new Address();
         a.setCountry(registrationInfo.getAddress().getCountry());
