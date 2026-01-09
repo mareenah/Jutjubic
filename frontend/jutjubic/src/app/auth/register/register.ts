@@ -43,37 +43,45 @@ export class RegisterComponent {
   }
 
   register(): void {
-    const address: Address = {
-      id: -1,
-      country: this.registerForm.value.country || '',
-      city: this.registerForm.value.city || '',
-      street: this.registerForm.value.street || '',
-    };
-
-    const register: Registration = {
-      email: this.registerForm.value.email || '',
-      username: this.registerForm.value.username || '',
-      password: this.registerForm.value.password || '',
-      repeatPassword: this.registerForm.value.repeatPassword || '',
-      name: this.registerForm.value.name || '',
-      lastname: this.registerForm.value.lastname || '',
-      address: address,
-    };
-
     if (this.registerForm.valid) {
+      const address: Address = {
+        id: 0,
+        country: this.registerForm.value.country || '',
+        city: this.registerForm.value.city || '',
+        street: this.registerForm.value.street || '',
+      };
+
+      const register: Registration = {
+        email: this.registerForm.value.email || '',
+        username: this.registerForm.value.username || '',
+        password: this.registerForm.value.password || '',
+        repeatPassword: this.registerForm.value.repeatPassword || '',
+        name: this.registerForm.value.name || '',
+        lastname: this.registerForm.value.lastname || '',
+        address: address,
+      };
+
       this.authService.register(register).subscribe({
         next: () => {
-          alert('Succesfully registered!');
+          alert('Succesfully registered!\nVerify your account and login.');
           this.router.navigate(['']);
         },
         error: (error) => {
-          alert(error);
+          switch (error.status) {
+            case 400:
+            case 409:
+              alert(error.error.message);
+              break;
+            default:
+              alert(error.error?.message || 'Unknown error occurred.');
+              break;
+          }
         },
       });
     }
   }
 
   login(): void {
-    this.router.navigate(['login']);
+    this.router.navigate(['/login']);
   }
 }

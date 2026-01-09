@@ -3,10 +3,8 @@ package com.example.jutjubic.contorller;
 import com.example.jutjubic.dto.JwtAuthenticationRequest;
 import com.example.jutjubic.dto.RegistrationInfoDto;
 import com.example.jutjubic.dto.UserTokenState;
-import com.example.jutjubic.exception.UsernameAlreadyExistsException;
 import com.example.jutjubic.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +22,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegistrationInfoDto registrationInfoDto){
-        try {
-            authService.register(registrationInfoDto);
-            return ResponseEntity.ok("User registered successfully.");
-        } catch (UsernameAlreadyExistsException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during registration.");
-        }
+    public ResponseEntity<Object> register(@RequestBody RegistrationInfoDto registrationInfoDto) throws InterruptedException {
+        return ResponseEntity.ok(authService.register(registrationInfoDto));
     }
 
     @GetMapping("/test")
