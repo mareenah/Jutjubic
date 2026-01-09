@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -39,6 +40,12 @@ public class User implements UserDetails {
 
     @Column(name = "enabled")
     private boolean enabled;
+
+    @Column(name = "verificationCode")
+    private String verificationCode;
+
+    @Column(name = "codeCreatedAt")
+    private LocalDateTime codeCreatedAt;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
