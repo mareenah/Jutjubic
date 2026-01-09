@@ -24,6 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -136,5 +138,27 @@ public class AuthServiceImpl implements AuthService {
 
         mailSender.send(message);
         System.out.println("Email sent!");
+    }
+
+    @Override
+    public User verify(String verificationCode){
+        User user = userRepository.findByVerificationCode(verificationCode)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid verification link. Please register again."));
+
+        if (user.isEnabled())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Your account is already verified.");
+
+        LocalDateTime createdAt = user.getCodeCreatedAt();
+        if(createdAt == null || createdAt.plus(VERIFICATION_LINK_EXPIRY_DURATION).isBefore(LocalDateTime.now())){
+            userRepository.deleteById(user.getId());
+            throw new ResponseStatusException(HttpStatus.GONE, "Verification link has expired. Please register again.");
+        }
+
+        changeUserStatus(user);
+        return userRepository.save(user);
+    }
+
+    private void changeUserStatus(User user) {
+        user.setEnabled(true);
     }
 }

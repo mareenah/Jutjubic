@@ -7,6 +7,7 @@ import com.example.jutjubic.model.User;
 
 public interface AuthService {
     UserTokenState login(JwtAuthenticationRequest loginDto);
-    User register(RegistrationInfoDto registrationInfo);
     User register(RegistrationInfoDto registrationInfo) throws InterruptedException;
+    User verify (String verificationCode);
+
 }
