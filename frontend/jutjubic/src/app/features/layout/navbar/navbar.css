@@ -87,3 +87,56 @@ mat-icon {
 .btn-logout {
   margin-left: 0.35rem;
 }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown .btn {
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primary-color);
+  border: none;
+}
+
+.dropdown-content {
+  position: absolute;
+  right: 4%;
+  top: 100%;
+  margin-top: 0.5rem;
+  border-radius: 0.01rem;
+  background-color: var(--dark-accent-color);
+  min-width: 10rem;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.dropdown-menu-link {
+  display: flex;
+  align-items: center;
+  padding: 0.95rem 1.2rem;
+  width: 100%;
+  text-decoration: none;
+  text-align: left;
+  font-weight: normal;
+  font-family: inherit;
+  background-color: var(--dark-accent-color);
+  color: var(--white);
+  cursor: pointer;
+  gap: 0.7rem;
+}
+
+a:hover {
+  background-color: var(--accent-color);
+  border-radius: 1rem;
+  width: auto;
+}
+
+.dropdown-menu-link mat-icon {
+  font-size: larger;
+}
+
+i {
+  color: wheat;
+}

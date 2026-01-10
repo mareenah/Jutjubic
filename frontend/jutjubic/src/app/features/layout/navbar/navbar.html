@@ -17,24 +17,26 @@
         <span class="btn-text">Prijava</span>
       </button>
 
+      <button class="btn" (click)="home()">
+        <mat-icon class="btn-home">home</mat-icon>
+        <span class="btn-text">Početna</span>
+      </button>
+
       <button class="btn" *ngIf="state.loggedIn && !state.isAuthPage">
         <mat-icon class="btn-add">add</mat-icon>
         <span class="btn-text">Kreiraj</span>
       </button>
 
-      <button class="btn">
-        <mat-icon class="btn-home">home</mat-icon>
-        <span class="btn-text">Početna</span>
-      </button>
-
-      <button class="btn" *ngIf="state.loggedIn">
-        <mat-icon>person</mat-icon>
-      </button>
-
-      <button class="btn" *ngIf="state.loggedIn" (click)="logout()">
-        <mat-icon btn-logout>logout</mat-icon>
-        <span class="btn-text">Odjava</span>
-      </button>
+      <div class="navbar-button dropdown" *ngIf="state.loggedIn">
+        <button class="btn dropbtn" (click)="toggleMenu()">
+          {{ user?.username }}
+          <mat-icon [class.rotate]="dropdownOpen">keyboard_arrow_down</mat-icon>
+        </button>
+        <div class="dropdown-content" *ngIf="dropdownOpen">
+          <a class="dropdown-menu-link"><mat-icon>person</mat-icon>Profil</a>
+          <a class="dropdown-menu-link" (click)="logout()"><mat-icon>logout</mat-icon>Odjava</a>
+        </div>
+      </div>
     </ng-container>
   </div>
 </div>
