@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { filter } from 'rxjs';
+import { filter, map, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { User } from '../../../models/user.model';
 import { AuthService } from '../../../auth/auth.service';
@@ -14,37 +14,39 @@ import { TokenStorage } from '../../../auth/jwt/token.service';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar implements OnInit, AfterViewInit {
-  user: User | undefined;
+export class Navbar implements OnInit {
   isLoginPage = false;
   isRegisterPage = false;
-  isLoggedIn = false;
+  loggedIn$: any;
+  isAuthPage$: any;
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-    private tokenStorage: TokenStorage
-  ) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.user$.subscribe((user) => {
-      this.user = user;
-      console.log('Navbar\n' + 'username: ' + user.username + ' id: ' + user.id);
-    });
-  }
+    this.loggedIn$ = this.authService.loggedIn$;
 
-  ngAfterViewInit(): void {
+    this.isAuthPage$ = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      startWith(null),
+      map(() => {
+        const url = this.router.url;
+        return url === '/login' || url === '/register';
+      })
+    );
+
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
-      this.isLoginPage = this.router.url === '/login';
-      this.isRegisterPage = this.router.url === '/register';
+      const url = this.router.url;
+      this.isLoginPage = url === '/login';
+      this.isRegisterPage = url === '/register';
     });
-  }
-
-  hasLoggedIn(): boolean {
-    return this.user?.username !== '';
   }
 
   login(): void {
+    this.router.navigate(['/login']);
+  }
+
+  logout(): void {
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

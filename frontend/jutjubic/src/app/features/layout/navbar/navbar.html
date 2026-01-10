@@ -6,9 +6,30 @@
     </div>
   </div>
   <div class="navbar-buttons">
-    <button class="btn" (click)="login()" *ngIf="!hasLoggedIn() && !isLoginPage && !isRegisterPage">
-      <mat-icon>login</mat-icon>
-      <span class="btn-text">Login</span>
-    </button>
+    <ng-container
+      *ngIf="{
+        loggedIn: loggedIn$ | async,
+        isAuthPage: isAuthPage$ | async
+      } as state"
+    >
+      <button class="btn" *ngIf="!state.loggedIn && !state.isAuthPage" (click)="login()">
+        <mat-icon>login</mat-icon>
+        <span class="btn-text">Prijava</span>
+      </button>
+
+      <button class="btn" *ngIf="state.loggedIn && !state.isAuthPage">
+        <mat-icon class="btn-add">add</mat-icon>
+        <span class="btn-text">Kreiraj</span>
+      </button>
+
+      <button class="btn" *ngIf="state.loggedIn">
+        <mat-icon btn-profile>person</mat-icon>
+      </button>
+
+      <button class="btn" *ngIf="state.loggedIn" (click)="logout()">
+        <mat-icon btn-logout>logout</mat-icon>
+        <span class="btn-text">Odjava</span>
+      </button>
+    </ng-container>
   </div>
 </div>
