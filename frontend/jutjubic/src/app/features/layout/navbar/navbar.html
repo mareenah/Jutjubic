@@ -22,8 +22,13 @@
         <span class="btn-text">Kreiraj</span>
       </button>
 
+      <button class="btn">
+        <mat-icon class="btn-home">home</mat-icon>
+        <span class="btn-text">Početna</span>
+      </button>
+
       <button class="btn" *ngIf="state.loggedIn">
-        <mat-icon btn-profile>person</mat-icon>
+        <mat-icon>person</mat-icon>
       </button>
 
       <button class="btn" *ngIf="state.loggedIn" (click)="logout()">

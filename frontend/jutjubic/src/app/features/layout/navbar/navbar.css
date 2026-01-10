@@ -73,6 +73,7 @@
 mat-icon {
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: large;
 }
 
@@ -81,10 +82,6 @@ mat-icon {
   justify-content: center;
   align-items: center;
   font-size: x-large;
-}
-
-.btn-profile {
-  justify-content: center;
 }
 
 .btn-logout {
