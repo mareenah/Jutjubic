@@ -7,5 +7,5 @@ export interface Post {
   video: string;
   createdAt: string;
   geoLocation?: string;
-  userId: number;
+  userId: string;
 }

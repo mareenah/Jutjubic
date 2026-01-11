@@ -20,7 +20,7 @@ export class Home implements OnInit {
       video: 'assets/video1.mp4',
       createdAt: '2025-01-11',
       geoLocation: 'Novi Sad, Serbia',
-      userId: 1,
+      userId: '558cce57-fa1d-45d0-b78c-c78a45e0ac49',
     },
     {
       id: 2,
@@ -31,7 +31,7 @@ export class Home implements OnInit {
       video: 'assets/video2.mp4',
       createdAt: '2025-01-01',
       geoLocation: 'Belgrade',
-      userId: 2,
+      userId: 'dd218417-7c74-4862-a561-ea2e912237b4',
     },
     {
       id: 3,
@@ -42,7 +42,7 @@ export class Home implements OnInit {
       video: 'assets/video3.mp4',
       createdAt: '2025-01-13',
       geoLocation: 'Boston',
-      userId: 1,
+      userId: 'dd218417-7c74-4862-a561-ea2e912237b4',
     },
     {
       id: 4,
@@ -53,7 +53,7 @@ export class Home implements OnInit {
       video: 'assets/video1.mp4',
       createdAt: '2025-01-10',
       geoLocation: 'Rome, Italy',
-      userId: 1,
+      userId: '558cce57-fa1d-45d0-b78c-c78a45e0ac49',
     },
     {
       id: 5,
@@ -64,7 +64,7 @@ export class Home implements OnInit {
       video: 'assets/video2.mp4',
       createdAt: '2025-01-11',
       geoLocation: 'Belgrade',
-      userId: 2,
+      userId: 'f93a58de-807b-4d0b-ae2e-dba507196f31',
     },
     {
       id: 6,
@@ -75,7 +75,7 @@ export class Home implements OnInit {
       video: 'assets/video3.mp4',
       createdAt: '2025-01-12',
       geoLocation: 'Novi Sad',
-      userId: 1,
+      userId: '558cce57-fa1d-45d0-b78c-c78a45e0ac49',
     },
     {
       id: 7,
@@ -86,7 +86,7 @@ export class Home implements OnInit {
       video: 'assets/video4.mp4',
       createdAt: '2025-01-13',
       geoLocation: 'France',
-      userId: 3,
+      userId: 'f93a58de-807b-4d0b-ae2e-dba507196f31',
     },
     {
       id: 8,
@@ -97,7 +97,7 @@ export class Home implements OnInit {
       video: 'assets/video5.mp4',
       createdAt: '2025-01-14',
       geoLocation: 'Online',
-      userId: 4,
+      userId: '558cce57-fa1d-45d0-b78c-c78a45e0ac49',
     },
     {
       id: 9,
@@ -108,7 +108,7 @@ export class Home implements OnInit {
       video: 'assets/video6.mp4',
       createdAt: '2025-01-15',
       geoLocation: 'Paris',
-      userId: 5,
+      userId: 'dd218417-7c74-4862-a561-ea2e912237b4',
     },
     {
       id: 10,
@@ -119,7 +119,7 @@ export class Home implements OnInit {
       video: 'assets/video7.mp4',
       createdAt: '2025-01-16',
       geoLocation: 'Berlin',
-      userId: 6,
+      userId: 'f93a58de-807b-4d0b-ae2e-dba507196f31',
     },
     {
       id: 11,
@@ -130,7 +130,7 @@ export class Home implements OnInit {
       video: 'assets/video8.mp4',
       createdAt: '2025-01-17',
       geoLocation: 'Home',
-      userId: 7,
+      userId: 'dd218417-7c74-4862-a561-ea2e912237b4',
     },
     {
       id: 12,
@@ -141,7 +141,7 @@ export class Home implements OnInit {
       video: 'assets/video9.mp4',
       createdAt: '2025-01-18',
       geoLocation: 'Zagreb',
-      userId: 8,
+      userId: 'dd218417-7c74-4862-a561-ea2e912237b4',
     },
   ];
 
