@@ -36,10 +36,9 @@ public class AuthenticationController {
         return true;
     }
 
-    @GetMapping("/test")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<String> test(){
-        return ResponseEntity.ok("Authentication works!");
+    @GetMapping(value="/user/{id}", produces = "application/json")
+    public ResponseEntity<Object> findById(@PathVariable String id) {
+        return ResponseEntity.ok(authService.profile(id));
     }
 
 }

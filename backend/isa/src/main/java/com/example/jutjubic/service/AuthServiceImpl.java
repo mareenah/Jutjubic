@@ -161,4 +161,11 @@ public class AuthServiceImpl implements AuthService {
     private void changeUserStatus(User user) {
         user.setEnabled(true);
     }
+
+    public User profile (String id){
+        UUID userId = UUID.fromString(id);
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+    }
+
 }

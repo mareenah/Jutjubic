@@ -9,5 +9,6 @@ public interface AuthService {
     UserTokenState login(JwtAuthenticationRequest loginDto);
     User register(RegistrationInfoDto registrationInfo) throws InterruptedException;
     User verify (String verificationCode);
+    User profile (String id);
 
 }
