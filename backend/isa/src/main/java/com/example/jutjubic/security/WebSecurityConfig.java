@@ -1,5 +1,6 @@
 package com.example.jutjubic.security;
 
+import com.example.jutjubic.security.ratelimit.LoginRateLimitFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +25,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
+    private final LoginRateLimitFilter loginRateLimitFilter;
+
     @Autowired
     CustomUserDetailsService userDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
+
+    public WebSecurityConfig(LoginRateLimitFilter loginRateLimitFilter) {
+        this.loginRateLimitFilter = loginRateLimitFilter;
+    }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -55,14 +62,14 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                 .exceptionHandling(getExceptionHandlingConfig())
                 .sessionManagement(getSessionManagementConfig())
                 .authorizeHttpRequests((requests) -> {
-                    requests.requestMatchers("/api/**", "/api/test/all").permitAll(); // TODO
-                    requests.anyRequest().permitAll();
+                    requests.requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/verify", "/api/auth/test").permitAll(); // TODO
+                    requests.anyRequest().authenticated();
                 });
 
+        http.addFilterBefore(loginRateLimitFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-
     }
 
     private Customizer<CsrfConfigurer<HttpSecurity>> getCsrfConfig(){
