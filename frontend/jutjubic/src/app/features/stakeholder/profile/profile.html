@@ -1,0 +1,61 @@
+<div class="profile-page">
+  <div class="profile-layout">
+    <mat-card class="profile-card">
+      <h2 class="profile-title">{{ user.username }}</h2>
+      <p class="profile-email">{{ user.email }}</p>
+
+      <div class="profile-section">
+        <div class="row">
+          <div class="field">
+            <span class="label">Ime</span>
+            <span class="value">{{ user.name }}</span>
+          </div>
+
+          <div class="field">
+            <span class="label">Prezime</span>
+            <span class="value">{{ user.lastname }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-section">
+        <h3>Adresa</h3>
+
+        <div class="row">
+          <div class="field">
+            <span class="label">Država</span>
+            <span class="value">{{ user.address.country }}</span>
+          </div>
+
+          <div class="field">
+            <span class="label">Grad</span>
+            <span class="value">{{ user.address.city }}</span>
+          </div>
+        </div>
+
+        <div class="field full">
+          <span class="label">Ulica</span>
+          <span class="value">{{ user.address.street }}</span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="posts-section">
+    <h3 class="section-title">Objave</h3>
+
+    <div class="posts-grid" *ngIf="userPosts.length; else noPosts">
+      <div class="post-card" *ngFor="let post of userPosts" (click)="displayPost(post)">
+        <img [src]="post.thumbnail" />
+        <div class="post-info">
+          <h4>{{ post.title }}</h4>
+          <p>{{ post.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noPosts>
+      <p class="empty">Korisnik još nema objave.</p>
+    </ng-template>
+  </div>
+</div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Post } from '../../../models/post.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { PostService } from '../post.service';
+import { StakeholderService } from '../stakeholder.service';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -16,14 +16,13 @@ export class PostDisplayComponent implements OnInit {
   post!: Post;
   isLoggedIn = false;
 
-  constructor(private router: Router, private postService: PostService) {}
+  constructor(private router: Router, private stakeholderService: StakeholderService) {}
 
   ngOnInit() {
-    this.postService.selectedPost$.subscribe((p) => {
+    this.stakeholderService.selectedPost$.subscribe((p) => {
       if (p) this.post = p;
       else console.error('Izaberi objavu!');
     });
-    console.log(this.post);
   }
 
   tryLike() {
@@ -31,7 +30,6 @@ export class PostDisplayComponent implements OnInit {
       alert('Da bi lajkovao objavu, prijavi se.');
       return;
     }
-    // like logic
   }
 
   tryComment() {
@@ -39,7 +37,6 @@ export class PostDisplayComponent implements OnInit {
       alert('Da bi komentarisao objavu, prijavi se.');
       return;
     }
-    // comment logic
   }
 
   displayProfile(userId: string): void {

@@ -10,6 +10,7 @@ import { User } from '../models/user.model';
 import { TokenStorage } from './jwt/token.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthenticationResponse } from '../models/authenticationResponse.model';
+import { UserProfile } from '../models/userProfile.model';
 
 @Injectable({
   providedIn: 'root',
@@ -74,5 +75,9 @@ export class AuthService {
     this.router.navigate(['']);
     this.user$.next({ username: '', id: 0 });
     this.loggedInSubject.next(false);
+  }
+
+  getUserProfile(id: string): Observable<UserProfile> {
+    return this.http.get<UserProfile>(environment.apiHost + 'auth/user/' + id);
   }
 }

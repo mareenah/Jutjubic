@@ -1,0 +1,116 @@
+.profile-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.profile-layout {
+  display: flex;
+  gap: 2rem;
+  max-width: 1100px;
+  margin-right: 3rem;
+}
+
+.profile-card {
+  width: 320px;
+  height: 550px;
+  background-color: var(--secondary-color);
+  border-radius: 14px;
+  padding: 2rem;
+  color: var(--white);
+}
+
+.profile-title {
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.profile-email {
+  text-align: center;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+
+.profile-section {
+  margin-bottom: 1.5rem;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.field {
+  flex: 1;
+  background: var(--accent-color);
+  padding: 0.8rem;
+  border-radius: 8px;
+}
+
+.field.full {
+  margin-top: 0.8rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.value {
+  font-size: 0.95rem;
+}
+
+.posts-section {
+  width: 40%;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 1rem;
+}
+
+.post-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+}
+
+.post-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.post-info {
+  padding: 0.6rem;
+}
+
+.post-info h4 {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.post-info p {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+@media (max-width: 900px) {
+  .profile-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-card {
+    width: 100%;
+  }
+}

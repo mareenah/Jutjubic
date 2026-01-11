@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Post } from '../../models/post.model';
 
 @Injectable({ providedIn: 'root' })
-export class PostService {
+export class StakeholderService {
   private selectedPostSubject = new BehaviorSubject<Post | null>(null);
   selectedPost$ = this.selectedPostSubject.asObservable();
 
