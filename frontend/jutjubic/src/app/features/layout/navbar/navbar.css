@@ -15,12 +15,13 @@
 .logo {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .logo-image {
-  height: 2rem;
-  width: 2rem;
-  margin-right: 0.5rem;
+  height: 1.5rem;
+  width: 1.7rem;
+  margin-right: 0.3rem;
 }
 
 .logo-text {
