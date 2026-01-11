@@ -13,10 +13,24 @@
             <input matInput type="text" formControlName="email" />
           </mat-form-field>
 
+          <div
+            class="validation-error >"
+            *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+          >
+            Email je neophodan i mora biti validan.
+          </div>
+
           <mat-form-field appearance="outline" class="register-input">
             <mat-label>Korisničko ime</mat-label>
             <input matInput type="text" formControlName="username" />
           </mat-form-field>
+
+          <div
+            *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid"
+            class="validation-error >"
+          >
+            Korisničko mora početi slovom i sadržati slova, cifre, tačke ili donje crte.
+          </div>
 
           <div class="password-field">
             <mat-form-field appearance="outline" class="register-input">
@@ -33,6 +47,14 @@
               [icon]="isPasswordVisible ? faEyeSlash : faEye"
               (click)="togglePasswordVisibility()"
             ></fa-icon>
+          </div>
+
+          <div
+            *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid"
+            class="validation-error >"
+          >
+            Lozinka mora sadržati najmanje 8 karaktera, bar: 1 veliko slovo, 1 malo slovo, 1 broj, 1
+            specijalan karakter.
           </div>
 
           <div class="password-field">
@@ -53,16 +75,37 @@
           </div>
         </div>
 
+        <div
+          *ngIf="registerForm.get('repeatPassword')?.touched && registerForm.get('repeatPassword')?.errors?.['mismatch']"
+          class="validation-error >"
+        >
+          Lozinke se ne poklapaju.
+        </div>
+
         <div class="col">
           <mat-form-field appearance="outline" class="register-input">
             <mat-label>Ime</mat-label>
             <input matInput type="text" formControlName="name" />
           </mat-form-field>
 
+          <div
+            *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid"
+            class="validation-error"
+          >
+            Bar 1 slovo, a dozvoljena su: slova, crte, apostrofi, razmaci.
+          </div>
+
           <mat-form-field appearance="outline" class="register-input">
             <mat-label>Prezime</mat-label>
             <input matInput type="text" formControlName="lastname" />
           </mat-form-field>
+
+          <div
+            *ngIf="registerForm.get('lastname')?.touched && registerForm.get('lastname')?.invalid"
+            class="validation-error"
+          >
+            Bar 1 slovo, a dozvoljena su: slova, crte, apostrofi, razmaci.
+          </div>
 
           <h4>Adresa (opciona)</h4>
 
@@ -71,15 +114,36 @@
             <input matInput type="text" formControlName="country" />
           </mat-form-field>
 
+          <div
+            *ngIf="registerForm.get('country')?.touched && registerForm.get('country')?.invalid"
+            class="validation-error >"
+          >
+            Dozvoljeno: slova, crte, apostrofi, razmaci.
+          </div>
+
           <mat-form-field appearance="outline" class="register-input">
             <mat-label>Grad</mat-label>
             <input matInput type="text" formControlName="city" />
           </mat-form-field>
 
+          <div
+            *ngIf="registerForm.get('city')?.touched && registerForm.get('city')?.invalid"
+            class="validation-error >"
+          >
+            Dozvoljeno: slova, crte, apostrofi, razmaci.
+          </div>
+
           <mat-form-field appearance="outline" class="register-input">
             <mat-label>Ulica</mat-label>
             <input matInput type="text" formControlName="street" />
           </mat-form-field>
+        </div>
+
+        <div
+          *ngIf="registerForm.get('street')?.touched && registerForm.get('street')?.invalid"
+          class="validation-error >"
+        >
+          Dozvoljeno: slova, cifre, razmaci, crte, kose crte.
         </div>
 
         <button class="register-submit" (click)="register()">Submit</button>

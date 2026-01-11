@@ -8,6 +8,13 @@
         <input matInput type="text" placeholder="Email" formControlName="email" />
       </mat-form-field>
 
+      <div
+        class="validation-error"
+        *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+      >
+        Email je neophodan i mora biti validan.
+      </div>
+
       <div class="password-field">
         <mat-form-field appearance="outline" class="login-input">
           <mat-label>Password</mat-label>
@@ -24,6 +31,14 @@
           [icon]="isPasswordVisible ? faEyeSlash : faEye"
           (click)="togglePasswordVisibility()"
         ></fa-icon>
+      </div>
+
+      <div
+        class="validation-error"
+        *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+      >
+        Lozinka mora sadržati najmanje 8 karaktera, bar: 1 veliko slovo, 1 malo slovo, 1 broj, 1
+        specijalan karakter.
       </div>
 
       <button class="login-submit" (click)="login()">Submit</button>

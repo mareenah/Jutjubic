@@ -82,3 +82,10 @@
   margin-left: 0.8rem;
   font-weight: 400;
 }
+
+.validation-error {
+  font-size: smaller;
+  color: var(--error-color);
+  margin-top: 0rem;
+  margin-bottom: 0.7rem;
+}

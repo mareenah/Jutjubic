@@ -38,13 +38,13 @@ public class RegistrationInfoDto {
     private String repeatPassword;
 
     @NotBlank(message = "Enter your name.")
-    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ' -]+$",
+    @Pattern(regexp = "^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ' -]+$",
             message = "Only letters, hyphens, apostrophes and spaces allowed.")
-    @Size(min = 1, max = 30, message = "Name must be between 2 and 30 characters.")
+    @Size(min = 1, max = 30, message = "Name must be between 1 and 30 characters.")
     private String name;
 
     @NotBlank(message = "Enter your lastname.")
-    @Pattern(regexp = "^[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ' -]+$",
+    @Pattern(regexp = "^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ' -]+$",
             message = "Only letters, hyphens, apostrophes, and spaces allowed.")
     @Size(min = 1, max = 30, message = "Lastname must be between 1 and 30 characters.")
     private String lastname;
