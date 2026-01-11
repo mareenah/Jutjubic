@@ -24,7 +24,7 @@ public class AddressDto {
     @Size(max = 30, message = "City must be below 30 characters.")
     private String city;
 
-    @Pattern(regexp = "^$|^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-z0-9À-ÖØ-öø-ÿčćžđšČĆŽĐŠ\\s\\-\\\\/]+$",
+    @Pattern(regexp = "^$|^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-z0-9À-ÖØ-öø-ÿčćžđšČĆŽĐŠ\\s\\-\\/]+$",
             message = "Invalid street format.")
     @Size(max = 30, message = "Street must be below 30 characters.")
     private String street;

@@ -138,7 +138,7 @@ export class RegisterComponent implements OnInit {
             validators: [
               Validators.maxLength(30),
               Validators.pattern(
-                /^$|^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-z0-9À-ÖØ-öø-ÿčćžđšČĆŽĐŠ\\s\\-\\\\/]+$/
+                /^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-z0-9À-ÖØ-öø-ÿčćžđšČĆŽĐŠ\s\-\/]+$/
               ),
             ],
           },
