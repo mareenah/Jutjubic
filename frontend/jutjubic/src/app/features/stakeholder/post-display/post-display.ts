@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StakeholderService } from '../stakeholder.service';
 import { MatIcon } from '@angular/material/icon';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   standalone: true,
@@ -14,26 +15,31 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class PostDisplayComponent implements OnInit {
   post!: Post;
-  isLoggedIn = false;
+  loggedIn$: any;
 
-  constructor(private router: Router, private stakeholderService: StakeholderService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private stakeholderService: StakeholderService
+  ) {}
 
   ngOnInit() {
     this.stakeholderService.selectedPost$.subscribe((p) => {
       if (p) this.post = p;
       else console.error('Izaberi objavu!');
     });
+    this.loggedIn$ = this.authService.loggedIn$;
   }
 
   tryLike() {
-    if (!this.isLoggedIn) {
+    if (!this.loggedIn$) {
       alert('Da bi lajkovao objavu, prijavi se.');
       return;
     }
   }
 
   tryComment() {
-    if (!this.isLoggedIn) {
+    if (!this.loggedIn$) {
       alert('Da bi komentarisao objavu, prijavi se.');
       return;
     }
