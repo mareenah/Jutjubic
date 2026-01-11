@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { filter, map, startWith } from 'rxjs';
@@ -11,7 +11,7 @@ import { User } from '../../../models/user.model';
   selector: 'app-navbar',
   imports: [MatIconModule, CommonModule],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css',
+  styleUrls: ['./navbar.css'],
 })
 export class Navbar implements OnInit {
   user: User | undefined;
