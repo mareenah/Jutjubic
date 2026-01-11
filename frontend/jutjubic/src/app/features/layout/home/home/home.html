@@ -1,5 +1,5 @@
 <div class="home-grid">
-  <div class="video-card" *ngFor="let post of posts">
+  <div class="video-card" *ngFor="let post of posts" (click)="displayPost(post)">
     <img class="thumbnail" [src]="post.thumbnail" alt="thumbnail" />
     <div class="video-info">
       <h4 class="title">{{ post.title }}</h4>

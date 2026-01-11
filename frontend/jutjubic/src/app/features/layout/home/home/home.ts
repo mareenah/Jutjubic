@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from '../../../../models/post.model';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { PostService } from '../../../stakeholder/post.service';
 
 @Component({
   standalone: true,
@@ -145,7 +147,14 @@ export class Home implements OnInit {
     },
   ];
 
+  constructor(private router: Router, private postService: PostService) {}
+
   ngOnInit(): void {
     this.posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  displayPost(post: Post): void {
+    this.postService.selectPost(post);
+    this.router.navigate(['/posts', post.id]);
   }
 }

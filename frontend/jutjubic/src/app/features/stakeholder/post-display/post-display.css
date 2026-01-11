@@ -1,0 +1,87 @@
+.post {
+  margin: 0.5rem 20rem;
+  background-color: var(--secondary-color);
+  padding: 1.4rem;
+  border-radius: 0.4rem;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.post-thumbnail {
+  width: 100%;
+  height: 51vh;
+  object-fit: cover;
+  margin: 0.2rem 0;
+  border-radius: 0.2rem;
+}
+
+.post-title {
+  flex: 1;
+  margin: 0;
+}
+
+.like-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.profile-btn {
+  display: flex;
+  justify-self: center;
+  width: fit-content;
+  border: 1px solid var(--white);
+  border-radius: 10px;
+  padding: 0.7rem 1.1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  background-color: var(--secondary-color);
+  transition: background-color 0.3s;
+}
+
+.profile-btn:hover {
+  background-color: var(--hover-accent-color);
+}
+
+.comment-btn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.comments-container {
+  font-size: small;
+  height: 4rem;
+  width: 47rem;
+  overflow-y: auto;
+  background: var(--dark-accent-color);
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.8rem;
+  gap: 0.4rem;
+}
+
+.comment {
+  font-size: smaller;
+  border: 1px solid var(--hover-accent-color);
+  border-radius: 0.6rem;
+  margin-bottom: 0.8rem;
+  padding: 0.8rem 0.5rem;
+}
+
+.comment-input {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.comment-input input {
+  flex: 1;
+  padding: 0.5rem;
+}

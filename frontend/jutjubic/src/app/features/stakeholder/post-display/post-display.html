@@ -1,0 +1,23 @@
+<div class="post">
+  <img class="post-thumbnail" [src]="post.thumbnail" />
+  <div class="post-header">
+    <h4 class="post-title">{{ post.title }}</h4>
+
+    <button class="like-btn" (click)="tryLike()">
+      <mat-icon>favorite</mat-icon>
+    </button>
+
+    <button class="profile-btn" (click)="displayProfile(post.userId)">Profil</button>
+  </div>
+  <div class="comments-container">
+    <div class="comment">Komentar...</div>
+    <div class="comment">Komentar...</div>
+    <div class="comment">Komentar...</div>
+    <div class="comment">Komentar...</div>
+    <div class="comment">Komentar...</div>
+  </div>
+  <div class="comment-input">
+    <input type="text" placeholder="Napiši komentar..." />
+    <button class="comment-btn" (click)="tryComment()"><mat-icon>send</mat-icon></button>
+  </div>
+</div>

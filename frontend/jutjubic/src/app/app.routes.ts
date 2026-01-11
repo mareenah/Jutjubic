@@ -3,10 +3,14 @@ import { LoginComponent } from './auth/login/login';
 import { RegisterComponent } from './auth/register/register';
 import { VerificationComponent } from './auth/verification/verification';
 import { Home } from './features/layout/home/home/home';
+import { PostDisplayComponent } from './features/stakeholder/post-display/post-display';
+import { ProfileComponent } from './features/stakeholder/profile/profile';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'verify/:verificationCode', component: VerificationComponent },
   { path: '', component: Home },
+  { path: 'posts/:id', component: PostDisplayComponent },
+  { path: 'users/:userId', component: ProfileComponent },
 ];
