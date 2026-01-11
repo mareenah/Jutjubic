@@ -1,0 +1,53 @@
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 2.5rem;
+  gap: 3rem;
+  overflow-y: scroll;
+}
+
+.video-card {
+  background-color: var(--secondary-color);
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.video-card:hover {
+  transition: transform 0.2s ease box-shadow 0.2s ease;
+  box-shadow: 0 6px 12px rgb(42, 35, 35);
+  background-color: var(--accent-color);
+}
+
+.thumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.video-info {
+  padding: 12px;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 4px 0;
+}
+
+.description {
+  font-size: 13px;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.tags span {
+  font-size: 0.7rem;
+  color: var(--white);
+  margin-right: 6px;
+}
+
+.meta {
+  font-size: 11px;
+  color: var(--accent-color);
+}
