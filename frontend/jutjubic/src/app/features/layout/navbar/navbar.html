@@ -1,15 +1,15 @@
 <div class="navbar">
   <div class="navbar-menu">
     <div class="logo">
-      <img class="logo-image" src="assets/logo.png" alt="Logo" (click)="home()" />
-      <div class="logo-text">Jutjubic</div>
+      <img class="logo-image" src="assets/logo.svg" alt="Logo" (click)="home()" />
+      <div class="logo-text">Jutjubić</div>
     </div>
   </div>
   <div class="navbar-buttons">
     <ng-container
       *ngIf="{
         loggedIn: loggedIn$ | async,
-        isAuthPage: isAuthPage$ | async
+        isAuthPage: isAuthPage$ | async,
       } as state"
     >
       <button class="btn" *ngIf="!state.loggedIn && !state.isAuthPage" (click)="login()">
