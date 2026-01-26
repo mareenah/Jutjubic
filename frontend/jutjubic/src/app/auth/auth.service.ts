@@ -20,13 +20,14 @@ export class AuthService {
     username: '',
     id: 0,
   });
+
   private loggedInSubject = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedInSubject.asObservable();
 
   constructor(
     private http: HttpClient,
     private tokenStorage: TokenStorage,
-    private router: Router
+    private router: Router,
   ) {
     this.restoreUserFromToken();
   }
@@ -34,7 +35,7 @@ export class AuthService {
   register(registration: Registration): Observable<RegistrationResponse> {
     return this.http.post<RegistrationResponse>(
       environment.apiHost + 'auth/register',
-      registration
+      registration,
     );
   }
 
@@ -48,7 +49,7 @@ export class AuthService {
         this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
         this.setUser();
         this.loggedInSubject.next(true);
-      })
+      }),
     );
   }
 
@@ -75,6 +76,10 @@ export class AuthService {
     this.router.navigate(['']);
     this.user$.next({ username: '', id: 0 });
     this.loggedInSubject.next(false);
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.tokenStorage.getAccessToken();
   }
 
   getUserProfile(id: string): Observable<UserProfile> {
