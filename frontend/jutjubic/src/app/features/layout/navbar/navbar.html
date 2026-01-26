@@ -30,7 +30,6 @@
       <div class="navbar-button dropdown" *ngIf="state.loggedIn">
         <button class="btn dropbtn" (click)="toggleMenu()">
           {{ user?.username }}
-          <mat-icon [class.rotate]="dropdownOpen">keyboard_arrow_down</mat-icon>
         </button>
         <div class="dropdown-content" *ngIf="dropdownOpen">
           <a class="dropdown-menu-link"><mat-icon>person</mat-icon>Profil</a>
