@@ -24,7 +24,7 @@ export class Navbar implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class Navbar implements OnInit {
       map(() => {
         const url = this.router.url;
         return url === '/login' || url === '/register';
-      })
+      }),
     );
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {

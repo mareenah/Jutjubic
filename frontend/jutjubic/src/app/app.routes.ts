@@ -5,7 +5,7 @@ import { VerificationComponent } from './auth/verification/verification';
 import { Home } from './features/layout/home/home/home';
 import { PostDisplayComponent } from './features/stakeholder/post-display/post-display';
 import { ProfileComponent } from './features/stakeholder/profile/profile';
-import { guestGuard } from './auth/guest.guard';
+import { guestGuard } from './auth/guards/guest.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
