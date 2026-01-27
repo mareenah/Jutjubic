@@ -22,7 +22,7 @@
         <span class="btn-text">Početna</span>
       </button>
 
-      <button class="btn" *ngIf="state.loggedIn && !state.isAuthPage">
+      <button class="btn" *ngIf="state.loggedIn && !state.isAuthPage" (click)="create()">
         <mat-icon class="btn-add">add</mat-icon>
         <span class="btn-text">Kreiraj</span>
       </button>

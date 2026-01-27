@@ -1,15 +1,17 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { filter, map, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { VideoCreateComponent } from '../../stakeholder/video-create/video-create';
 
 @Component({
   standalone: true,
   selector: 'app-navbar',
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, MatDialogModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
 })
@@ -20,6 +22,7 @@ export class Navbar implements OnInit {
   loggedIn$: any;
   isAuthPage$: any;
   dropdownOpen = false;
+  dialog = inject(MatDialog);
 
   constructor(
     private router: Router,
@@ -75,5 +78,14 @@ export class Navbar implements OnInit {
 
   home(): void {
     this.router.navigate(['/']);
+  }
+
+  create(): void {
+    let dialogRef = this.dialog.open(VideoCreateComponent, {
+      height: '87vh',
+      width: '65vw',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+    });
   }
 }
