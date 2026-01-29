@@ -44,16 +44,6 @@
   <div class="posts-section">
     <h3 class="section-title">Objave</h3>
 
-    <div class="posts-grid" *ngIf="userPosts.length; else noPosts">
-      <div class="post-card" *ngFor="let post of userPosts" (click)="displayPost(post)">
-        <img [src]="post.thumbnail" />
-        <div class="post-info">
-          <h4>{{ post.title }}</h4>
-          <p>{{ post.description }}</p>
-        </div>
-      </div>
-    </div>
-
     <ng-template #noPosts>
       <p class="empty">Korisnik još nema objave.</p>
     </ng-template>

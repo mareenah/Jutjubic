@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from '../../../models/post.model';
+import { PostResponse } from '../../../models/postResponse.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StakeholderService } from '../stakeholder.service';
@@ -13,10 +13,13 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './post-display.css',
 })
 export class PostDisplayComponent implements OnInit {
-  post!: Post;
+  post!: PostResponse;
   isLoggedIn = false;
 
-  constructor(private router: Router, private stakeholderService: StakeholderService) {}
+  constructor(
+    private router: Router,
+    private stakeholderService: StakeholderService,
+  ) {}
 
   ngOnInit() {
     this.stakeholderService.selectedPost$.subscribe((p) => {
