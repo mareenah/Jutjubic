@@ -1,5 +1,6 @@
 package com.example.jutjubic.model;
 
+import com.example.jutjubic.converter.StringListJsonConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 ;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -27,8 +29,9 @@ public class Post {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "tags")
-    private String tags;
+    @Column(name = "tags", columnDefinition = "json")
+    @Convert(converter = StringListJsonConverter.class)
+    private List<String> tags;
 
     @Column(name = "thumbnailUrl")
     private String thumbnailUrl;
