@@ -8,6 +8,7 @@ export interface PostResponse {
   thumbnail: string;
   video: string;
   createdAt: string;
-  geoLocation?: string;
+  country?: string;
+  city?: string;
   user: UserProfile;
 }

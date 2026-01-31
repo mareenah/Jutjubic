@@ -6,6 +6,7 @@ export interface PostResponse {
   tags: string[];
   thumbnail: string;
   video: string;
-  geoLocation?: string;
+  country?: string;
+  city?: string;
   user: UserProfile;
 }
