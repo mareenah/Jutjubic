@@ -43,6 +43,4 @@ public class PostDto {
     @Size(max = 30, message = "City must be below 30 characters.")
     private String city;
 
-    private UUID userId;
-
 }

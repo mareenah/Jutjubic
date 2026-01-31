@@ -1,6 +1,6 @@
 import { UserProfile } from './userProfile.model';
 
-export interface PostResponse {
+export interface Post {
   title: string;
   description: string;
   tags: string[];
@@ -8,5 +8,4 @@ export interface PostResponse {
   video: string;
   country?: string;
   city?: string;
-  user: UserProfile;
 }
