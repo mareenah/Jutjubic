@@ -36,7 +36,7 @@ public class Post {
     @Column(name = "thumbnailUrl")
     private String thumbnailUrl;
 
-    @Column(name = "video")
+    @Column(name = "videoPath")
     private String videoPath;
 
     @Column(name = "createdAt")

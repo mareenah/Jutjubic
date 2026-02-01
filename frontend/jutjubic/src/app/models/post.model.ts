@@ -5,7 +5,7 @@ export interface Post {
   description: string;
   tags: string[];
   thumbnail: string;
-  video: string;
+  videoPath: string;
   country?: string;
   city?: string;
 }
