@@ -7,8 +7,22 @@
   </div>
   <mat-divider></mat-divider>
   <div class="section-upload">
-    <img class="icon-upload" src="assets/upload.svg" />
-    <button class="btn-upload">
+    <img
+      class="icon-upload"
+      src="assets/upload.svg"
+      accept="requiredFileType"
+      (click)="openFilePicker()"
+    />
+
+    <input
+      #fileInput
+      type="file"
+      class="file-input"
+      (change)="onFileSelected($event)"
+      [accept]="requiredFileType"
+    />
+
+    <button class="btn-upload" (click)="openFilePicker()">
       <span class="btn-text">Odabir datoteka</span>
     </button>
   </div>

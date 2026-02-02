@@ -1,0 +1,6 @@
+<p>video-detail-create works!</p>
+@if (videoPreviewUrl) {
+  <div class="video-preview">
+    <video [src]="videoPreviewUrl" muted autoplay loop playsinline></video>
+  </div>
+}

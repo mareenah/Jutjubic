@@ -81,7 +81,7 @@ export class Navbar implements OnInit {
   }
 
   create(): void {
-    let dialogRef = this.dialog.open(VideoCreateComponent, {
+    this.dialog.open(VideoCreateComponent, {
       height: '87vh',
       width: '65vw',
       maxWidth: '100vw',

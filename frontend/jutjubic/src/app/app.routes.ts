@@ -8,6 +8,7 @@ import { ProfileComponent } from './features/stakeholder/profile/profile';
 import { guestGuard } from './auth/guards/guest.guard';
 import { authGuard } from './auth/guards/auth.guard';
 import { VideoCreateComponent } from './features/stakeholder/video-create/video-create';
+import { VideoDetailCreateComponent } from './features/stakeholder/video-detail-create/video-detail-create';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
@@ -19,7 +20,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: '', component: VideoCreateComponent },
-      { path: 'details', component: VideoCreateComponent },
+      { path: 'details', component: VideoDetailCreateComponent },
     ],
   },
   { path: 'posts/:id', component: PostDisplayComponent },

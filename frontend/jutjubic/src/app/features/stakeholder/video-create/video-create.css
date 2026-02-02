@@ -47,6 +47,7 @@
   height: 8.2rem;
   width: 8.2rem;
   margin-top: 8.5rem;
+  cursor: pointer;
 }
 
 .btn-upload {
@@ -73,7 +74,7 @@
 }
 
 .btn-upload:hover {
-  background-color: var(--hover-accent-color);
+  background-color: var(--light-accent-color);
 }
 
 .footer {
@@ -90,4 +91,8 @@
   line-height: 1.3rem;
   font-size: 0.75rem;
   color: var(--light-accent-color);
+}
+
+.file-input {
+  display: none;
 }
