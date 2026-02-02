@@ -1,16 +1,14 @@
 package com.example.jutjubic.service;
 
-import com.example.jutjubic.converter.StringListJsonConverter;
 import com.example.jutjubic.dto.PostDto;
 import com.example.jutjubic.model.Post;
 import com.example.jutjubic.model.User;
 import com.example.jutjubic.repository.PostRepository;
-import com.example.jutjubic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,7 +25,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,9 +32,6 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private PostRepository postRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Value("${file.upload.video-dir}")
     private String videoDir;
@@ -52,7 +45,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post upload(PostDto postDto) throws IOException {
+    public Post upload(PostDto postDto) throws IOException, InterruptedException {
+        //Thread.sleep(35_000); // 35 seconds
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Path videoPath = null;
         Path thumbnailPath = null;
@@ -104,25 +98,29 @@ public class PostServiceImpl implements PostService {
             String videoFileName = UUID.randomUUID() + "_" + video.getOriginalFilename();
             Path uploadPath = Paths.get(videoDir).toAbsolutePath();
             Files.createDirectories(uploadPath);
-            Path videoFilePath = uploadPath.resolve(videoFileName);
-            Files.copy(video.getInputStream(), videoFilePath, StandardCopyOption.REPLACE_EXISTING);
-            videoPath = Path.of("videos/" + videoFileName);
+            videoPath = uploadPath.resolve(videoFileName);
+            Files.copy(video.getInputStream(), videoPath, StandardCopyOption.REPLACE_EXISTING);
             post.setVideoPath(videoPath.toString()); //TODO get path?
 
             MultipartFile thumbnail = postDto.getThumbnail();
             String thumbFileName = UUID.randomUUID() + "_" + thumbnail.getOriginalFilename();;
             uploadPath = Paths.get(thumbDir).toAbsolutePath();
             Files.createDirectories(uploadPath);
-            Path thumbFilePath = uploadPath.resolve(thumbFileName);
-            Files.copy(thumbnail.getInputStream(), thumbFilePath, StandardCopyOption.REPLACE_EXISTING);
-            thumbnailPath = Path.of("thumbnails/" + thumbFileName);
+            thumbnailPath = uploadPath.resolve(thumbFileName);
+            Files.copy(thumbnail.getInputStream(), thumbnailPath, StandardCopyOption.REPLACE_EXISTING);
             post.setThumbnailUrl(thumbnailPath.toString()); //TODO get path?
 
             return postRepository.save(post);
         } catch (Exception e) {
             if (videoPath != null) Files.deleteIfExists(videoPath);
             if (thumbnailPath != null) Files.deleteIfExists(thumbnailPath);
-            throw e;
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error happened. Please try again.");
         }
+    }
+
+    @Override
+    @Cacheable(value = "thumbnails", key = "#path")
+    public byte[] findThumbnail(String path) throws IOException {
+        return Files.readAllBytes(Paths.get(path).toAbsolutePath());
     }
 }

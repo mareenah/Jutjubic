@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface PostService {
     List<Post> findAll();
-    Post upload(PostDto postDto) throws IOException;
+    Post upload(PostDto postDto) throws IOException, InterruptedException;
+    byte[] findThumbnail(String path) throws IOException;
 }
