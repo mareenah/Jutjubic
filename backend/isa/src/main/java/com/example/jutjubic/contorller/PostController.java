@@ -3,18 +3,11 @@ package com.example.jutjubic.contorller;
 import com.example.jutjubic.dto.PostDto;
 import com.example.jutjubic.model.Post;
 import com.example.jutjubic.service.PostService;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -39,7 +32,6 @@ public class PostController {
 
     @PostMapping(value = "/create", consumes = "multipart/form-data")
     @PreAuthorize("isAuthenticated()")
-    @Transactional
     public ResponseEntity<Object> upload(@Valid @ModelAttribute PostDto postDto) throws IOException, InterruptedException {
         return ResponseEntity.ok(postService.upload(postDto));
     }

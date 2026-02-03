@@ -15,6 +15,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -49,7 +50,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post upload(PostDto postDto) throws IOException, InterruptedException {
+    @Transactional(rollbackFor = Exception.class)
+    public Post upload(PostDto postDto) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
@@ -105,18 +107,21 @@ public class PostServiceImpl implements PostService {
             Path videoAbsolutePath = videoDirPath.resolve(videoFileName);
             videoPath = videoAbsolutePath;
 
-            InputStream in = video.getInputStream();
-            OutputStream out = Files.newOutputStream(videoAbsolutePath);
 
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            long start = System.currentTimeMillis();
+            try (InputStream in = video.getInputStream(); OutputStream out = Files.newOutputStream(videoAbsolutePath)) {
 
-            while ((bytesRead = in.read(buffer)) != -1) {
-                out.write(buffer, 0, bytesRead);
-                out.flush();
-                if (System.currentTimeMillis() - start > 10_000)
-                    throw new ResponseStatusException(HttpStatus.REQUEST_TIMEOUT, "Video upload took too long");
+                byte[] buffer = new byte[8192];
+                int bytesRead;
+                long start = System.currentTimeMillis();
+                long sizeMb = postDto.getVideo().getSize() / (1024 * 1024);
+                long timeoutMs = Math.max(30_000, sizeMb * 1000L); //min 30s, max 200 000s
+
+                while ((bytesRead = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                    out.flush();
+                    if (System.currentTimeMillis() - start > timeoutMs)
+                        throw new ResponseStatusException(HttpStatus.REQUEST_TIMEOUT, "Video upload took too long");
+                }
             }
 
             String videoRelativePath = "videos/" + videoFileName;
