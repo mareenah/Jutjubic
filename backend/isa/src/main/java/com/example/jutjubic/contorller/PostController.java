@@ -5,6 +5,8 @@ import com.example.jutjubic.model.Post;
 import com.example.jutjubic.service.PostService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -27,8 +29,8 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @Value("uploads/thumbnails")
-    private String thumbDir;
+    @Value("${file.upload.base-dir}")
+    private String baseUploadDir;
 
     @GetMapping(value = "/", produces = "application/json")
     public List<Post> findAll() {
@@ -43,8 +45,8 @@ public class PostController {
     }
 
     @GetMapping("/thumbnails/{name}")
-    public ResponseEntity<byte[]> getThumbnail(@PathVariable String name) throws IOException {
-        byte[] data = postService.findThumbnail(thumbDir + "/" + name);
-        return ResponseEntity.ok().body(data);
+    public ResponseEntity<byte[]> findThumbnail(@PathVariable String name) throws IOException {
+        Path absolutePath = Paths.get(baseUploadDir, "thumbnails", name).toAbsolutePath();
+        return ResponseEntity.ok(postService.findThumbnail(absolutePath.toString()));
     }
 }
