@@ -19,8 +19,6 @@ export class Navbar implements OnInit {
   user: User | undefined;
   isLoginPage = false;
   isRegisterPage = false;
-  loggedIn$: any;
-  isAuthPage$: any;
   dropdownOpen = false;
   dialog = inject(MatDialog);
 
@@ -35,17 +33,6 @@ export class Navbar implements OnInit {
       this.user = user;
       console.log('Navbar\n' + 'username: ' + user.username + ' id: ' + user.id);
     });
-
-    this.loggedIn$ = this.authService.loggedIn$;
-
-    this.isAuthPage$ = this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      startWith(null),
-      map(() => {
-        const url = this.router.url;
-        return url === '/login' || url === '/register';
-      }),
-    );
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       const url = this.router.url;

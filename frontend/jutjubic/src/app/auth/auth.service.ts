@@ -18,11 +18,8 @@ import { UserProfile } from '../models/userProfile.model';
 export class AuthService {
   user$ = new BehaviorSubject<User>({
     username: '',
-    id: 0,
+    id: '',
   });
-
-  private loggedInSubject = new BehaviorSubject<boolean>(false);
-  loggedIn$ = this.loggedInSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -48,7 +45,6 @@ export class AuthService {
       tap((authenticationResponse) => {
         this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
         this.setUser();
-        this.loggedInSubject.next(true);
       }),
     );
   }
@@ -56,26 +52,33 @@ export class AuthService {
   private setUser(): void {
     const jwtHelperService = new JwtHelperService();
     const accessToken = this.tokenStorage.getAccessToken() || '';
+    const decode = jwtHelperService.decodeToken(accessToken);
+
     const user: User = {
-      id: +jwtHelperService.decodeToken(accessToken).id,
-      username: jwtHelperService.decodeToken(accessToken).username,
+      id: decode.id,
+      username: decode.username,
     };
 
     this.user$.next(user);
   }
 
   private restoreUserFromToken(): void {
-    if (this.tokenStorage.getAccessToken()) {
-      this.setUser();
-      this.loggedInSubject.next(true);
+    const token = this.tokenStorage.getAccessToken();
+    const jwtHelper = new JwtHelperService();
+
+    if (jwtHelper.isTokenExpired(token)) {
+      this.logout();
+      this.router.navigate(['/login']);
+      return;
     }
+
+    this.setUser();
   }
 
   logout(): void {
     this.tokenStorage.clear();
     this.router.navigate(['']);
-    this.user$.next({ username: '', id: 0 });
-    this.loggedInSubject.next(false);
+    this.user$.next({ username: '', id: '' });
   }
 
   isLoggedIn(): boolean {
