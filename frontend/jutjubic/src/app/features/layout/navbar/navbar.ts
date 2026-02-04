@@ -31,7 +31,6 @@ export class Navbar implements OnInit {
   ngOnInit(): void {
     this.authService.user$.subscribe((user) => {
       this.user = user;
-      console.log('Navbar\n' + 'username: ' + user.username + ' id: ' + user.id);
     });
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {

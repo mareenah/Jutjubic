@@ -57,13 +57,12 @@
   align-items: center;
   background-color: var(--white);
   color: var(--dark-accent-color);
-  cursor: pointer;
   padding: 1.15rem 0.5rem;
   border: none;
   border-radius: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-top: 5.5rem;
+  margin-top: 3.4rem;
 }
 
 .btn-text {

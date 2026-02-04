@@ -1,7 +1,7 @@
 <div class="container">
   <div class="header">
     <p class="title">Prenos videozapisa</p>
-    <button class="btn-close">
+    <button class="btn-close" (click)="close()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
@@ -10,7 +10,7 @@
     <img
       class="icon-upload"
       src="assets/upload.svg"
-      accept="requiredFileType"
+      accept="video/mp4"
       (click)="openFilePicker()"
     />
 
@@ -19,7 +19,7 @@
       type="file"
       class="file-input"
       (change)="onFileSelected($event)"
-      [accept]="requiredFileType"
+      accept="video/mp4"
     />
 
     <button class="btn-upload" (click)="openFilePicker()">

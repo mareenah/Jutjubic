@@ -16,7 +16,7 @@ export class StakeholderService {
     this.selectedPostSubject.next(post);
   }
 
-  uploadVideo(videoData: FormData): Observable<Post> {
-    return this.http.post<Post>(environment.apiHost + 'posts/create', videoData);
+  uploadVideo(post: FormData): Observable<PostResponse> {
+    return this.http.post<PostResponse>(environment.apiHost + 'posts/create', post);
   }
 }

@@ -1,8 +1,7 @@
 import { Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { Router } from '@angular/router';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { VideoDetailCreateComponent } from '../../stakeholder/video-detail-create/video-detail-create';
 
 @Component({
@@ -13,15 +12,11 @@ import { VideoDetailCreateComponent } from '../../stakeholder/video-detail-creat
 })
 export class VideoCreateComponent {
   selectedFile: File | null = null;
-  @Input() requiredFileType: string = 'video / mp4';
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   dialog = inject(MatDialog);
+  MAX_VIDEO_SIZE = 200 * 1024 * 1024;
 
-  constructor(
-    private router: Router,
-    private elementRef: ElementRef,
-    private dialogRef: MatDialogRef<VideoCreateComponent>,
-  ) {}
+  constructor(private dialogRef: MatDialogRef<VideoCreateComponent>) {}
 
   openFilePicker(): void {
     this.fileInput.nativeElement.click();
@@ -31,6 +26,16 @@ export class VideoCreateComponent {
     const file: File = event.target.files[0];
 
     if (file) {
+      if (file.type !== 'video/mp4') {
+        alert('Dozvoljen je samo MP4 video.');
+        return;
+      }
+
+      if (file.size > this.MAX_VIDEO_SIZE) {
+        alert('Video mora biti manji od 200MB.');
+        return;
+      }
+
       this.selectedFile = file;
       this.dialogRef.close();
 
@@ -42,5 +47,9 @@ export class VideoCreateComponent {
         data: { videoFile: file },
       });
     }
+  }
+
+  close(): void {
+    this.dialogRef.close();
   }
 }

@@ -8,10 +8,12 @@ body {
 :root {
   --primary-color: #0f0f0f;
   --secondary-color: #272727;
+  --tertiary-color: #1f1f1f;
   --accent-color: #3f3f3f;
   --hover-accent-color: #515151;
   --white: #ffffff;
   --dark-accent-color: #070707;
+  --mid-accent-color: #aaaaaa;
   --light-accent-color: #878787;
   --error-color: #feaaa1;
 }

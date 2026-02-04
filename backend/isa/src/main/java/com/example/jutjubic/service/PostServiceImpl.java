@@ -84,8 +84,8 @@ public class PostServiceImpl implements PostService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Too large video file (max 200MB).");
 
         for (String tag : postDto.getTags()) {
-            if (!tag.matches("^[\\p{L}\\p{N}_-]{2,30}$"))
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid tag (min 2 characters): " + tag);
+            if (!tag.matches("^[\\p{L}\\p{N}_-]{1,30}$"))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid tag (min 1 character): " + tag);
         }
 
         try {

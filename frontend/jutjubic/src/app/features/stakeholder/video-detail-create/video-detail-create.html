@@ -1,6 +1,164 @@
-<p>video-detail-create works!</p>
-@if (videoPreviewUrl) {
-  <div class="video-preview">
-    <video [src]="videoPreviewUrl" muted autoplay loop playsinline></video>
+<div class="container">
+  <div class="header">
+    <p class="title">{{ headerTitle }}</p>
+    <button class="btn-close" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
-}
+  <mat-divider></mat-divider>
+  <h3 class="section-details-title">Pojedinosti</h3>
+  <div class="section-video-details">
+    <div class="column-video-details">
+      <form [formGroup]="videoForm">
+        <mat-form-field appearance="outline" class="video-input">
+          <mat-label>Naslov</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Dodajte naslov koji opisuje vaš videozapis"
+            formControlName="title"
+          />
+        </mat-form-field>
+        @if (videoForm.get('title')?.touched && videoForm.get('title')?.invalid) {
+          <div class="validation-error">
+            Naslov je neophodan i dozvoljava latinična i ćirilična slova, brojeve, razmake i osnovnu
+            interpunkciju od 2 do 50 znakova.
+          </div>
+        }
+
+        <mat-form-field appearance="outline" class="video-input description-field">
+          <mat-label>Opis</mat-label>
+          <textarea
+            matInput
+            rows="6"
+            placeholder="Recite gledaocima nešto o videozapisu"
+            formControlName="description"
+          ></textarea>
+        </mat-form-field>
+        @if (videoForm.get('description')?.touched && videoForm.get('description')?.invalid) {
+          <div class="validation-error">
+            Opis dozvoljava latinična i ćirilična slova, brojeve, razmake i tabulatore, nove redove,
+            uobičajenu interpunkciju od 5 do 2000 znakova.
+          </div>
+        }
+
+        <div class="section-tags">
+          <mat-label>Tagovi</mat-label>
+
+          <mat-form-field
+            appearance="outline"
+            class="video-input"
+            [class.mat-form-field-invalid]="
+              videoForm.get('tags')?.touched && videoForm.get('tags')?.invalid
+            "
+          >
+            <mat-chip-grid #chipGrid formControlName="tags" aria-label="Tagovi">
+              @for (tag of tags; track trackBy(i, tag); let i = $index) {
+                <mat-chip-row [removable]="removable">
+                  {{ tag }}
+
+                  @if (removable) {
+                    <button matChipRemove (click)="removeTag(tag)">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  }
+                </mat-chip-row>
+              }
+              <input
+                class="video-input"
+                placeholder="Novi tag"
+                formControlName="tagInput"
+                [matChipInputFor]="chipGrid"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (matChipInputTokenEnd)="addTag($event)"
+                (click)="onTagsTouched()"
+              />
+            </mat-chip-grid>
+          </mat-form-field>
+        </div>
+
+        @if (videoForm.get('tags')?.touched && videoForm.get('tags')?.hasError('required')) {
+          <div class="validation-error tags-error">Morate unijeti bar jedan tag.</div>
+        }
+
+        <div class="section-thumbnail">
+          <mat-label>Minijatura</mat-label>
+          <span>Postavite minijaturu koja će se isticati i privući pažnju gledaoca. </span>
+          <input
+            type="file"
+            hidden
+            accept="image/*"
+            (change)="onThumbnailSelected($event)"
+            #fileInput
+          />
+          <button
+            mat-icon-button
+            disableRipple
+            type="button"
+            accept="image/*"
+            class="btn-thumbnail"
+            (click)="onThumbnailTouched(); fileInput.click()"
+          >
+            @if (thumbnailPreviewUrl) {
+              <img [src]="thumbnailPreviewUrl" class="thumbnail-preview" />
+            } @else {
+              <mat-icon>add_photo_alternate</mat-icon>
+              <span>Prenesi datoteku</span>
+            }
+          </button>
+        </div>
+        @if (
+          videoForm.get('thumbnail')?.touched && videoForm.get('thumbnail')?.hasError('required')
+        ) {
+          <div class="validation-error">Minijatura je obavezna.</div>
+        }
+
+        @if (
+          videoForm.get('thumbnail')?.touched && videoForm.get('thumbnail')?.hasError('invalidType')
+        ) {
+          <div class="validation-error">Dozvoljene su samo slike.</div>
+        }
+
+        <div class="section-location">
+          <span>Lokacija (opciona)</span>
+          <div class="location-details">
+            <mat-form-field appearance="outline" class="video-input">
+              <mat-label>Država</mat-label>
+              <input matInput type="text" placeholder="Država" formControlName="country" />
+            </mat-form-field>
+            @if (videoForm.get('country')?.touched && videoForm.get('country')?.invalid) {
+              <div class="validation-error">Država mora sadržati slova do 30 karaktera.</div>
+            }
+
+            <mat-form-field appearance="outline" class="video-input">
+              <mat-label>Grad</mat-label>
+              <input matInput type="text" placeholder="Grad" formControlName="city" />
+            </mat-form-field>
+            @if (videoForm.get('city')?.touched && videoForm.get('city')?.invalid) {
+              <div class="validation-error">Grad mora sadržati slova do 30 karaktera.</div>
+            }
+          </div>
+        </div>
+      </form>
+    </div>
+
+    @if (videoPreviewUrl) {
+      <div class="column-video-preview">
+        <div class="video-wrapper">
+          <video #videoEl [src]="videoPreviewUrl" muted autoplay loop playsinline></video>
+          @if (thumbnailPreviewUrl) {
+            <img class="video-thumbnail-overlay" [src]="thumbnailPreviewUrl" />
+          }
+        </div>
+        <mat-label>Naziv datoteke</mat-label>
+        <span>{{ videoPreview.name }}</span>
+      </div>
+    }
+  </div>
+  <mat-divider></mat-divider>
+  <div class="footer">
+    <button class="btn-upload" (click)="upload()">
+      <span class="btn-text">Dalje</span>
+    </button>
+  </div>
+</div>
