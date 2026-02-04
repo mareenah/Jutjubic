@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PostResponse } from '../../../../models/postResponse.model';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { StakeholderService } from '../../../stakeholder/stakeholder.service';
+import { PostResponse } from '../../../../models/postResponse.model';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -12,19 +13,25 @@ import { StakeholderService } from '../../../stakeholder/stakeholder.service';
   styleUrl: './home.css',
 })
 export class Home implements OnInit {
-  posts: PostResponse[] = [];
+  fixedPosts$!: Observable<PostResponse[]>;
 
   constructor(
     private router: Router,
     private stakeholderService: StakeholderService,
-  ) {}
+  ) {
+    console.log(router);
+  }
 
   ngOnInit(): void {
-    this.posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    this.fixedPosts$ = this.stakeholderService.findPosts();
   }
 
   displayPost(post: PostResponse): void {
     this.stakeholderService.selectPost(post);
     this.router.navigate(['/posts', post.id]);
+  }
+
+  trackById(index: number, post: PostResponse) {
+    return post.id;
   }
 }

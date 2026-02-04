@@ -25,9 +25,24 @@ public class PostController {
     @Value("${file.upload.base-dir}")
     private String baseUploadDir;
 
-    @GetMapping(value = "/", produces = "application/json")
+    @GetMapping(produces = "application/json")
     public List<Post> findAll() {
         return postService.findAll();
+
+//        return postService.findAll().stream().map(post -> {
+//            Post newPost = new Post();
+//            newPost.setId(post.getId());
+//            newPost.setTitle(post.getTitle());
+//            newPost.setDescription(post.getDescription());
+//            newPost.setTags(post.getTags());
+//            newPost.setThumbnail("/api/posts/thumbnails/" + post.getThumbnail());
+//            newPost.setVideo("/api/posts/videos/" + post.getVideo());
+//            newPost.setCreatedAt(post.getCreatedAt());
+//            newPost.setCountry(post.getCountry());
+//            newPost.setCity(post.getCity());
+//            newPost.setUser(post.getUser());
+//            return newPost;
+//        }).toList();
     }
 
     @PostMapping(value = "/create", consumes = "multipart/form-data")

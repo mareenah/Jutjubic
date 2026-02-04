@@ -46,7 +46,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> findAll() {
-        return postRepository.findAll(Sort.by(Sort.Direction.DESC));
+        List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        return posts;
     }
 
     @Override
@@ -123,9 +124,7 @@ public class PostServiceImpl implements PostService {
                         throw new ResponseStatusException(HttpStatus.REQUEST_TIMEOUT, "Video upload took too long");
                 }
             }
-
-            String videoRelativePath = "videos/" + videoFileName;
-            post.setVideoPath(videoRelativePath);
+            post.setVideo(videoFileName);
 
             MultipartFile thumbnail = postDto.getThumbnail();
             String thumbFileName = UUID.randomUUID() + "_" + thumbnail.getOriginalFilename();
@@ -134,8 +133,7 @@ public class PostServiceImpl implements PostService {
             Path thumbAbsolutePath = thumbDirPath.resolve(thumbFileName);
             Files.copy(thumbnail.getInputStream(), thumbAbsolutePath, StandardCopyOption.REPLACE_EXISTING);
             thumbnailPath = thumbAbsolutePath;
-            String thumbRelativePath = "thumbnails/" + thumbFileName;
-            post.setThumbnailUrl(thumbRelativePath);
+            post.setThumbnail(thumbFileName);
 
             return postRepository.save(post);
         } catch (ResponseStatusException e) {

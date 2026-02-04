@@ -1,7 +1,7 @@
 import { Component, ElementRef, HostListener, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { filter, map, startWith } from 'rxjs';
+import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';

@@ -1,7 +1,7 @@
 import { UserProfile } from './userProfile.model';
 
 export interface PostResponse {
-  id: number;
+  id: string;
   title: string;
   description: string;
   tags: string[];

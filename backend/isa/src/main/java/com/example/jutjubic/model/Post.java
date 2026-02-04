@@ -34,10 +34,10 @@ public class Post {
     private List<String> tags;
 
     @Column(name = "thumbnailUrl")
-    private String thumbnailUrl;
+    private String thumbnail;
 
     @Column(name = "videoPath")
-    private String videoPath;
+    private String video;
 
     @Column(name = "createdAt")
     private Instant createdAt;
@@ -51,5 +51,4 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
 }

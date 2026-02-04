@@ -1,15 +1,33 @@
-<div class="home-grid">
-  <div class="video-card" *ngFor="let post of posts" (click)="displayPost(post)">
-    <img class="thumbnail" [src]="post.thumbnail" alt="thumbnail" />
-    <div class="video-info">
-      <h4 class="title">{{ post.title }}</h4>
-      <p class="description">{{ post.description }}</p>
+<div *ngIf="fixedPosts$ | async as posts; else loading">
+  <div *ngIf="posts.length > 0; else noPosts">
+    <div class="home-grid">
+      <div
+        class="video-card"
+        *ngFor="let post of posts; trackBy: trackById"
+        (click)="displayPost(post)"
+      >
+        <img class="thumbnail" [src]="post.thumbnail" />
 
-      <div class="tags">
-        <span *ngFor="let tag of post.tags">#{{ tag }}</span>
+        <div class="video-info">
+          <h4 class="title">{{ post.title }}</h4>
+          <h6 class="detail-info">{{ post.user.username }}</h6>
+          <div class="views-time">
+            <div class="views">
+              <h6 class="detail-info">15</h6>
+              <h6 class="detail-info">pregleda</h6>
+            </div>
+            <h6 class="detail-info">· {{ post.createdAt }}</h6>
+          </div>
+        </div>
       </div>
-
-      <small class="meta"> {{ post.country }} , {{ post.city }} • {{ post.createdAt }} </small>
     </div>
   </div>
 </div>
+
+<ng-template #loading>
+  <p>Loading…</p>
+</ng-template>
+
+<ng-template #noPosts>
+  <p>No posts.</p>
+</ng-template>
