@@ -8,18 +8,19 @@ import { PostResponse } from '../../../models/postResponse.model';
 import { CommonModule } from '@angular/common';
 import { StakeholderService } from '../stakeholder.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
   selector: 'app-profile',
-  imports: [MatInputModule, MatCardModule, CommonModule],
+  imports: [MatInputModule, MatCardModule, CommonModule, MatIconModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
 export class ProfileComponent implements OnInit {
   userId!: string;
   user: UserProfile = {
-    id: 0,
+    id: '',
     email: '',
     username: '',
     password: '',
@@ -47,13 +48,28 @@ export class ProfileComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.userId = params['userId'];
     });
-    this.getProfile();
+    this.findProfile();
   }
 
-  getProfile(): void {
-    this.authService.getUserProfile(this.userId).subscribe({
+  findProfile(): void {
+    this.authService.findUserProfile(this.userId).subscribe({
       next: (result) => {
         this.user = result;
+        this.findPostsByUser(this.user);
+
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        console.log(console.error);
+      },
+    });
+  }
+
+  findPostsByUser(user: UserProfile) {
+    this.stakeholderService.findPostsByUser(this.user).subscribe({
+      next: (result) => {
+        this.posts = result;
+        console.log('findPostsByUser' + this.posts + ' user:' + this.user.id);
         this.cdr.detectChanges();
       },
       error: () => {
@@ -63,7 +79,6 @@ export class ProfileComponent implements OnInit {
   }
 
   displayPost(post: PostResponse): void {
-    this.stakeholderService.selectPost(post);
     this.router.navigate(['/posts', post.id]);
   }
 }

@@ -85,7 +85,7 @@ export class AuthService {
     return !!this.tokenStorage.getAccessToken();
   }
 
-  getUserProfile(id: string): Observable<UserProfile> {
+  findUserProfile(id: string): Observable<UserProfile> {
     return this.http.get<UserProfile>(environment.apiHost + 'auth/user/' + id);
   }
 }

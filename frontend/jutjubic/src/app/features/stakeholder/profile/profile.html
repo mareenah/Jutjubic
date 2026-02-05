@@ -1,6 +1,7 @@
 <div class="profile-page">
   <div class="profile-layout">
     <mat-card class="profile-card">
+      <mat-icon>person</mat-icon>
       <h2 class="profile-title">{{ user.username }}</h2>
       <p class="profile-email">{{ user.email }}</p>
 
@@ -43,7 +44,23 @@
 
   <div class="posts-section">
     <h3 class="section-title">Objave</h3>
-
+    <ng-container *ngIf="posts.length !== 0; else noPosts">
+      <div class="posts-grid">
+        <div class="post-card" *ngFor="let post of posts" (click)="displayPost(post)">
+          <img clas="thumbnail" [src]="post.thumbnail" alt="Post thumbnail" />
+          <div class="video-info">
+            <h4 class="title">{{ post.title }}</h4>
+            <div class="views-time">
+              <div class="views">
+                <h6 class="detail-info">15</h6>
+                <h6 class="detail-info">pregleda</h6>
+              </div>
+              <h6 class="detail-info">· {{ post.createdAt | date: 'dd MMM yyyy' }}</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
     <ng-template #noPosts>
       <p class="empty">Korisnik još nema objave.</p>
     </ng-template>

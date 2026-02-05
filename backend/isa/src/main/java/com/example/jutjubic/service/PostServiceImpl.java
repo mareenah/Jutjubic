@@ -155,8 +155,15 @@ public class PostServiceImpl implements PostService {
         return Files.readAllBytes(Paths.get(path).toAbsolutePath());
     }
 
+    @Override
     public Post findPostById(UUID id){
         return postRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
     }
+
+    @Override
+    public List<Post> findPostsByUser(UUID userId) {
+        return postRepository.findAllByUserId(userId);
+    }
+
 }

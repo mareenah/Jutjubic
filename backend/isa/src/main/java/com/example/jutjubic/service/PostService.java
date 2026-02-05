@@ -12,5 +12,6 @@ public interface PostService {
     Post upload(PostDto postDto) throws IOException;
     byte[] findThumbnail(String path) throws IOException;
     Post findPostById(UUID id);
+    List<Post> findPostsByUser(UUID userId);
 
 }
