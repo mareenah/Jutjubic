@@ -29,6 +29,7 @@ import { COMMA, ENTER, N } from '@angular/cdk/keycodes';
 import { Router } from '@angular/router';
 
 @Component({
+  standalone: true,
   selector: 'app-video-detail-create',
   imports: [
     MatDividerModule,
