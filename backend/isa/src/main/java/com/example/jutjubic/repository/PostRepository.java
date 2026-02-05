@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface PostRepository extends JpaRepository<Post, UUID> {
     @Override
     List<Post> findAll(Sort sort);
-    List<Post> findAllByUserId(UUID userId);
+    List<Post> findAllByUserId(UUID userId, Sort sort);
 }

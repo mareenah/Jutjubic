@@ -202,7 +202,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> findPostsByUser(UUID userId) {
-        return postRepository.findAllByUserId(userId);
+        return postRepository
+                .findAllByUserId(
+                        userId,
+                        Sort.by(Sort.Direction.DESC, "createdAt")
+                )
+                .stream()
+                .map(this::mapToObject)
+                .toList();
     }
-
 }
