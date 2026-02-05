@@ -1,11 +1,14 @@
 import { UserProfile } from './userProfile.model';
 
-export interface Post {
+export interface PostResponse {
+  id: string;
   title: string;
   description: string;
   tags: string[];
-  thumbnail: File;
-  video: File;
+  thumbnail: string;
+  video: string;
+  createdAt: string;
   country?: string;
   city?: string;
+  user: UserProfile;
 }

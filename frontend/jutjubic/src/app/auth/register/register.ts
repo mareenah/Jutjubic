@@ -53,7 +53,11 @@ export class RegisterComponent implements OnInit {
     street: new FormControl(''),
   });
 
-  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private fb: FormBuilder,
+  ) {
     this.isPasswordVisible = false;
   }
 
@@ -92,7 +96,7 @@ export class RegisterComponent implements OnInit {
               Validators.minLength(1),
               Validators.maxLength(30),
               Validators.pattern(
-                /^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ' -]+$/
+                /^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ' -]+$/,
               ),
             ],
           },
@@ -105,7 +109,7 @@ export class RegisterComponent implements OnInit {
               Validators.minLength(1),
               Validators.maxLength(30),
               Validators.pattern(
-                /^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ' -]+$/
+                /^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ' -]+$/,
               ),
             ],
           },
@@ -116,7 +120,7 @@ export class RegisterComponent implements OnInit {
             validators: [
               Validators.maxLength(30),
               Validators.pattern(
-                /^$|^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ\s'-]+$/
+                /^$|^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ\s'-]+$/,
               ),
             ],
           },
@@ -127,7 +131,7 @@ export class RegisterComponent implements OnInit {
             validators: [
               Validators.maxLength(30),
               Validators.pattern(
-                /^$|^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ\s'-]+$/
+                /^$|^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ\s'-]+$/,
               ),
             ],
           },
@@ -138,7 +142,7 @@ export class RegisterComponent implements OnInit {
             validators: [
               Validators.maxLength(30),
               Validators.pattern(
-                /^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-z0-9À-ÖØ-öø-ÿčćžđšČĆŽĐŠ\s\-\/]+$/
+                /^(?=.*[A-Za-zÀ-ÖØ-öø-ÿčćžđšČĆŽĐŠ])[A-Za-z0-9À-ÖØ-öø-ÿčćžđšČĆŽĐŠ\s\-\/]+$/,
               ),
             ],
           },
@@ -146,7 +150,7 @@ export class RegisterComponent implements OnInit {
       },
       {
         validators: this.matchPasswords('password', 'repeatPassword'),
-      } as AbstractControlOptions
+      } as AbstractControlOptions,
     );
   }
 
@@ -204,7 +208,7 @@ export class RegisterComponent implements OnInit {
 
       this.authService.register(register).subscribe({
         next: () => {
-          alert('Succesfully registered!\nVerify your account and login.');
+          alert('Uspješna registracija!\nVerifikuj nalog i prijavi se.');
           this.router.navigate(['']);
         },
         error: (error) => {
@@ -214,7 +218,7 @@ export class RegisterComponent implements OnInit {
               alert(error.error.message);
               break;
             default:
-              alert(error.error?.message || 'Unknown error occurred.');
+              alert(error.error?.message || 'Nepoznata greška.');
               break;
           }
         },

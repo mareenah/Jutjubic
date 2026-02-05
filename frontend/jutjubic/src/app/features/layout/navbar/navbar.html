@@ -1,42 +1,40 @@
 <div class="navbar">
   <div class="navbar-menu">
-    <div class="logo">
-      <img class="logo-image" src="assets/logo.png" alt="Logo" (click)="home()" />
-      <div class="logo-text">Jutjubic</div>
+    <div class="logo" (click)="home()">
+      <img class="logo-image" src="assets/logo.svg" alt="Logo" />
+      <div class="logo-text">Jutjubić</div>
     </div>
   </div>
   <div class="navbar-buttons">
-    <ng-container
-      *ngIf="{
-        loggedIn: loggedIn$ | async,
-        isAuthPage: isAuthPage$ | async
-      } as state"
-    >
-      <button class="btn" *ngIf="!state.loggedIn && !state.isAuthPage" (click)="login()">
-        <mat-icon>login</mat-icon>
-        <span class="btn-text">Prijava</span>
-      </button>
+    <ng-container>
+      @if (!isLoginPage && !isRegisterPage && user?.id == '') {
+        <button class="btn" (click)="login()">
+          <mat-icon>login</mat-icon>
+          <span class="btn-text">Prijava</span>
+        </button>
+      }
 
       <button class="btn" (click)="home()">
         <mat-icon class="btn-home">home</mat-icon>
         <span class="btn-text">Početna</span>
       </button>
 
-      <button class="btn" *ngIf="state.loggedIn && !state.isAuthPage">
-        <mat-icon class="btn-add">add</mat-icon>
-        <span class="btn-text">Kreiraj</span>
-      </button>
-
-      <div class="navbar-button dropdown" *ngIf="state.loggedIn">
-        <button class="btn dropbtn" (click)="toggleMenu()">
-          {{ user?.username }}
-          <mat-icon [class.rotate]="dropdownOpen">keyboard_arrow_down</mat-icon>
+      @if (!isLoginPage && !isRegisterPage && user?.id != '') {
+        <button class="btn" (click)="create()">
+          <mat-icon class="btn-add">add</mat-icon>
+          <span class="btn-text">Kreiraj</span>
         </button>
-        <div class="dropdown-content" *ngIf="dropdownOpen">
-          <a class="dropdown-menu-link"><mat-icon>person</mat-icon>Profil</a>
-          <a class="dropdown-menu-link" (click)="logout()"><mat-icon>logout</mat-icon>Odjava</a>
+
+        <div class="navbar-button dropdown">
+          <button class="btn dropbtn" (click)="toggleMenu()">
+            {{ user?.username }}
+          </button>
+          <div class="dropdown-content" *ngIf="dropdownOpen">
+            <a class="dropdown-menu-link"><mat-icon>person</mat-icon>Profil</a>
+            <a class="dropdown-menu-link" (click)="logout()"><mat-icon>logout</mat-icon>Odjava</a>
+          </div>
         </div>
-      </div>
+      }
     </ng-container>
   </div>
 </div>

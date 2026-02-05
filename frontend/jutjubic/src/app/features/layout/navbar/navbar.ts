@@ -1,15 +1,17 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { filter, map, startWith } from 'rxjs';
+import { filter } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { VideoCreateComponent } from '../../stakeholder/video-create/video-create';
 
 @Component({
   standalone: true,
   selector: 'app-navbar',
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, MatDialogModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css'],
 })
@@ -17,31 +19,19 @@ export class Navbar implements OnInit {
   user: User | undefined;
   isLoginPage = false;
   isRegisterPage = false;
-  loggedIn$: any;
-  isAuthPage$: any;
   dropdownOpen = false;
+  dialog = inject(MatDialog);
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
   ) {}
 
   ngOnInit(): void {
     this.authService.user$.subscribe((user) => {
       this.user = user;
     });
-
-    this.loggedIn$ = this.authService.loggedIn$;
-
-    this.isAuthPage$ = this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      startWith(null),
-      map(() => {
-        const url = this.router.url;
-        return url === '/login' || url === '/register';
-      })
-    );
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       const url = this.router.url;
@@ -74,5 +64,14 @@ export class Navbar implements OnInit {
 
   home(): void {
     this.router.navigate(['/']);
+  }
+
+  create(): void {
+    this.dialog.open(VideoCreateComponent, {
+      height: '87vh',
+      width: '65vw',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+    });
   }
 }
