@@ -21,11 +21,17 @@ export class AuthService {
     id: '',
   });
 
+  private loggedInSubject!: BehaviorSubject<boolean>;
+  isLoggedIn$!: Observable<boolean>;
+
   constructor(
     private http: HttpClient,
     private tokenStorage: TokenStorage,
     private router: Router,
   ) {
+    const hasToken = !!this.tokenStorage.getAccessToken();
+    this.loggedInSubject = new BehaviorSubject<boolean>(hasToken);
+    this.isLoggedIn$ = this.loggedInSubject.asObservable();
     this.restoreUserFromToken();
   }
 
@@ -45,6 +51,7 @@ export class AuthService {
       tap((authenticationResponse) => {
         this.tokenStorage.saveAccessToken(authenticationResponse.accessToken);
         this.setUser();
+        this.loggedInSubject.next(true);
       }),
     );
   }
@@ -62,26 +69,32 @@ export class AuthService {
     this.user$.next(user);
   }
 
-  private restoreUserFromToken(): void {
+  restoreUserFromToken(): void {
     const token = this.tokenStorage.getAccessToken();
-    if (!token) return;
+    if (!token) {
+      this.loggedInSubject.next(false);
+      return;
+    }
 
     const jwtHelper = new JwtHelperService();
+
     if (jwtHelper.isTokenExpired(token)) {
       this.logout();
       return;
     }
 
     this.setUser();
+    this.loggedInSubject.next(true);
   }
 
   logout(): void {
     this.tokenStorage.clear();
     this.router.navigate(['']);
+    this.loggedInSubject.next(false);
     this.user$.next({ username: '', id: '' });
   }
 
-  isLoggedIn(): boolean {
+  private hasToken(): boolean {
     return !!this.tokenStorage.getAccessToken();
   }
 

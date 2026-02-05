@@ -19,8 +19,10 @@ export class Navbar implements OnInit {
   user: User | undefined;
   isLoginPage = false;
   isRegisterPage = false;
+  isHomePage = false;
   dropdownOpen = false;
   dialog = inject(MatDialog);
+  isLoggedIn: boolean = false;
 
   constructor(
     private router: Router,
@@ -33,10 +35,15 @@ export class Navbar implements OnInit {
       this.user = user;
     });
 
+    this.authService.isLoggedIn$.subscribe((status) => {
+      this.isLoggedIn = status;
+    });
+
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
       const url = this.router.url;
       this.isLoginPage = url === '/login';
       this.isRegisterPage = url === '/register';
+      this.isHomePage = url === '/';
     });
   }
 
