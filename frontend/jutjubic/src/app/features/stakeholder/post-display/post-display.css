@@ -83,7 +83,7 @@
 .views-date-place-decription {
   background-color: var(--secondary-color);
   border-radius: 0.5rem;
-  margin: 0.4rem 0.5rem;
+  margin: 0.4rem 0rem;
   padding: 0.9rem 0.5rem;
   line-height: 1.2rem;
   font-size: 0.85rem;
@@ -156,17 +156,46 @@
 
 .comment-input {
   display: flex;
+  flex-direction: column;
   width: 100%;
-  min-height: 4.5rem;
+  min-height: 2rem;
   height: auto;
   gap: 0.4rem;
 }
 
+.comment-input-person {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.comment-input-person mat-icon {
+  margin-right: 0.3rem;
+}
+
+.comment-input-send {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 0.5rem;
+}
+
 .comment-input textarea {
   flex: 1;
-  padding: 0.6rem;
+  margin-right: 0.6rem;
+  margin-top: 0rem;
+  margin-left: 0.6rem;
+  margin-bottom: 0.6rem;
   font-size: 0.9rem;
-  border-bottom-left-radius: 0.6rem;
+  border-style: solid;
+  border-width: 0.1rem;
+  border-color: var(--mid-accent-color);
+  border-left: none;
+  border-top: none;
+  border-right: none;
+  background-color: transparent;
+  margin-bottom: 0.5rem;
 }
 
 .comment-btn {
