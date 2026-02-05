@@ -11,8 +11,8 @@ export class StakeholderService {
 
   constructor(private http: HttpClient) {}
 
-  selectPost(post: PostResponse) {
-    this.selectedPostSubject.next(post);
+  findPostById(id: string): Observable<PostResponse> {
+    return this.http.get<PostResponse>(environment.apiHost + 'posts/' + id);
   }
 
   uploadVideo(post: FormData): Observable<PostResponse> {

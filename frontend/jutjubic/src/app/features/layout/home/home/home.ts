@@ -18,16 +18,13 @@ export class Home implements OnInit {
   constructor(
     private router: Router,
     private stakeholderService: StakeholderService,
-  ) {
-    console.log(router);
-  }
+  ) {}
 
   ngOnInit(): void {
     this.fixedPosts$ = this.stakeholderService.findPosts();
   }
 
   displayPost(post: PostResponse): void {
-    this.stakeholderService.selectPost(post);
     this.router.navigate(['/posts', post.id]);
   }
 

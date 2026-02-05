@@ -31,7 +31,6 @@ import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeoutException;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -154,5 +153,10 @@ public class PostServiceImpl implements PostService {
     public byte[] findThumbnail(String path) throws IOException {
         log.info("Loading thumbnail from disk: {}", path);
         return Files.readAllBytes(Paths.get(path).toAbsolutePath());
+    }
+
+    public Post findPostById(UUID id){
+        return postRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
     }
 }

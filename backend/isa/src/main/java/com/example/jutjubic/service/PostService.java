@@ -5,9 +5,12 @@ import com.example.jutjubic.model.Post;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public interface PostService {
     List<Post> findAll();
     Post upload(PostDto postDto) throws IOException;
     byte[] findThumbnail(String path) throws IOException;
+    Post findPostById(UUID id);
+
 }

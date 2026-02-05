@@ -63,8 +63,9 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                 .exceptionHandling(getExceptionHandlingConfig())
                 .sessionManagement(getSessionManagementConfig())
                 .authorizeHttpRequests((requests) -> {
-                    requests.requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/verify", "/api/auth/user/**").permitAll();
+                    requests.requestMatchers("/api/auth/**").permitAll();
                     requests.requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll();
+                    requests.requestMatchers(HttpMethod.POST, "/api/posts/create").authenticated();
                     requests.anyRequest().authenticated();
                 });
 

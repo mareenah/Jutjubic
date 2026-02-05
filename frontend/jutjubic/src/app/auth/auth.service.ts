@@ -64,11 +64,11 @@ export class AuthService {
 
   private restoreUserFromToken(): void {
     const token = this.tokenStorage.getAccessToken();
-    const jwtHelper = new JwtHelperService();
+    if (!token) return;
 
+    const jwtHelper = new JwtHelperService();
     if (jwtHelper.isTokenExpired(token)) {
       this.logout();
-      this.router.navigate(['/login']);
       return;
     }
 

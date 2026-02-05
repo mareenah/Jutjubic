@@ -6,7 +6,9 @@ import { StakeholderService } from '../stakeholder.service';
 import { MatIcon } from '@angular/material/icon';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';
+import { ActivatedRoute } from '@angular/router';
 import { UserProfile } from '../../../models/userProfile.model';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -24,6 +26,8 @@ export class PostDisplayComponent implements OnInit {
     private router: Router,
     private stakeholderService: StakeholderService,
     private authService: AuthService,
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -31,11 +35,21 @@ export class PostDisplayComponent implements OnInit {
       this.user = user;
     });
 
-    if (this.user?.id !== '') this.isLoggedIn = true;
+    this.isLoggedIn = !!this.user?.id;
 
-    this.stakeholderService.selectedPost$.subscribe((p) => {
-      if (p) this.post = p;
-      else console.error('Izaberi objavu!');
+    const postId = this.route.snapshot.paramMap.get('id');
+    if (!postId) {
+      console.error('Ne postoji id u objavi');
+      return;
+    }
+
+    this.stakeholderService.findPostById(postId).subscribe({
+      next: (post) => {
+        this.post = post;
+        this.cdr.detectChanges();
+        console.log(post.video);
+      },
+      error: () => console.error('Objava nije pronađena.'),
     });
   }
 

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -55,5 +56,10 @@ public class PostController {
     public ResponseEntity<byte[]> findThumbnail(@PathVariable String name) throws IOException {
         Path absolutePath = Paths.get(baseUploadDir, "thumbnails", name).toAbsolutePath();
         return ResponseEntity.ok(postService.findThumbnail(absolutePath.toString()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> findPost(@PathVariable UUID id) {
+        return ResponseEntity.ok(postService.findPostById(id));
     }
 }

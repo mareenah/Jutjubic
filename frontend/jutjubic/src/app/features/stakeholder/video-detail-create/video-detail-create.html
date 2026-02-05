@@ -162,7 +162,7 @@
 
     <div *ngIf="videoPreview" class="column-video-preview">
       <div class="video-wrapper">
-        <video #videoEl [src]="videoPreviewUrl" muted autoplay loop playsinline></video>
+        <video #videoEl [src]="videoPreviewUrl" muted autoplay loop playsinline controls></video>
         <img
           *ngIf="thumbnailPreviewUrl"
           class="video-thumbnail-overlay"
