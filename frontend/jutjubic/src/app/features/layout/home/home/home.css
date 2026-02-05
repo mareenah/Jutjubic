@@ -66,9 +66,9 @@
   height: 1.4rem;
 }
 
-#no-posts,
-#loading {
+.loading {
   display: flex;
-  justify-content: center;
   margin-top: 7rem;
+  justify-self: center;
+  font-size: large;
 }
