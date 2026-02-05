@@ -24,11 +24,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +40,9 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private ThumbnailCacheService thumbnailCacheService;
+
     @Value("${file.upload.base-dir}")
     private String baseUploadDir;
 
@@ -45,8 +50,49 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> findAll() {
-        List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))
+                .stream()
+                .map(this::mapToObject)
+                .toList();;
         return posts;
+    }
+
+    @Override
+    public Post mapToObject(Post post) {
+        Post object = new Post();
+
+        object.setId(post.getId());
+        object.setTitle(post.getTitle());
+        object.setDescription(post.getDescription());
+        object.setTags(post.getTags());
+        object.setCreatedAt(post.getCreatedAt());
+        object.setCountry(post.getCountry());
+        object.setCity(post.getCity());
+        object.setUser(post.getUser());
+        object.setVideo(post.getVideo());
+
+        try {
+            Path path = Paths.get("uploads/thumbnails", post.getThumbnail());
+            String mimeType = Files.probeContentType(path);
+
+            if (mimeType == null) {
+                mimeType = URLConnection.guessContentTypeFromName(post.getThumbnail());
+            }
+            if (mimeType == null) {
+                mimeType = "image/jpeg";
+            }
+
+            Path absolutePath = Paths.get(baseUploadDir, "thumbnails", post.getThumbnail()).toAbsolutePath();
+            byte[] imageBytes = thumbnailCacheService.findThumbnail(absolutePath.toString());
+            String base64 = Base64.getEncoder().encodeToString(imageBytes);
+            String dataUri = "data:" + mimeType + ";base64," + base64;
+            object.setThumbnail(dataUri);
+
+        } catch (IOException e) {
+            object.setThumbnail(null);
+        }
+
+        return object;
     }
 
     @Override
@@ -149,13 +195,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    @Cacheable(value = "thumbnails", key = "#path")
-    public byte[] findThumbnail(String path) throws IOException {
-        log.info("Loading thumbnail from disk: {}", path);
-        return Files.readAllBytes(Paths.get(path).toAbsolutePath());
-    }
-
-    @Override
     public Post findPostById(UUID id){
         return postRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
@@ -163,7 +202,13 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> findPostsByUser(UUID userId) {
-        return postRepository.findAllByUserId(userId);
+        return postRepository
+                .findAllByUserId(
+                        userId,
+                        Sort.by(Sort.Direction.DESC, "createdAt")
+                )
+                .stream()
+                .map(this::mapToObject)
+                .toList();
     }
-
 }

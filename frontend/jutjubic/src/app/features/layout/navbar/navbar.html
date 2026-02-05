@@ -7,19 +7,20 @@
   </div>
   <div class="navbar-buttons">
     <ng-container>
-      @if (!isLoginPage && !isRegisterPage && user?.id == '') {
+      <div *ngIf="!isLoginPage && !isRegisterPage && !isLoggedIn">
         <button class="btn" (click)="login()">
           <mat-icon>login</mat-icon>
           <span class="btn-text">Prijava</span>
         </button>
-      }
+      </div>
+      <div *ngIf="!isHomePage">
+        <button class="btn" (click)="home()">
+          <mat-icon class="btn-home">home</mat-icon>
+          <span class="btn-text">Početna</span>
+        </button>
+      </div>
 
-      <button class="btn" (click)="home()">
-        <mat-icon class="btn-home">home</mat-icon>
-        <span class="btn-text">Početna</span>
-      </button>
-
-      @if (!isLoginPage && !isRegisterPage && user?.id != '') {
+      <div class="navbar-buttons" *ngIf="!isLoginPage && !isRegisterPage && isLoggedIn">
         <button class="btn" (click)="create()">
           <mat-icon class="btn-add">add</mat-icon>
           <span class="btn-text">Kreiraj</span>
@@ -34,7 +35,7 @@
             <a class="dropdown-menu-link" (click)="logout()"><mat-icon>logout</mat-icon>Odjava</a>
           </div>
         </div>
-      }
+      </div>
     </ng-container>
   </div>
 </div>
