@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { VideoDetailCreateComponent } from '../../stakeholder/video-detail-create/video-detail-create';
 
 @Component({
+  standalone: true,
   selector: 'app-video-create',
   imports: [MatIconModule, MatDividerModule],
   templateUrl: './video-create.html',
