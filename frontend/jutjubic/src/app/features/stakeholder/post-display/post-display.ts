@@ -9,6 +9,8 @@ import { User } from '../../../models/user.model';
 import { ActivatedRoute } from '@angular/router';
 import { UserProfile } from '../../../models/userProfile.model';
 import { ChangeDetectorRef } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { environment } from '../../../../environment/environment';
 
 @Component({
   standalone: true,
@@ -21,6 +23,8 @@ export class PostDisplayComponent implements OnInit {
   post!: PostResponse;
   isLoggedIn = false;
   user: User | undefined;
+  videoUrl!: string;
+  post$!: Observable<PostResponse>;
 
   constructor(
     private router: Router,
@@ -37,20 +41,13 @@ export class PostDisplayComponent implements OnInit {
 
     this.isLoggedIn = !!this.user?.id;
 
-    const postId = this.route.snapshot.paramMap.get('id');
+    const postId = this.route.snapshot.paramMap.get('id')!;
     if (!postId) {
       console.error('Ne postoji id u objavi');
       return;
     }
 
-    this.stakeholderService.findPostById(postId).subscribe({
-      next: (post) => {
-        this.post = post;
-        this.cdr.detectChanges();
-        console.log(post.video);
-      },
-      error: () => console.error('Objava nije pronađena.'),
-    });
+    this.post$ = this.stakeholderService.findPostByIdWithVideo(postId);
   }
 
   tryLike() {

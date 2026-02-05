@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { PostResponse } from '../../models/postResponse.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment/environment';
@@ -26,5 +26,18 @@ export class StakeholderService {
 
   findPostsByUser(user: UserProfile): Observable<PostResponse[]> {
     return this.http.get<PostResponse[]>(environment.apiHost + 'posts/user/' + user.id);
+  }
+
+  findPostByIdWithVideo(id: string): Observable<PostResponse> {
+    return this.http.get<PostResponse>(environment.apiHost + 'posts/' + id).pipe(
+      map((post) => ({
+        ...post,
+        video: this.streamVideoUrl(post.video),
+      })),
+    );
+  }
+
+  streamVideoUrl(filename: string): string {
+    return environment.apiHost + 'posts/videos/' + filename;
   }
 }

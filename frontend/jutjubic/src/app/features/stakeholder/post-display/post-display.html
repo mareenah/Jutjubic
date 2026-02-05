@@ -1,6 +1,14 @@
-<div *ngIf="post" class="container">
+<div *ngIf="post$ | async as post" class="container">
   <div class="section-video">
-    <video class="video" [src]="post.video" muted autoplay controls playsinline></video>
+    <video
+      class="video"
+      [src]="post.video"
+      controls
+      preload="metadata"
+      autoplay
+      controls
+      playsinline
+    ></video>
     <h4 class="title">{{ post.title }}</h4>
     <div class="details">
       <div class="profile-like">
