@@ -6,17 +6,17 @@
         *ngFor="let post of posts; trackBy: trackById"
         (click)="displayPost(post)"
       >
-        <img class="thumbnail" [src]="post.thumbnail" />
+        <img class="thumbnail" *ngIf="post.thumbnail" [src]="post.thumbnail" />
 
         <div class="video-info">
           <h4 class="title">{{ post.title }}</h4>
           <h6 class="detail-info">{{ post.user.username }}</h6>
           <div class="views-time">
             <div class="views">
-              <h6 class="detail-info">15</h6>
-              <h6 class="detail-info">pregleda</h6>
+              <span>15</span>
+              <span>pregleda ·</span>
             </div>
-            <h6 class="detail-info">· {{ post.createdAt | date: 'dd MMM yyyy' }}</h6>
+            <h6 class="detail-info">{{ post.createdAt | date: 'dd MMM yyyy' }}</h6>
           </div>
         </div>
       </div>
