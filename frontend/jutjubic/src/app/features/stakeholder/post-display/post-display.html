@@ -25,7 +25,7 @@
             <span>{{ post.city }}</span>
           </div>
         </div>
-        <div class="description">{{ post.description }}</div>
+        <p class="description">{{ post.description }}</p>
       </div>
     </div>
   </div>
@@ -112,7 +112,11 @@
       </div>
     </div>
     <div class="comment-input">
-      <div class="comment-input-person"><mat-icon>person</mat-icon><span>Osoba...</span></div>
+      <div class="comment-input-person">
+        <mat-icon>person</mat-icon>
+        <span *ngIf="!isLoggedIn">Gost</span>
+        <span *ngIf="isLoggedIn">{{ user!.username }}</span>
+      </div>
       <div class="comment-input-send">
         <textarea type="text" placeholder="Napiši komentar..."></textarea>
         <button class="comment-btn" (click)="tryComment()"><mat-icon>send</mat-icon></button>

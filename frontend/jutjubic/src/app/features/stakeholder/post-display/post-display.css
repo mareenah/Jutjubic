@@ -89,6 +89,11 @@
   font-size: 0.85rem;
 }
 
+.description {
+  white-space: pre-line;
+  margin: 0.5rem 0 0.3rem 0;
+}
+
 .views-date-place {
   display: flex;
   gap: 0.6rem;
