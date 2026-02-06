@@ -1,18 +1,15 @@
 package com.example.jutjubic.contorller;
 
 import com.example.jutjubic.dto.CommentDto;
-import com.example.jutjubic.dto.PostDto;
 import com.example.jutjubic.model.Comment;
-import com.example.jutjubic.model.Post;
 import com.example.jutjubic.service.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -29,8 +26,7 @@ public class CommentController {
     }
 
     @GetMapping("/post/{id}")
-    public ResponseEntity<List<Comment>> findPostsByUser(@PathVariable UUID id) {
-        List<Comment> comments = commentService.findCommentsByPost(id);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<Page<Comment>> findCommentsByPost(@PathVariable UUID id, @RequestParam int page, @RequestParam int size) {
+        return ResponseEntity.ok(commentService.findCommentsByPost(id, page, size));
     }
 }
