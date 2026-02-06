@@ -79,6 +79,13 @@ export class PostDisplayComponent implements OnInit {
       return;
     }
 
+    console.log(this.commentText.trim().length);
+
+    if (this.commentText.trim().length > 500) {
+      alert('Komentar može imati najviše 500 karaktera!');
+      return;
+    }
+
     const comment: Comment = {
       text: this.commentText,
       postId: this.postId,
