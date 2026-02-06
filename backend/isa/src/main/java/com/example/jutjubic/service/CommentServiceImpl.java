@@ -7,6 +7,7 @@ import com.example.jutjubic.model.User;
 import com.example.jutjubic.repository.CommentRepository;
 import com.example.jutjubic.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,6 +43,14 @@ public class CommentServiceImpl implements CommentService{
         User user = (User) auth.getPrincipal();
         comment.setUser(user);
         return commentRepository.save(comment);
+    }
+
+    public List<Comment> findCommentsByPost(UUID postId) {
+        return commentRepository
+                .findAllByPostId(
+                        postId,
+                        Sort.by(Sort.Direction.DESC, "createdAt"));
+
     }
 
 }

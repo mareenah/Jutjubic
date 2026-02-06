@@ -48,4 +48,10 @@ export class StakeholderService {
       this.http.post<CommentResponse>(environment.apiHost + 'comments/create', comment),
     );
   }
+
+  async findCommentsByPost(postId: string): Promise<CommentResponse[]> {
+    return await firstValueFrom(
+      this.http.get<CommentResponse[]>(environment.apiHost + 'comments/post/' + postId),
+    );
+  }
 }

@@ -32,11 +32,11 @@ public class Comment {
     @Column(name = "createdAt", nullable = false)
     private Instant createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 }

@@ -39,21 +39,24 @@
   </div>
   <div class="section-comments">
     <div class="comments-title">Komentari</div>
+
     <div class="comments-container">
-      <div class="comment">
-        <div class="person-comment" (click)="displayProfile(post.user)">
+      <div *ngIf="comments.length === 0" class="no-comments">
+        <span>Nema komentara.</span>
+      </div>
+
+      <div class="comment" *ngFor="let comment of comments">
+        <div class="person-comment" (click)="displayProfile(comment.user)">
           <mat-icon>person</mat-icon>
-          <span>Korisnik123</span>
+          <span>{{ comment.user.username }}</span>
+          <div class="date">
+            <h5>{{ comment.createdAt | date: 'dd MMM yyyy' }}</h5>
+          </div>
         </div>
-        <span class="text"
-          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.</span
-        >
+        <span class="text">{{ comment.text }}</span>
       </div>
     </div>
+
     <div class="comment-input">
       <div class="comment-input-person">
         <mat-icon>person</mat-icon>
@@ -61,8 +64,8 @@
         <span *ngIf="isLoggedIn">{{ user!.username }}</span>
       </div>
       <div class="comment-input-send">
-        <textarea #commentText type="text" placeholder="Napiši komentar..."></textarea>
-        <button class="comment-btn" (click)="tryComment(commentText.value)">
+        <textarea [(ngModel)]="commentText" type="text" placeholder="Napiši komentar..."></textarea>
+        <button class="comment-btn" (click)="tryComment()">
           <mat-icon>send</mat-icon>
         </button>
       </div>

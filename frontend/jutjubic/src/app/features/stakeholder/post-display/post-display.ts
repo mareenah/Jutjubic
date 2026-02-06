@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { PostResponse } from '../../../models/postResponse.model';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StakeholderService } from '../stakeholder.service';
 import { MatIcon } from '@angular/material/icon';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfile } from '../../../models/userProfile.model';
 import { Observable } from 'rxjs';
 import { Comment } from '../../../models/comment.model';
-import { C } from '@angular/cdk/keycodes';
+import { FormsModule } from '@angular/forms';
+import { CommentResponse } from '../../../models/commentResponse.model';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   standalone: true,
   selector: 'app-post-display',
-  imports: [CommonModule, MatIcon],
+  imports: [CommonModule, MatIcon, FormsModule],
   templateUrl: './post-display.html',
   styleUrl: './post-display.css',
 })
 export class PostDisplayComponent implements OnInit {
-  post!: PostResponse;
   isLoggedIn = false;
   user: User | undefined;
   videoUrl!: string;
@@ -31,15 +31,18 @@ export class PostDisplayComponent implements OnInit {
     userId: '',
   };
   postId: string = '';
+  commentText: string = '';
+  comments: CommentResponse[] = [];
 
   constructor(
-    private router: Router,
     private stakeholderService: StakeholderService,
     private authService: AuthService,
     private route: ActivatedRoute,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.authService.user$.subscribe((user) => {
       this.user = user;
     });
@@ -53,6 +56,8 @@ export class PostDisplayComponent implements OnInit {
     }
 
     this.post$ = this.stakeholderService.findPostByIdWithVideo(this.postId);
+    await this.findComments();
+    this.cdr.detectChanges();
   }
 
   tryLike() {
@@ -62,28 +67,52 @@ export class PostDisplayComponent implements OnInit {
     }
   }
 
-  async tryComment(typedText: string) {
+  async tryComment() {
     if (!this.isLoggedIn) {
       alert('Da bi komentarisao objavu, prijavi se.');
+      this.commentText = '';
       return;
     }
 
-    if (!typedText.trim()) {
+    if (!this.commentText.trim()) {
       alert('Komentar ne može biti prazan!');
       return;
     }
 
-    const comment: Comment = { text: typedText, postId: this.postId, userId: this.user?.id! };
+    const comment: Comment = {
+      text: this.commentText,
+      postId: this.postId,
+      userId: this.user?.id!,
+    };
+
+    this.commentText = '';
+
     try {
-      const response = await this.stakeholderService.createComment(comment);
-      console.log('Comment created:', response);
-      //this.commentText = '';
+      const createdComment = await this.stakeholderService.createComment(comment);
+      alert('Komentar kreiran!');
+      this.comments = [createdComment, ...this.comments];
+      this.cdr.detectChanges();
     } catch (err) {
-      console.error('Error creating comment', err);
+      console.error('Greska u kreiranju komentara.', err);
+      this.commentText = this.commentText;
     }
   }
 
   displayProfile(user: UserProfile): void {
     this.router.navigate(['/users', user.id]);
+  }
+
+  async findComments() {
+    try {
+      console.log('Loading comments...');
+      this.comments = await this.stakeholderService.findCommentsByPost(this.postId);
+      console.log('Comments found:', this.comments);
+
+      if (!this.comments || this.comments.length === 0) {
+        console.log('No comments found for this post');
+      }
+    } catch (err) {
+      console.error('Failed to load comments', err);
+    }
   }
 }
