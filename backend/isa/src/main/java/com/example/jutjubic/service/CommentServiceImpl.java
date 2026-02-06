@@ -6,7 +6,11 @@ import com.example.jutjubic.model.Post;
 import com.example.jutjubic.model.User;
 import com.example.jutjubic.repository.CommentRepository;
 import com.example.jutjubic.repository.PostRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +35,9 @@ public class CommentServiceImpl implements CommentService{
     @Autowired
     private PostRepository postRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(PostService.class);
+
+    @CacheEvict(value = "comments", key = "#comment.post.id + '*'", allEntries = true)
     public Comment create(CommentDto commentDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
@@ -47,16 +54,11 @@ public class CommentServiceImpl implements CommentService{
         return commentRepository.save(comment);
     }
 
-    public List<Comment> findCommentsByPost(UUID postId) {
-        return commentRepository
-                .findAllByPostId(
-                        postId,
-                        Sort.by(Sort.Direction.DESC, "createdAt"));
-
     @Override
+    @Cacheable(value = "comments", key = "#postId + ':' + #page + ':' + #size")
     public Page<Comment> findCommentsByPost(UUID postId, int page, int size) {
+        log.info("Loading comments from disk for post: {}", postId);
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         return commentRepository.findAllByPostId(postId, pageable);
     }
-
 }
