@@ -1,5 +1,3 @@
-import { UserProfile } from './userProfile.model';
-
 export interface Post {
   title: string;
   description: string;

@@ -8,9 +8,9 @@ import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';
 import { ActivatedRoute } from '@angular/router';
 import { UserProfile } from '../../../models/userProfile.model';
-import { ChangeDetectorRef } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { environment } from '../../../../environment/environment';
+import { Observable } from 'rxjs';
+import { Comment } from '../../../models/comment.model';
+import { C } from '@angular/cdk/keycodes';
 
 @Component({
   standalone: true,
@@ -25,13 +25,18 @@ export class PostDisplayComponent implements OnInit {
   user: User | undefined;
   videoUrl!: string;
   post$!: Observable<PostResponse>;
+  comment: Comment = {
+    text: '',
+    postId: '',
+    userId: '',
+  };
+  postId: string = '';
 
   constructor(
     private router: Router,
     private stakeholderService: StakeholderService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -41,13 +46,13 @@ export class PostDisplayComponent implements OnInit {
 
     this.isLoggedIn = !!this.user?.id;
 
-    const postId = this.route.snapshot.paramMap.get('id')!;
-    if (!postId) {
+    this.postId = this.route.snapshot.paramMap.get('id')!;
+    if (!this.postId) {
       console.error('Ne postoji id u objavi');
       return;
     }
 
-    this.post$ = this.stakeholderService.findPostByIdWithVideo(postId);
+    this.post$ = this.stakeholderService.findPostByIdWithVideo(this.postId);
   }
 
   tryLike() {
@@ -57,10 +62,24 @@ export class PostDisplayComponent implements OnInit {
     }
   }
 
-  tryComment() {
+  async tryComment(typedText: string) {
     if (!this.isLoggedIn) {
       alert('Da bi komentarisao objavu, prijavi se.');
       return;
+    }
+
+    if (!typedText.trim()) {
+      alert('Komentar ne može biti prazan!');
+      return;
+    }
+
+    const comment: Comment = { text: typedText, postId: this.postId, userId: this.user?.id! };
+    try {
+      const response = await this.stakeholderService.createComment(comment);
+      console.log('Comment created:', response);
+      //this.commentText = '';
+    } catch (err) {
+      console.error('Error creating comment', err);
     }
   }
 

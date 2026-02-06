@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, map, Observable } from 'rxjs';
 import { PostResponse } from '../../models/postResponse.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment/environment';
 import { UserProfile } from '../../models/userProfile.model';
+import { Comment } from '../../models/comment.model';
+import { CommentResponse } from '../../models/commentResponse.model';
 
 @Injectable({ providedIn: 'root' })
 export class StakeholderService {
@@ -39,5 +41,11 @@ export class StakeholderService {
 
   streamVideoUrl(filename: string): string {
     return environment.apiHost + 'posts/videos/' + filename;
+  }
+
+  async createComment(comment: Comment): Promise<CommentResponse> {
+    return await firstValueFrom(
+      this.http.post<CommentResponse>(environment.apiHost + 'comments/create', comment),
+    );
   }
 }

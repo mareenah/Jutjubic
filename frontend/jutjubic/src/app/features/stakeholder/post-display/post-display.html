@@ -53,71 +53,6 @@
           Srpske.</span
         >
       </div>
-      <div class="comment">
-        <div class="person-comment">
-          <mat-icon>person</mat-icon>
-          <span>Korisnik123</span>
-        </div>
-        <span class="text"
-          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.</span
-        >
-      </div>
-      <div class="comment">
-        <div class="person-comment">
-          <mat-icon>person</mat-icon>
-          <span>Korisnik123</span>
-        </div>
-        <span class="text"
-          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.</span
-        >
-      </div>
-      <div class="comment">
-        <div class="person-comment">
-          <mat-icon>person</mat-icon>
-          <span>Korisnik123</span>
-        </div>
-        <span class="text"
-          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.</span
-        >
-      </div>
-      <div class="comment">
-        <div class="person-comment">
-          <mat-icon>person</mat-icon>
-          <span>Korisnik123</span>
-        </div>
-        <span class="text"
-          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.</span
-        >
-      </div>
-      <div class="comment">
-        <div class="person-comment">
-          <mat-icon>person</mat-icon>
-          <span>Korisnik123</span>
-        </div>
-        <span class="text"
-          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
-          Srpske.</span
-        >
-      </div>
     </div>
     <div class="comment-input">
       <div class="comment-input-person">
@@ -126,8 +61,10 @@
         <span *ngIf="isLoggedIn">{{ user!.username }}</span>
       </div>
       <div class="comment-input-send">
-        <textarea type="text" placeholder="Napiši komentar..."></textarea>
-        <button class="comment-btn" (click)="tryComment()"><mat-icon>send</mat-icon></button>
+        <textarea #commentText type="text" placeholder="Napiši komentar..."></textarea>
+        <button class="comment-btn" (click)="tryComment(commentText.value)">
+          <mat-icon>send</mat-icon>
+        </button>
       </div>
     </div>
   </div>
