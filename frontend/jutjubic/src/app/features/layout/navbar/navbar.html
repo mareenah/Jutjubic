@@ -26,7 +26,9 @@
         {{ user?.username }}
       </button>
       <div class="dropdown-content" *ngIf="dropdownOpen">
-        <a class="dropdown-menu-link"><mat-icon>person</mat-icon>Profil</a>
+        <a class="dropdown-menu-link" (click)="profile(this.user!)"
+          ><mat-icon>person</mat-icon>Profil</a
+        >
         <a class="dropdown-menu-link" (click)="logout()"><mat-icon>logout</mat-icon>Odjava</a>
       </div>
     </div>

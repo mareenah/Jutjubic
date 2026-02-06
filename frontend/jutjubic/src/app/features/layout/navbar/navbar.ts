@@ -7,6 +7,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { VideoCreateComponent } from '../../stakeholder/video-create/video-create';
+import { UserProfile } from '../../../models/userProfile.model';
 
 @Component({
   standalone: true,
@@ -54,6 +55,11 @@ export class Navbar implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+    this.dropdownOpen = false;
+  }
+
+  profile(user: User): void {
+    this.router.navigate(['/users', user.id]);
     this.dropdownOpen = false;
   }
 
