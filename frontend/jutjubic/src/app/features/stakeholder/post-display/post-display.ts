@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PostResponse } from '../../../models/postResponse.model';
 import { CommonModule } from '@angular/common';
 import { StakeholderService } from '../stakeholder.service';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +16,7 @@ import { ChangeDetectorRef } from '@angular/core';
 @Component({
   standalone: true,
   selector: 'app-post-display',
-  imports: [CommonModule, MatIcon, FormsModule],
+  imports: [CommonModule, MatIconModule, FormsModule],
   templateUrl: './post-display.html',
   styleUrl: './post-display.css',
 })
@@ -33,6 +33,9 @@ export class PostDisplayComponent implements OnInit {
   postId: string = '';
   commentText: string = '';
   comments: CommentResponse[] = [];
+  page: number = 0;
+  size: number = 10;
+  totalPages: number = 0;
 
   constructor(
     private stakeholderService: StakeholderService,
@@ -79,8 +82,6 @@ export class PostDisplayComponent implements OnInit {
       return;
     }
 
-    console.log(this.commentText.trim().length);
-
     if (this.commentText.trim().length > 500) {
       alert('Komentar može imati najviše 500 karaktera!');
       return;
@@ -111,15 +112,32 @@ export class PostDisplayComponent implements OnInit {
 
   async findComments() {
     try {
-      console.log('Loading comments...');
-      this.comments = await this.stakeholderService.findCommentsByPost(this.postId);
-      console.log('Comments found:', this.comments);
+      const pageResult = await this.stakeholderService.findCommentsByPost(
+        this.postId,
+        this.page,
+        this.size,
+      );
 
-      if (!this.comments || this.comments.length === 0) {
-        console.log('No comments found for this post');
-      }
+      this.comments = [...pageResult.content];
+      this.totalPages = pageResult.totalPages;
+
+      this.cdr.markForCheck();
     } catch (err) {
       console.error('Failed to load comments', err);
+    }
+  }
+
+  nextPage() {
+    if (this.page + 1 < this.totalPages) {
+      this.page++;
+      this.findComments();
+    }
+  }
+
+  prevPage() {
+    if (this.page > 0) {
+      this.page--;
+      this.findComments();
     }
   }
 }

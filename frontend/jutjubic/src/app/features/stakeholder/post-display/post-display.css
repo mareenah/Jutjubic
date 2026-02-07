@@ -235,3 +235,25 @@
   cursor: pointer;
   margin-bottom: 1rem;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.pagination mat-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: medium;
+}
+.pagination button {
+  color: var(--white);
+  border: none;
+  background-color: transparent;
+  font-size: medium;
+}

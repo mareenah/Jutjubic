@@ -6,6 +6,7 @@ import { environment } from '../../../environment/environment';
 import { UserProfile } from '../../models/userProfile.model';
 import { Comment } from '../../models/comment.model';
 import { CommentResponse } from '../../models/commentResponse.model';
+import { Page } from '../../models/page.model';
 
 @Injectable({ providedIn: 'root' })
 export class StakeholderService {
@@ -49,9 +50,15 @@ export class StakeholderService {
     );
   }
 
-  async findCommentsByPost(postId: string): Promise<CommentResponse[]> {
+  async findCommentsByPost(
+    postId: string,
+    page: number,
+    size: number,
+  ): Promise<Page<CommentResponse>> {
     return await firstValueFrom(
-      this.http.get<CommentResponse[]>(environment.apiHost + 'comments/post/' + postId),
+      this.http.get<Page<CommentResponse>>(
+        `${environment.apiHost}comments/post/${postId}?page=${page}&size=${size}`,
+      ),
     );
   }
 }
