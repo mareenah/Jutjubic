@@ -46,9 +46,11 @@
       </div>
 
       <div class="comment" *ngFor="let comment of comments">
-        <div class="person-comment" (click)="displayProfile(comment.user)">
-          <mat-icon>person</mat-icon>
-          <span>{{ comment.user.username }}</span>
+        <div class="person-comment">
+          <div class="person-section" (click)="displayProfile(comment.user)">
+            <mat-icon>person</mat-icon>
+            <span>{{ comment.user.username }}</span>
+          </div>
           <div class="date">
             <h5>{{ comment.createdAt | date: 'dd MMM yyyy' }}</h5>
           </div>

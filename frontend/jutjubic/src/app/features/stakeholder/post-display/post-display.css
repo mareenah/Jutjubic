@@ -182,8 +182,14 @@
   margin-bottom: 0.3rem;
 }
 
+.person-section {
+  display: flex;
+  align-items: center;
+}
+
 .person-comment span {
   margin-left: 0.5rem;
+  align-items: center;
 }
 
 .comment-input {
