@@ -103,9 +103,10 @@ export class PostDisplayComponent implements OnInit {
     } catch (err: any) {
       if (err.status === 429) alert(err.error.message);
       else if (err.status === 401) alert(err.error.message);
-      else console.error('Greska u kreiranju komentara.', err);
+      else console.error('Greška u kreiranju komentara.', err);
       this.commentText = this.commentText;
     }
+    await this.findComments();
   }
 
   displayProfile(user: UserProfile): void {
@@ -122,24 +123,23 @@ export class PostDisplayComponent implements OnInit {
 
       this.comments = [...pageResult.content];
       this.totalPages = pageResult.totalPages;
-
-      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     } catch (err) {
       console.error('Failed to load comments', err);
     }
   }
 
-  nextPage() {
+  async nextPage() {
     if (this.page + 1 < this.totalPages) {
       this.page++;
-      this.findComments();
+      await this.findComments();
     }
   }
 
-  prevPage() {
+  async prevPage() {
     if (this.page > 0) {
       this.page--;
-      this.findComments();
+      await this.findComments();
     }
   }
 }

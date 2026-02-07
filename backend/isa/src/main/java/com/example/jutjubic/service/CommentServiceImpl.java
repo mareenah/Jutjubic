@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService{
 
     private static final Logger log = LoggerFactory.getLogger(PostService.class);
 
-    @CacheEvict(value = "comments", key = "#comment.post.id + '*'", allEntries = true)
+    @CacheEvict(value = "comments", allEntries = true)
     public Comment create(CommentDto commentDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
