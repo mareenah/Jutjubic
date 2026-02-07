@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,6 +44,8 @@ public class CommentServiceImpl implements CommentService{
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You must be logged in to create a comment.");
 
+        validateRateLimit(UUID.fromString(commentDto.getUserId()));
+
         Comment comment = new Comment();
         comment.setText(commentDto.getText());
         comment.setCreatedAt(Instant.now());
@@ -60,5 +63,13 @@ public class CommentServiceImpl implements CommentService{
         log.info("Loading comments from disk for post: {}", postId);
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         return commentRepository.findAllByPostId(postId, pageable);
+    }
+
+    @Override
+    public void validateRateLimit(UUID userId) {
+        Instant oneHourAgo = Instant.now().minus(1, ChronoUnit.HOURS);
+        long count = commentRepository.countUserCommentsSince(userId, oneHourAgo);
+        if (count >= 60)
+            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "Dozvoljeno maksimalno 60 komentara po satu.");
     }
 }

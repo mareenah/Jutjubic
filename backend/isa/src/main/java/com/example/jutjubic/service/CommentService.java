@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface CommentService {
     Comment create(CommentDto commentDto);
     Page<Comment> findCommentsByPost(UUID postId, int page, int size);
+    void validateRateLimit(UUID userId);
 }
