@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService{
     public Comment create(CommentDto commentDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You must be logged in to create a comment.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Da bi komentarisao objavu, prijavi se.");
 
         validateRateLimit(UUID.fromString(commentDto.getUserId()));
 

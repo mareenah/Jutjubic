@@ -100,8 +100,10 @@ export class PostDisplayComponent implements OnInit {
       alert('Komentar kreiran!');
       this.comments = [createdComment, ...this.comments];
       this.cdr.detectChanges();
-    } catch (err) {
-      console.error('Greska u kreiranju komentara.', err);
+    } catch (err: any) {
+      if (err.status === 429) alert(err.error.message);
+      else if (err.status === 401) alert(err.error.message);
+      else console.error('Greska u kreiranju komentara.', err);
       this.commentText = this.commentText;
     }
   }
