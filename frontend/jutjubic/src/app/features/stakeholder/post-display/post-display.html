@@ -29,7 +29,8 @@
           <span class="views">3<span>pregleda</span></span>
           <span class="date"> {{ post.createdAt | date: 'dd MMM yyyy' }}</span>
           <div class="place">
-            <span>{{ post.country }} · </span>
+            <span>{{ post.country }}</span>
+            <span *ngIf="post.city != null && post.country != null"> · </span>
             <span>{{ post.city }}</span>
           </div>
         </div>

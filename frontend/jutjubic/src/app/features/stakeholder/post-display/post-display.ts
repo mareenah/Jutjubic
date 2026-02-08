@@ -22,7 +22,6 @@ import { environment } from '../../../../environment/environment';
   styleUrl: './post-display.css',
 })
 export class PostDisplayComponent implements OnInit {
-  post!: PostResponse;
   isLoggedIn = false;
   user: User | undefined;
   videoUrl!: string;
