@@ -30,7 +30,16 @@
           <span class="date"> {{ post.createdAt | date: 'dd MMM yyyy' }}</span>
           <div class="place">
             <span>{{ post.country }}</span>
-            <span *ngIf="post.city != null && post.country != null"> · </span>
+            <span
+              *ngIf="
+                post.city !== null &&
+                post.country !== null &&
+                post.country !== '' &&
+                post.city !== ''
+              "
+            >
+              ·
+            </span>
             <span>{{ post.city }}</span>
           </div>
         </div>
