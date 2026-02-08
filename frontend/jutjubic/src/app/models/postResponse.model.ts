@@ -11,4 +11,5 @@ export interface PostResponse {
   country?: string;
   city?: string;
   user: UserProfile;
+  views: number;
 }

@@ -26,7 +26,7 @@
 
       <div class="views-date-place-decription">
         <div class="views-date-place">
-          <span class="views">3<span>pregleda</span></span>
+          <span class="views">{{ post.views }}<span>pregleda</span></span>
           <span class="date"> {{ post.createdAt | date: 'dd MMM yyyy' }}</span>
           <div class="place">
             <span>{{ post.country }}</span>

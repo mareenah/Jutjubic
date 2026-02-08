@@ -24,13 +24,10 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.List;
@@ -47,6 +44,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+    @Autowired
+    private VideoService videoService;
 
     @Value("${file.upload.base-dir}")
     private String baseUploadDir;
@@ -75,6 +75,7 @@ public class PostServiceImpl implements PostService {
         object.setCity(post.getCity());
         object.setUser(post.getUser());
         object.setVideo(post.getVideo());
+        object.setViews(post.getViews());
 
         try {
             Path path = Paths.get("uploads/thumbnails", post.getThumbnail());
@@ -148,6 +149,7 @@ public class PostServiceImpl implements PostService {
             post.setCity(postDto.getCity());
             User user = (User) auth.getPrincipal();
             post.setUser(user);
+            post.setViews(0L);
 
             MultipartFile video = postDto.getVideo();
             String videoFileName = UUID.randomUUID() + "_" + video.getOriginalFilename();
@@ -199,9 +201,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post findPostById(UUID id){
+        videoService.incrementViews(id);
         return postRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
-    }
+            new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+        }
 
     @Override
     public List<Post> findPostsByUser(UUID userId) {
@@ -214,4 +217,5 @@ public class PostServiceImpl implements PostService {
                 .map(this::mapToObject)
                 .toList();
     }
+
 }
