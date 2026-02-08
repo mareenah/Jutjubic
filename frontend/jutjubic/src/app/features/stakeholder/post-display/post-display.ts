@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from '../../../models/post.model';
+import { PostResponse } from '../../../models/postResponse.model';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StakeholderService } from '../stakeholder.service';
 import { MatIcon } from '@angular/material/icon';
 import { AuthService } from '../../../auth/auth.service';
+import { User } from '../../../models/user.model';
+import { ActivatedRoute } from '@angular/router';
+import { UserProfile } from '../../../models/userProfile.model';
+import { ChangeDetectorRef } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { environment } from '../../../../environment/environment';
 
 @Component({
   standalone: true,
@@ -14,38 +20,51 @@ import { AuthService } from '../../../auth/auth.service';
   styleUrl: './post-display.css',
 })
 export class PostDisplayComponent implements OnInit {
-  post!: Post;
-  loggedIn$: any;
+  post!: PostResponse;
+  isLoggedIn = false;
+  user: User | undefined;
+  videoUrl!: string;
+  post$!: Observable<PostResponse>;
 
   constructor(
     private router: Router,
+    private stakeholderService: StakeholderService,
     private authService: AuthService,
-    private stakeholderService: StakeholderService
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
-    this.stakeholderService.selectedPost$.subscribe((p) => {
-      if (p) this.post = p;
-      else console.error('Izaberi objavu!');
+    this.authService.user$.subscribe((user) => {
+      this.user = user;
     });
-    this.loggedIn$ = this.authService.loggedIn$;
+
+    this.isLoggedIn = !!this.user?.id;
+
+    const postId = this.route.snapshot.paramMap.get('id')!;
+    if (!postId) {
+      console.error('Ne postoji id u objavi');
+      return;
+    }
+
+    this.post$ = this.stakeholderService.findPostByIdWithVideo(postId);
   }
 
   tryLike() {
-    if (!this.loggedIn$) {
+    if (!this.isLoggedIn) {
       alert('Da bi lajkovao objavu, prijavi se.');
       return;
     }
   }
 
   tryComment() {
-    if (!this.loggedIn$) {
+    if (!this.isLoggedIn) {
       alert('Da bi komentarisao objavu, prijavi se.');
       return;
     }
   }
 
-  displayProfile(userId: string): void {
-    this.router.navigate(['/users', userId]);
+  displayProfile(user: UserProfile): void {
+    this.router.navigate(['/users', user.id]);
   }
 }

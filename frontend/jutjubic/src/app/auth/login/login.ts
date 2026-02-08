@@ -33,7 +33,10 @@ export class LoginComponent {
   emailRegex: RegExp = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   passwordRegex: RegExp = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!?@#$%^&*><:;,.()]).{8,}$/;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {
     this.isPasswordVisible = false;
   }
 
@@ -67,7 +70,7 @@ export class LoginComponent {
               alert(error.error.message);
               break;
             default:
-              alert('Login failed due to an unexpected error.');
+              alert('Greška: prijava neuspješna.');
               break;
           }
         },

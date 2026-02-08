@@ -4,6 +4,7 @@ import com.example.jutjubic.security.ratelimit.LoginRateLimitFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -62,7 +63,9 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                 .exceptionHandling(getExceptionHandlingConfig())
                 .sessionManagement(getSessionManagementConfig())
                 .authorizeHttpRequests((requests) -> {
-                    requests.requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/verify", "/api/posts","/api/auth/user/**").permitAll();
+                    requests.requestMatchers("/api/auth/**").permitAll();
+                    requests.requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll();
+                    requests.requestMatchers(HttpMethod.POST, "/api/posts/create").authenticated();
                     requests.anyRequest().authenticated();
                 });
 

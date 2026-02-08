@@ -1,23 +1,134 @@
-<div class="post">
-  <img class="post-thumbnail" [src]="post.thumbnail" />
-  <div class="post-header">
-    <h4 class="post-title">{{ post.title }}</h4>
+<div *ngIf="post$ | async as post" class="container">
+  <div class="section-video">
+    <video
+      class="video"
+      [src]="post.video"
+      controls
+      preload="metadata"
+      autoplay
+      controls
+      playsinline
+    ></video>
+    <h4 class="title">{{ post.title }}</h4>
+    <div class="details">
+      <div class="profile-like">
+        <button class="profile-btn" (click)="displayProfile(post.user)">
+          <mat-icon>person</mat-icon>
+          {{ post.user.username }}
+        </button>
+        <div class="like-info">
+          <span>75</span>
+          <button class="like-btn" (click)="tryLike()">
+            <mat-icon>thumb_up</mat-icon>
+          </button>
+        </div>
+      </div>
 
-    <button class="like-btn" (click)="tryLike()">
-      <mat-icon>favorite</mat-icon>
-    </button>
-
-    <button class="profile-btn" (click)="displayProfile(post.userId)">Profil</button>
+      <div class="views-date-place-decription">
+        <div class="views-date-place">
+          <span class="views">3<span>pregleda</span></span>
+          <span class="date"> {{ post.createdAt | date: 'dd MMM yyyy' }}</span>
+          <div class="place">
+            <span>{{ post.country }} · </span>
+            <span>{{ post.city }}</span>
+          </div>
+        </div>
+        <p class="description">{{ post.description }}</p>
+      </div>
+    </div>
   </div>
-  <div class="comments-container">
-    <div class="comment">Komentar...</div>
-    <div class="comment">Komentar...</div>
-    <div class="comment">Komentar...</div>
-    <div class="comment">Komentar...</div>
-    <div class="comment">Komentar...</div>
-  </div>
-  <div class="comment-input">
-    <input type="text" placeholder="Napiši komentar..." />
-    <button class="comment-btn" (click)="tryComment()"><mat-icon>send</mat-icon></button>
+  <div class="section-comments">
+    <div class="comments-title">Komentari</div>
+    <div class="comments-container">
+      <div class="comment">
+        <div class="person-comment" (click)="displayProfile(post.user)">
+          <mat-icon>person</mat-icon>
+          <span>Korisnik123</span>
+        </div>
+        <span class="text"
+          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.</span
+        >
+      </div>
+      <div class="comment">
+        <div class="person-comment">
+          <mat-icon>person</mat-icon>
+          <span>Korisnik123</span>
+        </div>
+        <span class="text"
+          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.</span
+        >
+      </div>
+      <div class="comment">
+        <div class="person-comment">
+          <mat-icon>person</mat-icon>
+          <span>Korisnik123</span>
+        </div>
+        <span class="text"
+          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.</span
+        >
+      </div>
+      <div class="comment">
+        <div class="person-comment">
+          <mat-icon>person</mat-icon>
+          <span>Korisnik123</span>
+        </div>
+        <span class="text"
+          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.</span
+        >
+      </div>
+      <div class="comment">
+        <div class="person-comment">
+          <mat-icon>person</mat-icon>
+          <span>Korisnik123</span>
+        </div>
+        <span class="text"
+          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.</span
+        >
+      </div>
+      <div class="comment">
+        <div class="person-comment">
+          <mat-icon>person</mat-icon>
+          <span>Korisnik123</span>
+        </div>
+        <span class="text"
+          >Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske..Korisnik je unio neki komentar jako lijep i koristan na sveopste dobro gradjana
+          Srpske.</span
+        >
+      </div>
+    </div>
+    <div class="comment-input">
+      <div class="comment-input-person">
+        <mat-icon>person</mat-icon>
+        <span *ngIf="!isLoggedIn">Gost</span>
+        <span *ngIf="isLoggedIn">{{ user!.username }}</span>
+      </div>
+      <div class="comment-input-send">
+        <textarea type="text" placeholder="Napiši komentar..."></textarea>
+        <button class="comment-btn" (click)="tryComment()"><mat-icon>send</mat-icon></button>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { Address } from './address.model';
 
 export interface UserProfile {
-  id?: number;
+  id?: string;
   email: string;
   username: string;
   password: string;
