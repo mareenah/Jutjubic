@@ -123,8 +123,11 @@
   display: flex;
   flex-direction: row;
   margin-top: 0.4rem;
+  pointer-events: none;
+  cursor: default;
   font-size: small;
 }
+
 .tags mat-chip-row {
   height: 1.3rem;
   font-size: 0.2rem;

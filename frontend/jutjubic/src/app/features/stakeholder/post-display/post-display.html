@@ -46,7 +46,9 @@
         <p class="description">{{ post.description }}</p>
         <div class="tags">
           <mat-chip-grid #chipGrid>
-            <mat-chip-row *ngFor="let tag of post.tags"> #{{ tag }} </mat-chip-row>
+            <mat-chip-row (clickable)="(false)" *ngFor="let tag of post.tags">
+              #{{ tag }}
+            </mat-chip-row>
           </mat-chip-grid>
         </div>
       </div>
