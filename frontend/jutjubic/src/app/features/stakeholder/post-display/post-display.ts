@@ -7,11 +7,12 @@ import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfile } from '../../../models/userProfile.model';
-import { Observable } from 'rxjs';
 import { Comment } from '../../../models/comment.model';
 import { FormsModule } from '@angular/forms';
 import { CommentResponse } from '../../../models/commentResponse.model';
 import { ChangeDetectorRef } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { environment } from '../../../../environment/environment';
 
 @Component({
   standalone: true,
@@ -21,6 +22,7 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrl: './post-display.css',
 })
 export class PostDisplayComponent implements OnInit {
+  post!: PostResponse;
   isLoggedIn = false;
   user: User | undefined;
   videoUrl!: string;
@@ -35,7 +37,7 @@ export class PostDisplayComponent implements OnInit {
   comments: CommentResponse[] = [];
   page: number = 0;
   size: number = 10;
-  totalPages: number = 0;
+  totalPages: number = 1;
 
   constructor(
     private stakeholderService: StakeholderService,

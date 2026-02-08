@@ -32,7 +32,7 @@ public class PostController {
 
     @PostMapping(value = "/create", consumes = "multipart/form-data")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Object> upload(@Valid @ModelAttribute PostDto postDto) throws IOException {
+    public ResponseEntity<Object> upload(@Valid @ModelAttribute PostDto postDto) {
         return ResponseEntity.ok(postService.upload(postDto));
     }
 
