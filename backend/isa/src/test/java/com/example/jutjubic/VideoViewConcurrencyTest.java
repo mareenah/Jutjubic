@@ -4,6 +4,7 @@ import com.example.jutjubic.model.Post;
 import com.example.jutjubic.repository.PostRepository;
 import com.example.jutjubic.service.PostService;
 import com.example.jutjubic.service.VideoService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,32 +32,38 @@ class VideoViewConcurrencyTest {
 
     @Test
     void shouldCorrectlyIncrementViewsWithConcurrentUsers() throws Exception {
+        UUID postId = null;
 
-        Post post = postRepository.save(new Post());
-        UUID postId = post.getId();
+        try {
+            Post post = postRepository.save(new Post());
+            postId = post.getId();
 
-        int users = 50;
+            int users = 50;
 
-        ExecutorService executor = Executors.newFixedThreadPool(10);
-        CountDownLatch latch = new CountDownLatch(users);
+            ExecutorService executor = Executors.newFixedThreadPool(10);
+            CountDownLatch latch = new CountDownLatch(users);
 
-        for (int i = 0; i < users; i++) {
-            executor.submit(() -> {
-                try {
-                    videoService.incrementViews(postId);
-                } finally {
-                    latch.countDown();
-                }
-            });
+            for (int i = 0; i < users; i++) {
+                UUID finalPostId = postId;
+                executor.submit(() -> {
+                    try {
+                        videoService.incrementViews(finalPostId);
+                    } finally {
+                        latch.countDown();
+                    }
+                });
+            }
+
+            latch.await();
+            executor.shutdown();
+
+            Post updatedPost = postRepository.findById(postId).orElseThrow();
+            logger.info("For 50 concurrent users: " + updatedPost.getViews() + " views.");
+            assertEquals(users, updatedPost.getViews());
+        } finally {
+            if (postId != null) {
+                postRepository.deleteById(postId);
+            }
         }
-
-        latch.await();
-        executor.shutdown();
-
-        Post updatedPost = postRepository.findById(postId).orElseThrow();
-        logger.info("For 50 concurrent users: " + updatedPost.getViews() + " views.");
-        assertEquals(users, updatedPost.getViews());
-
-        postRepository.deleteById(postId);
     }
 }
