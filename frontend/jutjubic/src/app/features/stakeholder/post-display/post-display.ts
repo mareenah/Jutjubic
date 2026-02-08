@@ -11,13 +11,13 @@ import { Comment } from '../../../models/comment.model';
 import { FormsModule } from '@angular/forms';
 import { CommentResponse } from '../../../models/commentResponse.model';
 import { ChangeDetectorRef } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { environment } from '../../../../environment/environment';
+import { Observable } from 'rxjs';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   standalone: true,
   selector: 'app-post-display',
-  imports: [CommonModule, MatIconModule, FormsModule],
+  imports: [CommonModule, MatIconModule, FormsModule, MatChipsModule],
   templateUrl: './post-display.html',
   styleUrl: './post-display.css',
 })
