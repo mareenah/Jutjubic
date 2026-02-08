@@ -11,13 +11,7 @@ import { Inject } from '@angular/core';
 import { StakeholderService } from '../stakeholder.service';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -25,7 +19,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
-import { COMMA, ENTER, N } from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Router } from '@angular/router';
 
 @Component({
@@ -211,7 +205,10 @@ export class VideoDetailCreateComponent implements OnInit, AfterViewInit {
         error: (error) => {
           switch (error.status) {
             case 400:
+            case 401:
+            case 404:
             case 409:
+            case 500:
               alert(error.error.message);
               break;
             default:
