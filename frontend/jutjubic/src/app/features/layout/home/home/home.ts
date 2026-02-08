@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { StakeholderService } from '../../../stakeholder/stakeholder.service';
@@ -17,13 +17,11 @@ export class Home implements OnInit {
 
   constructor(
     private router: Router,
-    private cdr: ChangeDetectorRef,
     private stakeholderService: StakeholderService,
   ) {}
 
   ngOnInit(): void {
     this.fixedPosts$ = this.stakeholderService.findPosts();
-    this.cdr.detectChanges();
   }
 
   displayPost(post: PostResponse): void {

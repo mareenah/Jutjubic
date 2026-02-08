@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -16,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -42,6 +43,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private ThumbnailCacheService thumbnailCacheService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Value("${file.upload.base-dir}")
     private String baseUploadDir;
@@ -97,7 +101,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Post upload(PostDto postDto) throws IOException {
+    public Post upload(PostDto postDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken)
@@ -109,9 +113,6 @@ public class PostServiceImpl implements PostService {
         if (contentType == null || !contentType.startsWith("image/")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Thumbnail must be an image file.");
         }
-
-        Path videoPath = null;
-        Path thumbnailPath = null;
 
         try {
             BufferedImage image = ImageIO.read(postDto.getThumbnail().getInputStream());
@@ -148,48 +149,48 @@ public class PostServiceImpl implements PostService {
 
             MultipartFile video = postDto.getVideo();
             String videoFileName = UUID.randomUUID() + "_" + video.getOriginalFilename();
-            Path videoDirPath = Paths.get(baseUploadDir, "videos").toAbsolutePath();
-            Files.createDirectories(videoDirPath);
-            Path videoAbsolutePath = videoDirPath.resolve(videoFileName);
-            videoPath = videoAbsolutePath;
-
-
-            try (InputStream in = video.getInputStream(); OutputStream out = Files.newOutputStream(videoAbsolutePath)) {
-
-                byte[] buffer = new byte[8192];
-                int bytesRead;
-                long start = System.currentTimeMillis();
-                long sizeMb = postDto.getVideo().getSize() / (1024 * 1024);
-                long timeoutMs = Math.max(30_000, sizeMb * 1000L); //min 30s, max 200 000s
-
-                while ((bytesRead = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, bytesRead);
-                    out.flush();
-                    if (System.currentTimeMillis() - start > timeoutMs)
-                        throw new ResponseStatusException(HttpStatus.REQUEST_TIMEOUT, "Video upload took too long");
-                }
-            }
+            Path tmpVideo = fileStorageService.saveToTemp(postDto.getVideo(), videoFileName);
             post.setVideo(videoFileName);
 
             MultipartFile thumbnail = postDto.getThumbnail();
             String thumbFileName = UUID.randomUUID() + "_" + thumbnail.getOriginalFilename();
-            Path thumbDirPath = Paths.get(baseUploadDir, "thumbnails").toAbsolutePath();
-            Files.createDirectories(thumbDirPath);
-            Path thumbAbsolutePath = thumbDirPath.resolve(thumbFileName);
-            Files.copy(thumbnail.getInputStream(), thumbAbsolutePath, StandardCopyOption.REPLACE_EXISTING);
-            thumbnailPath = thumbAbsolutePath;
+            Path tmpThumbnail = fileStorageService.saveToTemp(postDto.getThumbnail(), thumbFileName);
             post.setThumbnail(thumbFileName);
 
-            return postRepository.save(post);
+            Post postResponse = postRepository.save(post);
+
+            TransactionSynchronizationManager.registerSynchronization(
+                    new TransactionSynchronization() {
+
+                        @Override
+                        public void afterCommit() {
+                            try {
+                                fileStorageService.moveToFinal(tmpVideo, Paths.get("uploads/videos"));
+                                fileStorageService.moveToFinal(tmpThumbnail, Paths.get("uploads/thumbnails"));
+                                log.info("Video and thumbnail files saved.");
+                            } catch (IOException e) {
+                                log.error("File move failed after DB commit: ", e);
+                                throw new RuntimeException(e);
+                            }
+                        }
+
+                        @Override
+                        public void afterCompletion(int status) {
+                            if (status != STATUS_COMMITTED) {
+                                fileStorageService.deleteTemp(tmpVideo);
+                                fileStorageService.deleteTemp(tmpThumbnail);
+                                log.info("Transaction not commited. Temp files cleaned up.");
+                            }
+                        }
+                    }
+
+            );
+
+            return postResponse;
+
         } catch (ResponseStatusException e) {
-            if (videoPath != null) Files.deleteIfExists(videoPath);
-            if (thumbnailPath != null) Files.deleteIfExists(thumbnailPath);
-            log.info("Video and thumbnail files cleaned up.");
             throw e;
         } catch (Exception e) {
-            if (videoPath != null) Files.deleteIfExists(videoPath);
-            if (thumbnailPath != null) Files.deleteIfExists(thumbnailPath);
-            log.info("Video and thumbnail files cleaned up.");
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error happened. Please try again.");
         }
     }
