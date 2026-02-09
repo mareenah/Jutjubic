@@ -70,7 +70,7 @@ export class LoginComponent {
               alert(error.error.message);
               break;
             default:
-              alert('Greška: prijava neuspješna.');
+              alert('Prijava neuspješna, pokušajte ponovo.');
               break;
           }
         },
