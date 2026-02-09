@@ -81,7 +81,7 @@
         <mat-icon>arrow_back</mat-icon>
       </button>
 
-      <span>Stranica {{ page + 1 }} / {{ totalPages }}</span>
+      <span>Stranica {{ this.page + 1 }} / {{ this.totalPages }}</span>
 
       <button (click)="nextPage()" [disabled]="page + 1 === totalPages">
         <mat-icon>arrow_forward</mat-icon>

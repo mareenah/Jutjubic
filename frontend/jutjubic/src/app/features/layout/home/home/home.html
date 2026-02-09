@@ -1,4 +1,4 @@
-<div *ngIf="fixedPosts$ | async as posts; else loading">
+<div *ngIf="fixedPosts$ | async as posts; else noPosts">
   <div *ngIf="posts.length > 0; else noPosts">
     <div class="home-grid">
       <div
@@ -6,7 +6,7 @@
         *ngFor="let post of posts; trackBy: trackById"
         (click)="displayPost(post)"
       >
-        <img class="thumbnail" *ngIf="post.thumbnail" [src]="post.thumbnail" />
+        <img class="thumbnail" *ngIf="post.thumbnail" [src]="post.thumbnail" alt="Minijatura" />
 
         <div class="video-info">
           <h4 class="title">{{ post.title }}</h4>
@@ -24,10 +24,6 @@
   </div>
 </div>
 
-<ng-template #loading>
-  <p class="loading">Učitavanje...</p>
-</ng-template>
-
 <ng-template #noPosts>
-  <p class="loading">Nema objava.</p>
+  <p class="no-posts">Nema objava.</p>
 </ng-template>

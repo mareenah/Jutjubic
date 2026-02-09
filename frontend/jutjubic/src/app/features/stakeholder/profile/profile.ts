@@ -55,8 +55,7 @@ export class ProfileComponent implements OnInit {
     this.authService.findUserProfile(this.userId).subscribe({
       next: (result) => {
         this.user = result;
-        this.findPostsByUser(this.user);
-
+        this.findPostsByUser();
         this.cdr.detectChanges();
       },
       error: () => {
@@ -65,7 +64,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  findPostsByUser(user: UserProfile) {
+  findPostsByUser() {
     this.stakeholderService.findPostsByUser(this.user).subscribe({
       next: (result) => {
         this.posts = result;
