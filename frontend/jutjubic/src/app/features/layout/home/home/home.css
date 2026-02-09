@@ -74,7 +74,7 @@
   height: 1.4rem;
 }
 
-.loading {
+.no-posts {
   display: flex;
   margin-top: 7rem;
   justify-self: center;

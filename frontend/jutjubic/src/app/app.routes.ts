@@ -9,6 +9,7 @@ import { guestGuard } from './auth/guards/guest.guard';
 import { authGuard } from './auth/guards/auth.guard';
 import { VideoCreateComponent } from './features/stakeholder/video-create/video-create';
 import { VideoDetailCreateComponent } from './features/stakeholder/video-detail-create/video-detail-create';
+import { WatchPartyCreateComponent } from './features/stakeholder/watch-party-create/watch-party-create';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
@@ -25,4 +26,5 @@ export const routes: Routes = [
   },
   { path: 'posts/:id', component: PostDisplayComponent },
   { path: 'users/:userId', component: ProfileComponent },
+  { path: 'watchParty', component: WatchPartyCreateComponent, canActivate: [authGuard] },
 ];

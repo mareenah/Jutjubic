@@ -1,0 +1,153 @@
+.party {
+  height: 77vh;
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+}
+
+.party-card {
+  width: 50.5rem;
+  padding: 1.1rem 2rem;
+  background-color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.party-title {
+  display: flex;
+  justify-content: center;
+  color: var(--white);
+}
+
+.party-input {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.users-section {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1.3rem;
+}
+
+.users-section mat-label {
+  font-weight: 500;
+}
+
+.users-list {
+  height: 7.7rem;
+  overflow-y: auto;
+}
+
+.btn-send-invites {
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.party-submit {
+  display: flex;
+  justify-items: center;
+  width: fit-content;
+  border: 1px solid var(--white);
+  border-radius: 10px;
+  padding: 0.7rem 1.1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  background-color: var(--secondary-color);
+  transition: background-color 0.3s;
+}
+
+.party-submit:hover {
+  background-color: var(--hover-accent-color);
+}
+
+.validation-error {
+  font-size: smaller;
+  color: var(--error-color);
+  margin-top: 0rem;
+  margin-bottom: 0.7rem;
+  margin-left: 1.35rem;
+}
+
+.posts-section {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100%;
+  width: 100%;
+  padding: 0.5rem 1.3rem;
+  border-radius: 0.6rem;
+  border-style: solid;
+  border-color: var(--secondary-color);
+  box-sizing: border-box;
+}
+
+.posts-section mat-label {
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  overflow-x: auto;
+}
+
+.post-card {
+  background: var(--primary-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+  height: 10rem;
+  width: auto;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.post-card.selected {
+  border: 2px solid var(--white);
+}
+
+.post-card:hover {
+  transition: transform 0.2s ease box-shadow 0.2s ease;
+  box-shadow: 0 6px 20px var(--primary-color);
+  background-color: var(--secondary-color);
+}
+
+.thumbnail {
+  height: 7.5rem;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.post-content {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.01rem;
+  margin: 0.2rem 0;
+}
+
+.no-posts {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+}

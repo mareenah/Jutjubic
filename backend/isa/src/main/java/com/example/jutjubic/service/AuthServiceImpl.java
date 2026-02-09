@@ -5,6 +5,7 @@ import com.example.jutjubic.dto.RegistrationInfoDto;
 import com.example.jutjubic.dto.UserTokenState;
 import com.example.jutjubic.exception.*;
 import com.example.jutjubic.model.Address;
+import com.example.jutjubic.model.Post;
 import com.example.jutjubic.model.User;
 import com.example.jutjubic.repository.UserRepository;
 import com.example.jutjubic.security.JwtUtil;
@@ -12,9 +13,11 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +29,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -168,4 +172,9 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
     }
 
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 }

@@ -66,8 +66,10 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                     requests.requestMatchers("/api/auth/**").permitAll();
                     requests.requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll();
                     requests.requestMatchers(HttpMethod.GET, "/api/comments/post/**").permitAll();
+                    requests.requestMatchers(HttpMethod.GET, "/api/auth").authenticated();
                     requests.requestMatchers(HttpMethod.POST, "/api/posts/create").authenticated();
                     requests.requestMatchers(HttpMethod.POST, "/api/comments/create").authenticated();
+                    requests.requestMatchers(HttpMethod.POST, "/api/watchParty/create").authenticated();
                     requests.anyRequest().authenticated();
                 });
 

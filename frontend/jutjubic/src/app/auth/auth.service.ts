@@ -94,11 +94,11 @@ export class AuthService {
     this.user$.next({ username: '', id: '' });
   }
 
-  private hasToken(): boolean {
-    return !!this.tokenStorage.getAccessToken();
-  }
-
   findUserProfile(id: string): Observable<UserProfile> {
     return this.http.get<UserProfile>(environment.apiHost + 'auth/user/' + id);
+  }
+
+  findUsers(): Observable<UserProfile[]> {
+    return this.http.get<UserProfile[]>(environment.apiHost + 'auth');
   }
 }

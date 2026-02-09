@@ -7,6 +7,8 @@ import { UserProfile } from '../../models/userProfile.model';
 import { Comment } from '../../models/comment.model';
 import { CommentResponse } from '../../models/commentResponse.model';
 import { Page } from '../../models/page.model';
+import { WatchParty } from '../../models/watchParty.model';
+import { WatchPartyResponse } from '../../models/watchPartyResponse.model';
 
 @Injectable({ providedIn: 'root' })
 export class StakeholderService {
@@ -59,6 +61,13 @@ export class StakeholderService {
       this.http.get<Page<CommentResponse>>(
         `${environment.apiHost}comments/post/${postId}?page=${page}&size=${size}`,
       ),
+    );
+  }
+
+  createWatchParty(watchParty: WatchParty): Observable<WatchPartyResponse> {
+    return this.http.post<WatchPartyResponse>(
+      environment.apiHost + 'watchParty/create',
+      watchParty,
     );
   }
 }

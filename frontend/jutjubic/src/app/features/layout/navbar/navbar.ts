@@ -87,4 +87,8 @@ export class Navbar implements OnInit {
       maxHeight: '100vh',
     });
   }
+
+  createWatchParty(): void {
+    this.router.navigate(['/watchParty']);
+  }
 }

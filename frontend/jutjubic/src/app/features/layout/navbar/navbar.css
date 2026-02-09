@@ -107,7 +107,7 @@ mat-icon {
   margin-top: 0.5rem;
   border-radius: 0.01rem;
   background-color: var(--dark-accent-color);
-  min-width: 10rem;
+  min-width: 10.5rem;
   z-index: 1;
   overflow: hidden;
   border-bottom-left-radius: 1rem;

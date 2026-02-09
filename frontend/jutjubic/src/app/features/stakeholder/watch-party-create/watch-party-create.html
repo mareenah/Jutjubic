@@ -1,0 +1,52 @@
+<div class="party">
+  <mat-card class="party-card">
+    <h2 class="party-title">Kreiraj watch party sobu</h2>
+
+    <div class="users-section">
+      <mat-label>Izaberi učesnike:</mat-label>
+      <div class="users-list">
+        <div class="user-item" *ngFor="let user of availableUsers">
+          <mat-checkbox (change)="toggleUser(user, $event.checked)">
+            {{ user.username }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="validation-error"
+      *ngIf="submitted && selectedUsers != null && selectedUsers.length === 0"
+    >
+      Bar jedan učesnik je neophodan.
+    </div>
+
+    <div class="posts-section">
+      <mat-label>Izaberi video:</mat-label>
+      <ng-container *ngIf="availablePosts != null && availablePosts.length !== 0; else noPosts">
+        <div class="posts-grid">
+          <div
+            class="post-card"
+            *ngFor="let post of availablePosts"
+            [class.selected]="selectedPost?.id === post.id"
+            (click)="selectPost(post)"
+          >
+            <img class="thumbnail" [src]="post.thumbnail" alt="Post thumbnail" />
+            <div class="post-content">
+              <h4 class="title">{{ post.title }}</h4>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noPosts>
+        <p class="no-posts" *ngIf="availablePosts.length === 0">Nema objava...</p>
+      </ng-template>
+    </div>
+
+    <div class="validation-error" *ngIf="submitted && !selectedPost">
+      Izaberi jednu video objavu.
+    </div>
+    <div class="btn-send-invites" (click)="sendInvites()">
+      <button class="party-submit">Pošalji pozivnice</button>
+    </div>
+  </mat-card>
+</div>
