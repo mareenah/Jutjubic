@@ -18,7 +18,15 @@
   <div class="navbar-buttons" *ngIf="!isLoginPage && !isRegisterPage && isLoggedIn">
     <button class="btn" (click)="create()">
       <mat-icon class="btn-add">add</mat-icon>
-      <span class="btn-text">Kreiraj</span>
+      <span class="btn-text">Objava</span>
+    </button>
+    <button
+      class="btn-wp"
+      *ngIf="!isWatchPartyPage && !isWatchPartiesPage && isWatchPartyCreator"
+      (click)="displayWatchParties()"
+    >
+      <mat-icon class="btn-add">smart_display</mat-icon>
+      <span class="btn-text">Pokreni watch party</span>
     </button>
 
     <div class="navbar-button dropdown">

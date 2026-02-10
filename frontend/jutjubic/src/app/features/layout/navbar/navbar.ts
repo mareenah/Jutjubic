@@ -8,6 +8,8 @@ import { User } from '../../../models/user.model';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { VideoCreateComponent } from '../../stakeholder/video-create/video-create';
 import { UserProfile } from '../../../models/userProfile.model';
+import { StakeholderService } from '../../stakeholder/stakeholder.service';
+import { WatchPartyResponse } from '../../../models/watchPartyResponse.model';
 
 @Component({
   standalone: true,
@@ -21,13 +23,17 @@ export class Navbar implements OnInit {
   isLoginPage = false;
   isRegisterPage = false;
   isHomePage = false;
+  isWatchPartyPage = false;
+  isWatchPartiesPage = false;
   dropdownOpen = false;
   dialog = inject(MatDialog);
   isLoggedIn: boolean = false;
+  isWatchPartyCreator: boolean = false;
 
   constructor(
     private router: Router,
     private authService: AuthService,
+    private stakeholderService: StakeholderService,
     private elementRef: ElementRef,
   ) {}
 
@@ -38,6 +44,7 @@ export class Navbar implements OnInit {
 
     this.authService.isLoggedIn$.subscribe((status) => {
       this.isLoggedIn = status;
+      if (this.isLoggedIn) this.isCreator(this.user!);
     });
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
@@ -45,6 +52,8 @@ export class Navbar implements OnInit {
       this.isLoginPage = url === '/login';
       this.isRegisterPage = url === '/register';
       this.isHomePage = url === '/';
+      this.isWatchPartyPage = url.startsWith('/watchParty/');
+      this.isWatchPartiesPage = url === '/watchParties';
     });
   }
 
@@ -90,5 +99,20 @@ export class Navbar implements OnInit {
 
   createWatchParty(): void {
     this.router.navigate(['/watchParty']);
+  }
+
+  isCreator(user: User): void {
+    this.stakeholderService.isCreator(user.id!).subscribe({
+      next: (result) => {
+        this.isWatchPartyCreator = result;
+      },
+      error: () => {
+        console.log(console.error);
+      },
+    });
+  }
+
+  displayWatchParties(): void {
+    this.router.navigate(['/watchParties']);
   }
 }

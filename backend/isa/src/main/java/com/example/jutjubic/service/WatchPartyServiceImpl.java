@@ -8,7 +8,9 @@ import com.example.jutjubic.repository.PostRepository;
 import com.example.jutjubic.repository.UserRepository;
 import com.example.jutjubic.repository.WatchPartyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,16 +27,19 @@ public class WatchPartyServiceImpl implements WatchPartyService {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private PostService postService;
+
     @Override
     public WatchParty create(WatchPartyDto watchPartyDto) {
         WatchParty watchParty = new WatchParty();
         UUID creatorId = UUID.fromString(watchPartyDto.getCreatorId());
         User creator = userRepository.findById(creatorId)
-                .orElseThrow(() -> new RuntimeException("Creator not found"));
+                .orElseThrow(() -> new RuntimeException("Creator not found."));
         ;
         UUID postId = UUID.fromString(watchPartyDto.getPostId());
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new RuntimeException("Post not found."));
 
         List<UUID> memberIds = watchPartyDto.getMemberIds()
                 .stream()
@@ -48,6 +53,32 @@ public class WatchPartyServiceImpl implements WatchPartyService {
         watchParty.setMembers(members);
 
         return watchPartyRepository.save(watchParty);
+    }
+
+    @Override
+    public WatchParty findWatchPartyById(UUID id) {
+        WatchParty party =  watchPartyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Watch party not found."));
+        if(party.getPost() !=null)
+            party.setPost(postService.mapToObject(party.getPost()));
+        return  party;
+    }
+
+    @Override
+    public List<WatchParty> findWatchPartiesByCreator(UUID creatorId) {
+        List<WatchParty> parties = watchPartyRepository.findByCreator_Id(creatorId);
+        if (parties.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Watch parties not found");
+        parties.forEach(party -> {
+            if(party.getPost() != null)
+                party.setPost(postService.mapToObject(party.getPost()));
+        });
+        return parties;
+    }
+
+    @Override
+    public boolean findCreatorById(UUID creatorId) {
+        return watchPartyRepository.existsByCreator_Id(creatorId);
     }
 
 }

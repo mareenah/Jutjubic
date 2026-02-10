@@ -70,4 +70,18 @@ export class StakeholderService {
       watchParty,
     );
   }
+
+  findWatchPartyById(id: string): Observable<WatchPartyResponse> {
+    return this.http.get<WatchPartyResponse>(environment.apiHost + 'watchParty/' + id);
+  }
+
+  findWatchPartiesByCreator(creatorId: string): Observable<WatchPartyResponse[]> {
+    return this.http.get<WatchPartyResponse[]>(
+      environment.apiHost + 'watchParty/creator/' + creatorId,
+    );
+  }
+
+  isCreator(creatorId: string): Observable<boolean> {
+    return this.http.get<boolean>(environment.apiHost + 'watchParty/if-creator/' + creatorId);
+  }
 }

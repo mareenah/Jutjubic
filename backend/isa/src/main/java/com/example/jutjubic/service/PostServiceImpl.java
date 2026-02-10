@@ -204,7 +204,7 @@ public class PostServiceImpl implements PostService {
         videoService.incrementViews(id);
         return postRepository.findById(id).orElseThrow(() ->
             new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
-        }
+    }
 
     @Override
     public List<Post> findPostsByUser(UUID userId) {

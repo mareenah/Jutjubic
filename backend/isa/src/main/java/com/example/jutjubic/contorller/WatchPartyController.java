@@ -3,6 +3,7 @@ package com.example.jutjubic.contorller;
 import com.example.jutjubic.dto.PostDto;
 import com.example.jutjubic.dto.WatchPartyDto;
 import com.example.jutjubic.model.Post;
+import com.example.jutjubic.model.WatchParty;
 import com.example.jutjubic.service.PostService;
 import com.example.jutjubic.service.WatchPartyService;
 import jakarta.validation.Valid;
@@ -34,4 +35,22 @@ public class WatchPartyController {
         return ResponseEntity.ok(watchPartyService.create(watchPartyDto));
     }
 
+    @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Object> findWatchParty(@PathVariable UUID id) {
+        return ResponseEntity.ok(watchPartyService.findWatchPartyById(id));
+    }
+
+    @GetMapping("/creator/{creatorId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<WatchParty>> findWatchPartiesByCreator(@PathVariable UUID creatorId) {
+        List<WatchParty> watchParties = watchPartyService.findWatchPartiesByCreator(creatorId);
+        return ResponseEntity.ok(watchParties);
+    }
+
+    @GetMapping("/if-creator/{creatorId}")
+    @PreAuthorize("isAuthenticated()")
+    public boolean isCreator(@PathVariable UUID creatorId) {
+        return watchPartyService.findCreatorById(creatorId);
+    }
 }

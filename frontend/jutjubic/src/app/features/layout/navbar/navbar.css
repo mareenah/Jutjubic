@@ -66,6 +66,22 @@
   font-size: 0.8rem;
 }
 
+.btn-wp {
+  display: flex;
+  flex-direction: row;
+  height: 2rem;
+  width: 11rem;
+  background-color: var(--secondary-color);
+  color: var(--white);
+  cursor: pointer;
+  padding: 1.2rem 0.5rem;
+  border: none;
+  border-radius: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  align-items: center;
+}
+
 .btn:hover {
   background-color: var(--accent-color);
 }
