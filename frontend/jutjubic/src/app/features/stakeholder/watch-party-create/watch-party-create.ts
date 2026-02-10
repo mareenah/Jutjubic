@@ -90,7 +90,7 @@ export class WatchPartyCreateComponent implements OnInit {
     this.stakeholderService.createWatchParty(watchParty).subscribe({
       next: (room) => {
         alert('Uspješno kreiran watch party!');
-        this.router.navigate(['/watchParty', room.id]);
+        this.router.navigate(['/']);
       },
       error: () => {
         console.error('Failed to create watch party');

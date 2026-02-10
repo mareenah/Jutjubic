@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/watchParty")
+@RequestMapping("/api/watch-party")
 public class WatchPartyController {
 
     @Autowired

@@ -69,7 +69,7 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                     requests.requestMatchers(HttpMethod.GET, "/api/auth").authenticated();
                     requests.requestMatchers(HttpMethod.POST, "/api/posts/create").authenticated();
                     requests.requestMatchers(HttpMethod.POST, "/api/comments/create").authenticated();
-                    requests.requestMatchers("/api/watchParty/**").authenticated();
+                    requests.requestMatchers("/api/watch-party/**").authenticated();
                     requests.anyRequest().authenticated();
                 });
 

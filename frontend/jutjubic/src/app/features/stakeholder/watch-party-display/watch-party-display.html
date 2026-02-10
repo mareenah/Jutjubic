@@ -1,0 +1,21 @@
+<div class="party-container" *ngIf="watchParty">
+  <div class="party-video-info">
+    <h4 class="party-title">{{ watchParty.post.title }}</h4>
+    <div class="party-members">
+      <span>Učesnici:</span>
+      <mat-chip-listbox>
+        <mat-chip-option *ngFor="let member of watchParty.members">
+          {{ member.username }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+    </div>
+  </div>
+  <video
+    class="party-video"
+    [src]="watchParty.post.video"
+    controls
+    preload="metadata"
+    controls
+    playsinline
+  ></video>
+</div>

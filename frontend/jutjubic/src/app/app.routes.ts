@@ -28,7 +28,11 @@ export const routes: Routes = [
   },
   { path: 'posts/:id', component: PostDisplayComponent },
   { path: 'users/:userId', component: ProfileComponent },
-  { path: 'watchParty', component: WatchPartyCreateComponent, canActivate: [authGuard] },
-  { path: 'watchParty/:id', component: WatchPartyDisplayComponent, canActivate: [authGuard] },
-  { path: 'watchParties', component: WatchPartiesDisplayComponent, canActivate: [authGuard] },
+  { path: 'watch-party', component: WatchPartyCreateComponent, canActivate: [authGuard] },
+  {
+    path: 'watch-party/:id/:postId',
+    component: WatchPartyDisplayComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'watch-parties', component: WatchPartiesDisplayComponent, canActivate: [authGuard] },
 ];

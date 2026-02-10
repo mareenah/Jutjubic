@@ -66,22 +66,29 @@ export class StakeholderService {
 
   createWatchParty(watchParty: WatchParty): Observable<WatchPartyResponse> {
     return this.http.post<WatchPartyResponse>(
-      environment.apiHost + 'watchParty/create',
+      environment.apiHost + 'watch-party/create',
       watchParty,
     );
   }
 
   findWatchPartyById(id: string): Observable<WatchPartyResponse> {
-    return this.http.get<WatchPartyResponse>(environment.apiHost + 'watchParty/' + id);
+    return this.http.get<WatchPartyResponse>(environment.apiHost + 'watch-party/' + id);
   }
 
   findWatchPartiesByCreator(creatorId: string): Observable<WatchPartyResponse[]> {
     return this.http.get<WatchPartyResponse[]>(
-      environment.apiHost + 'watchParty/creator/' + creatorId,
+      environment.apiHost + 'watch-party/creator/' + creatorId,
     );
   }
 
   isCreator(creatorId: string): Observable<boolean> {
-    return this.http.get<boolean>(environment.apiHost + 'watchParty/if-creator/' + creatorId);
+    return this.http.get<boolean>(environment.apiHost + 'watch-party/if-creator/' + creatorId);
+  }
+
+  mapPostVideo(post: PostResponse): PostResponse {
+    return {
+      ...post,
+      video: this.streamVideoUrl(post.video),
+    };
   }
 }

@@ -35,4 +35,12 @@ export class WatchPartiesDisplayComponent implements OnInit {
     if (this.user)
       this.watchParties$ = this.stakeholderService.findWatchPartiesByCreator(this.user.id!);
   }
+
+  selectParty(party: WatchPartyResponse): void {
+    this.selectedParty = party;
+    this.router.navigate([
+      '/watch-party/' + this.selectedParty.id + '/' + this.selectedParty.post.id,
+    ]);
+    alert('Watch party je počela!');
+  }
 }

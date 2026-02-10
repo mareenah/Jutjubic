@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PostResponse } from '../../../models/postResponse.model';
 import { CommonModule } from '@angular/common';
 import { StakeholderService } from '../stakeholder.service';
@@ -11,7 +11,6 @@ import { Comment } from '../../../models/comment.model';
 import { FormsModule } from '@angular/forms';
 import { CommentResponse } from '../../../models/commentResponse.model';
 import { ChangeDetectorRef } from '@angular/core';
-import { Observable } from 'rxjs';
 import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
@@ -25,7 +24,7 @@ export class PostDisplayComponent implements OnInit {
   isLoggedIn = false;
   user: User | undefined;
   videoUrl!: string;
-  post$!: Observable<PostResponse>;
+  @Input() post!: PostResponse;
   comment: Comment = {
     text: '',
     postId: '',
@@ -53,13 +52,21 @@ export class PostDisplayComponent implements OnInit {
 
     this.isLoggedIn = !!this.user?.id;
 
-    this.postId = this.route.snapshot.paramMap.get('id')!;
+    this.postId = this.route.snapshot.paramMap.get('postId')!;
     if (!this.postId) {
-      console.error('Ne postoji id u objavi');
+      console.error('Ne postoji postId u objavi.');
       return;
     }
 
-    this.post$ = this.stakeholderService.findPostByIdWithVideo(this.postId);
+    this.stakeholderService.findPostByIdWithVideo(this.postId).subscribe({
+      next: (result) => {
+        this.post = result;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        console.log(console.error);
+      },
+    });
     await this.findComments();
     this.cdr.detectChanges();
   }

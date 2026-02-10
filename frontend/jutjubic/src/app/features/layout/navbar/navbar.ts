@@ -52,8 +52,8 @@ export class Navbar implements OnInit {
       this.isLoginPage = url === '/login';
       this.isRegisterPage = url === '/register';
       this.isHomePage = url === '/';
-      this.isWatchPartyPage = url.startsWith('/watchParty/');
-      this.isWatchPartiesPage = url === '/watchParties';
+      this.isWatchPartyPage = url.startsWith('/watch-party/');
+      this.isWatchPartiesPage = url === '/watch-parties';
     });
   }
 
@@ -98,7 +98,7 @@ export class Navbar implements OnInit {
   }
 
   createWatchParty(): void {
-    this.router.navigate(['/watchParty']);
+    this.router.navigate(['/watch-party']);
   }
 
   isCreator(user: User): void {
@@ -113,6 +113,6 @@ export class Navbar implements OnInit {
   }
 
   displayWatchParties(): void {
-    this.router.navigate(['/watchParties']);
+    this.router.navigate(['/watch-parties']);
   }
 }

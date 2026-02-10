@@ -1,0 +1,32 @@
+.party-container {
+  margin-top: 0.5rem;
+  position: relative;
+  height: 86.5vh;
+  width: 85vw;
+  justify-items: center;
+  justify-self: center;
+}
+
+.party-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  justify-content: center;
+}
+
+.party-video-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  color: var(--white);
+}
+
+.party-members {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 1rem;
+}

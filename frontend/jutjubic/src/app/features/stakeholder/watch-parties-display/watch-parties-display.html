@@ -7,6 +7,7 @@
           class="party-card"
           [class.selected]="selectedParty?.id === party.id"
           *ngFor="let party of watchParties"
+          (click)="selectParty(party)"
         >
           <img class="thumbnail" [src]="party.post.thumbnail" alt="Party thumbnail" />
           <div class="party-content">
