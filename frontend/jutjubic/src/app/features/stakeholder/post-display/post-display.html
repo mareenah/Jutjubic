@@ -1,4 +1,4 @@
-<div *ngIf="post" class="container">
+<div *ngIf="post$ | async as post" class="container">
   <div class="section-video">
     <video
       class="video"
@@ -17,9 +17,9 @@
           {{ post.user.username }}
         </button>
         <div class="like-info">
-          <span>75</span>
+          <span>{{ likesCount }}</span>
           <button class="like-btn" (click)="tryLike()">
-            <mat-icon>thumb_up</mat-icon>
+            <mat-icon [ngClass]="{ liked: hasLiked, 'not-liked': !hasLiked }">thumb_up</mat-icon>
           </button>
         </div>
       </div>
@@ -76,12 +76,12 @@
       </div>
     </div>
 
-    <div class="pagination">
+    <div class="pagination" *ngIf="totalPages > 0">
       <button (click)="prevPage()" [disabled]="page === 0">
         <mat-icon>arrow_back</mat-icon>
       </button>
 
-      <span>Stranica {{ this.page + 1 }} / {{ this.totalPages }}</span>
+      <span>Stranica {{ page + 1 }} / {{ totalPages }}</span>
 
       <button (click)="nextPage()" [disabled]="page + 1 === totalPages">
         <mat-icon>arrow_forward</mat-icon>

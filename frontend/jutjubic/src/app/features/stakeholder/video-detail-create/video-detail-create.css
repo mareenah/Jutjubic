@@ -275,3 +275,7 @@ span {
 .btn-upload:hover {
   background-color: var(--light-accent-color);
 }
+
+.add-photo {
+  display: flex;
+}

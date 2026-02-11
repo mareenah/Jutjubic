@@ -9,8 +9,16 @@ import java.util.UUID;
 
 public interface PostService {
     List<Post> findAll();
+
     Post upload(PostDto postDto);
+
     Post findPostById(UUID id);
+
     List<Post> findPostsByUser(UUID userId);
+
     Post mapToObject(Post post);
+    long findLikesCount(UUID postId);
+    boolean hasUserLiked(UUID postId, UUID userId);
+    void toggleLike(UUID postId);
+
 }

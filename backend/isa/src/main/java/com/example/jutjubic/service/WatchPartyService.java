@@ -16,4 +16,5 @@ public interface WatchPartyService {
     List<WatchParty> findWatchPartiesByMember(UUID memberId);
     User mapToUser(User user);
     User getCreatorByWatchPartyId(UUID watchPartyId);
+    void delete(WatchParty watchParty);
 }

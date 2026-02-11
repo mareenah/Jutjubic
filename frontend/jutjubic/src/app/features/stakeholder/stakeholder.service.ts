@@ -98,4 +98,18 @@ export class StakeholderService {
   getCreatorByWatchPartyId(partyId: string) {
     return this.http.get<UserProfile>(`${environment.apiHost}watch-party/${partyId}/creator`);
   }
+
+  findLikesCount(postId: string): Observable<number> {
+    return this.http.get<number>(`${environment.apiHost}posts/${postId}/likes/count`);
+  }
+
+  toggleLike(postId: string): Observable<void> {
+    return this.http.post<void>(`${environment.apiHost}posts/${postId}/likes`, {});
+  }
+
+  hasLiked(postId: string, userId: string): Observable<boolean> {
+    return this.http.get<boolean>(
+      `${environment.apiHost}posts/${postId}/likes/has-liked/${userId}`,
+    );
+  }
 }

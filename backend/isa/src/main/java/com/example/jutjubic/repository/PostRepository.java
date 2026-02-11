@@ -25,4 +25,5 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
 
     @Override
     void deleteById(UUID uuid);
+
 }

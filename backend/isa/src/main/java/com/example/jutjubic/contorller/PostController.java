@@ -63,4 +63,20 @@ public class PostController {
                 .body(resource);
     }
 
+    @GetMapping("/{postId}/likes/count")
+    public ResponseEntity<Long> getLikesCount(@PathVariable UUID postId) {
+        return ResponseEntity.ok(postService.findLikesCount(postId));
+    }
+
+    @GetMapping("/{postId}/likes/has-liked/{userId}")
+    public ResponseEntity<Boolean> hasLiked(@PathVariable UUID postId, @PathVariable UUID userId) {
+        return ResponseEntity.ok(postService.hasUserLiked(postId, userId));
+    }
+
+    @PostMapping("/{postId}/likes")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> toggleLike(@PathVariable UUID postId) {
+        postService.toggleLike(postId);
+        return ResponseEntity.ok().build();
+    }
 }

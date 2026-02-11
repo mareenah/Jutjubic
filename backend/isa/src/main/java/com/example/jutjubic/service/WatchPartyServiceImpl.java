@@ -126,4 +126,9 @@ public class WatchPartyServiceImpl implements WatchPartyService {
         );
     }
 
+    @Override
+    public void delete(WatchParty watchParty){
+        watchPartyRepository.delete(watchParty);
+    }
+
 }

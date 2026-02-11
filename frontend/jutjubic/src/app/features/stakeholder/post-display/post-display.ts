@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { CommentResponse } from '../../../models/commentResponse.model';
 import { ChangeDetectorRef } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
+import { Observable } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -24,7 +25,7 @@ export class PostDisplayComponent implements OnInit {
   isLoggedIn = false;
   user: User | undefined;
   videoUrl!: string;
-  @Input() post!: PostResponse;
+  post$!: Observable<PostResponse>;
   comment: Comment = {
     text: '',
     postId: '',
@@ -36,6 +37,8 @@ export class PostDisplayComponent implements OnInit {
   page: number = 0;
   size: number = 10;
   totalPages: number = 1;
+  likesCount = 0;
+  hasLiked = false;
 
   constructor(
     private stakeholderService: StakeholderService,
@@ -58,15 +61,18 @@ export class PostDisplayComponent implements OnInit {
       return;
     }
 
-    this.stakeholderService.findPostByIdWithVideo(this.postId).subscribe({
-      next: (result) => {
-        this.post = result;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        console.log(console.error);
-      },
-    });
+    this.post$ = this.stakeholderService.findPostByIdWithVideo(this.postId);
+
+    this.stakeholderService
+      .findLikesCount(this.postId)
+      .subscribe((count) => (this.likesCount = count));
+
+    if (this.isLoggedIn) {
+      this.stakeholderService
+        .hasLiked(this.postId, this.user!.id!)
+        .subscribe((val) => (this.hasLiked = val));
+    }
+
     await this.findComments();
     this.cdr.detectChanges();
   }
@@ -76,6 +82,12 @@ export class PostDisplayComponent implements OnInit {
       alert('Da bi lajkovao objavu, prijavi se.');
       return;
     }
+
+    this.stakeholderService.toggleLike(this.postId).subscribe(() => {
+      this.hasLiked = !this.hasLiked;
+      this.likesCount += this.hasLiked ? 1 : -1;
+      this.cdr.detectChanges();
+    });
   }
 
   async tryComment() {

@@ -19,5 +19,4 @@ public class VideoServiceImpl implements VideoService {
         postRepository.incrementViews(postId);
     }
 
-
 }
