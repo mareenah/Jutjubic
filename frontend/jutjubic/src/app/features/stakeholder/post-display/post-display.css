@@ -66,6 +66,23 @@
   cursor: pointer;
 }
 
+.like-btn mat-icon {
+  display: flex;
+  align-items: center;
+}
+
+.like-btn .liked {
+  color: var(--white);
+}
+
+.like-btn .not-liked {
+  color: var(--light-accent-color);
+}
+
+.like-btn:hover mat-icon {
+  transform: scale(1.1);
+}
+
 .profile-btn {
   display: flex;
   justify-self: center;

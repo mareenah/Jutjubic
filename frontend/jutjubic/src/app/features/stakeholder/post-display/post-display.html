@@ -17,9 +17,9 @@
           {{ post.user.username }}
         </button>
         <div class="like-info">
-          <span>75</span>
+          <span>{{ likesCount }}</span>
           <button class="like-btn" (click)="tryLike()">
-            <mat-icon>thumb_up</mat-icon>
+            <mat-icon [ngClass]="{ liked: hasLiked, 'not-liked': !hasLiked }">thumb_up</mat-icon>
           </button>
         </div>
       </div>

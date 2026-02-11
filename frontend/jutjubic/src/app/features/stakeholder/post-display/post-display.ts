@@ -37,6 +37,8 @@ export class PostDisplayComponent implements OnInit {
   page: number = 0;
   size: number = 10;
   totalPages: number = 1;
+  likesCount = 0;
+  hasLiked = false;
 
   constructor(
     private stakeholderService: StakeholderService,
@@ -60,6 +62,17 @@ export class PostDisplayComponent implements OnInit {
     }
 
     this.post$ = this.stakeholderService.findPostByIdWithVideo(this.postId);
+
+    this.stakeholderService
+      .findLikesCount(this.postId)
+      .subscribe((count) => (this.likesCount = count));
+
+    if (this.isLoggedIn) {
+      this.stakeholderService
+        .hasLiked(this.postId, this.user!.id!)
+        .subscribe((val) => (this.hasLiked = val));
+    }
+
     await this.findComments();
     this.cdr.detectChanges();
   }
@@ -69,6 +82,12 @@ export class PostDisplayComponent implements OnInit {
       alert('Da bi lajkovao objavu, prijavi se.');
       return;
     }
+
+    this.stakeholderService.toggleLike(this.postId).subscribe(() => {
+      this.hasLiked = !this.hasLiked;
+      this.likesCount += this.hasLiked ? 1 : -1;
+      this.cdr.detectChanges();
+    });
   }
 
   async tryComment() {

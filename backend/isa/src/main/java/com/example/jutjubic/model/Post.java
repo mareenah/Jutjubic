@@ -56,3 +56,4 @@ public class Post {
     @NotNull
     @Column(name = "views")
     private Long views = 0L;
+}
