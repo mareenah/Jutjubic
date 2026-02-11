@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <div class="pagination">
+    <div class="pagination" *ngIf="totalPages > 0">
       <button (click)="prevPage()" [disabled]="page === 0">
         <mat-icon>arrow_back</mat-icon>
       </button>
