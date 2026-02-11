@@ -53,7 +53,6 @@ export class WatchPartyCreateComponent implements OnInit {
     this.stakeholderService.findPosts().subscribe({
       next: (result) => {
         this.availablePosts = result;
-        console.log('findPosts' + this.availablePosts);
         this.cdr.detectChanges();
       },
       error: () => {

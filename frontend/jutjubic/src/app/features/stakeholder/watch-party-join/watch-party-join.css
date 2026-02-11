@@ -1,0 +1,99 @@
+.parties-section {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100%;
+  width: 60%;
+  height: 52vh;
+  padding: 0.5rem 1.3rem;
+  border-radius: 0.6rem;
+  border-style: solid;
+  border-color: var(--secondary-color);
+  box-sizing: border-box;
+  margin-top: 3rem;
+}
+
+.parties-section mat-label {
+  display: flex;
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin: 1.2rem;
+  justify-content: center;
+}
+
+.parties-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  overflow-x: auto;
+  margin-top: 1.6rem;
+}
+
+.party-card {
+  background: var(--primary-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+  height: 13rem;
+  width: auto;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.party-card.selected {
+  border: 2px solid var(--white);
+}
+
+.party-card:hover {
+  transition: transform 0.2s ease box-shadow 0.2s ease;
+  box-shadow: 0 6px 20px var(--primary-color);
+  background-color: var(--secondary-color);
+}
+
+.thumbnail {
+  height: 8rem;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.party-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0.3rem;
+}
+
+.title {
+  display: flex;
+  align-content: center;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01rem;
+  margin: 0rem 0.4rem;
+}
+
+.members {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0rem 0.4rem;
+  flex: 1;
+}
+
+.creator {
+  display: flex;
+  font-size: 0.85rem;
+}
+
+.no-parties {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+}

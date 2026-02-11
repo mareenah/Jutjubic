@@ -1,21 +1,23 @@
 <div class="party-container" *ngIf="watchParty">
   <div class="party-video-info">
     <h4 class="party-title">{{ watchParty.post.title }}</h4>
-    <div class="party-members">
-      <span>Učesnici:</span>
-      <mat-chip-listbox>
-        <mat-chip-option *ngFor="let member of watchParty.members">
-          {{ member.username }}
-        </mat-chip-option>
-      </mat-chip-listbox>
-    </div>
   </div>
   <video
     class="party-video"
     [src]="watchParty.post.video"
     controls
     preload="metadata"
-    controls
     playsinline
+    autoplay
+    muted
+    *ngIf="videoStarted"
   ></video>
+  <div class="overlay" *ngIf="!videoStarted">
+    <mat-spinner *ngIf="!isCreator" diameter="60"></mat-spinner>
+    <p *ngIf="!isCreator">Čeka se da kreator pokrene party…</p>
+
+    <button *ngIf="isCreator" class="btn-play" (click)="startParty()">
+      <span class="btn-text">Pokreni party </span>
+    </button>
+  </div>
 </div>

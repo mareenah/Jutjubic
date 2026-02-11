@@ -18,15 +18,54 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 80.61vw;
   padding: 1rem 2rem;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
   color: var(--white);
 }
 
-.party-members {
+.overlay {
+  position: absolute;
+  inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-left: auto;
-  gap: 1rem;
+  justify-content: center;
+  gap: 1.2rem;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 2;
+}
+
+.btn-play {
+  display: flex;
+  flex-direction: row;
+  width: 8.6rem;
+  height: 2.7rem;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  color: var(--dark-accent-color);
+  cursor: pointer;
+  padding: 1.15rem 0.5rem;
+  margin-right: 1.6rem;
+  border: none;
+  border-radius: 1.2rem;
+  transition: background-color 0.3s;
+}
+
+.btn-text {
+  margin-left: 0.4rem;
+  margin-right: 0.4rem;
+  font-weight: 700;
+  font-size: 0.97rem;
+}
+
+.btn-play:hover {
+  background-color: var(--light-accent-color);
+}
+
+.overlay p {
+  color: #fff;
+  font-size: 0.95rem;
+  opacity: 0.85;
 }

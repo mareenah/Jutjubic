@@ -3,7 +3,7 @@ import { UserProfile } from './userProfile.model';
 
 export interface WatchPartyResponse {
   id: string;
-  creatorId: string;
+  creator: UserProfile;
   members: UserProfile[];
   post: PostResponse;
 }

@@ -68,7 +68,6 @@ export class ProfileComponent implements OnInit {
     this.stakeholderService.findPostsByUser(this.user).subscribe({
       next: (result) => {
         this.posts = result;
-        console.log('findPostsByUser' + this.posts + ' user:' + this.user.id);
         this.cdr.detectChanges();
       },
       error: () => {

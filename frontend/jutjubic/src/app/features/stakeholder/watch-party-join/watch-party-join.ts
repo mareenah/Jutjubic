@@ -8,18 +8,21 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { UserProfile } from '../../../models/userProfile.model';
 
 @Component({
   standalone: true,
-  selector: 'app-watch-parties-display',
+  selector: 'app-watch-party-join',
   imports: [MatLabel, CommonModule, MatChipsModule],
-  templateUrl: './watch-parties-display.html',
-  styleUrl: './watch-parties-display.css',
+  templateUrl: './watch-party-join.html',
+  styleUrl: './watch-party-join.css',
 })
-export class WatchPartiesDisplayComponent implements OnInit {
+export class WatchPartyJoinComponent implements OnInit {
   watchParties$!: Observable<WatchPartyResponse[]>;
   user: User | undefined;
   selectedParty: WatchPartyResponse | null = null;
+  creator?: UserProfile;
+  creatorsMap: { [partyId: string]: UserProfile } = {};
 
   constructor(
     private authService: AuthService,
@@ -33,7 +36,7 @@ export class WatchPartiesDisplayComponent implements OnInit {
     });
 
     if (this.user)
-      this.watchParties$ = this.stakeholderService.findWatchPartiesByCreator(this.user.id!);
+      this.watchParties$ = this.stakeholderService.findWatchPartiesByMember(this.user.id!);
   }
 
   selectParty(party: WatchPartyResponse): void {
@@ -41,5 +44,6 @@ export class WatchPartiesDisplayComponent implements OnInit {
     this.router.navigate([
       '/watch-party/' + this.selectedParty.id + '/' + this.selectedParty.post.id,
     ]);
+    alert('Pridružio si se party-ju!');
   }
 }

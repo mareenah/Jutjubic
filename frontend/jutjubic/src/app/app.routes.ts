@@ -12,6 +12,7 @@ import { VideoDetailCreateComponent } from './features/stakeholder/video-detail-
 import { WatchPartyCreateComponent } from './features/stakeholder/watch-party-create/watch-party-create';
 import { WatchPartyDisplayComponent } from './features/stakeholder/watch-party-display/watch-party-display';
 import { WatchPartiesDisplayComponent } from './features/stakeholder/watch-parties-display/watch-parties-display';
+import { WatchPartyJoinComponent } from './features/stakeholder/watch-party-join/watch-party-join';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
@@ -35,4 +36,5 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   { path: 'watch-parties', component: WatchPartiesDisplayComponent, canActivate: [authGuard] },
+  { path: 'watch-party-join', component: WatchPartyJoinComponent, canActivate: [authGuard] },
 ];

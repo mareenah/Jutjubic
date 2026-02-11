@@ -1,0 +1,30 @@
+<div class="parties-section">
+  <mat-label>Pridruži se watch party-ju</mat-label>
+  <div *ngIf="watchParties$ | async as watchParties; else noParties">
+    <ng-container *ngIf="watchParties.length > 0; else noParties">
+      <div class="parties-grid">
+        <div
+          class="party-card"
+          [class.selected]="selectedParty?.id === party.id"
+          *ngFor="let party of watchParties"
+          (click)="selectParty(party)"
+        >
+          <img class="thumbnail" [src]="party.post.thumbnail" alt="Party thumbnail" />
+          <div class="party-content">
+            <h4 class="title">{{ party.post.title }}</h4>
+            <div class="members">
+              <p class="creator">
+                Organizator:
+                {{ party.creator.username }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <ng-template #noParties>
+    <p class="no-parties">Nema watch party-ja.</p>
+  </ng-template>
+</div>

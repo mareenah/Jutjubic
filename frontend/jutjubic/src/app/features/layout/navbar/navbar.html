@@ -28,6 +28,14 @@
       <mat-icon class="btn-add">smart_display</mat-icon>
       <span class="btn-text">Pokreni watch party</span>
     </button>
+    <button
+      class="btn-join-wp"
+      *ngIf="!isWatchPartyPage && !isJoinPartiesPage && isWatchPartyMember"
+      (click)="joinWatchParty()"
+    >
+      <mat-icon class="btn-add">link</mat-icon>
+      <span class="btn-text">Pridruži se watch party</span>
+    </button>
 
     <div class="navbar-button dropdown">
       <button class="btn dropbtn" (click)="toggleMenu()">

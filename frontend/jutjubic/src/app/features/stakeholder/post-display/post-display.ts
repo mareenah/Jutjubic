@@ -52,7 +52,7 @@ export class PostDisplayComponent implements OnInit {
 
     this.isLoggedIn = !!this.user?.id;
 
-    this.postId = this.route.snapshot.paramMap.get('postId')!;
+    this.postId = this.route.snapshot.paramMap.get('id')!;
     if (!this.postId) {
       console.error('Ne postoji postId u objavi.');
       return;

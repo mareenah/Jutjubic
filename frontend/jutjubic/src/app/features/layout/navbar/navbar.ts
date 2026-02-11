@@ -1,4 +1,11 @@
-import { Component, ElementRef, HostListener, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { filter } from 'rxjs';
@@ -25,16 +32,19 @@ export class Navbar implements OnInit {
   isHomePage = false;
   isWatchPartyPage = false;
   isWatchPartiesPage = false;
+  isJoinPartiesPage = false;
   dropdownOpen = false;
   dialog = inject(MatDialog);
   isLoggedIn: boolean = false;
   isWatchPartyCreator: boolean = false;
+  isWatchPartyMember: boolean = false;
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private stakeholderService: StakeholderService,
     private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +54,9 @@ export class Navbar implements OnInit {
 
     this.authService.isLoggedIn$.subscribe((status) => {
       this.isLoggedIn = status;
-      if (this.isLoggedIn) this.isCreator(this.user!);
+      if (this.isLoggedIn) {
+        this.isCreator(this.user!);
+      }
     });
 
     this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
@@ -54,6 +66,7 @@ export class Navbar implements OnInit {
       this.isHomePage = url === '/';
       this.isWatchPartyPage = url.startsWith('/watch-party/');
       this.isWatchPartiesPage = url === '/watch-parties';
+      this.isJoinPartiesPage = url === '/watch-party-join';
     });
   }
 
@@ -105,6 +118,19 @@ export class Navbar implements OnInit {
     this.stakeholderService.isCreator(user.id!).subscribe({
       next: (result) => {
         this.isWatchPartyCreator = result;
+        if (!this.isWatchPartyCreator) this.isMember(this.user!);
+      },
+      error: () => {
+        console.log(console.error);
+      },
+    });
+  }
+
+  isMember(user: User): void {
+    this.stakeholderService.isMember(user.id!).subscribe({
+      next: (result) => {
+        this.isWatchPartyMember = result;
+        this.cdr.detectChanges();
       },
       error: () => {
         console.log(console.error);
@@ -114,5 +140,9 @@ export class Navbar implements OnInit {
 
   displayWatchParties(): void {
     this.router.navigate(['/watch-parties']);
+  }
+
+  joinWatchParty(): void {
+    this.router.navigate(['/watch-party-join']);
   }
 }
