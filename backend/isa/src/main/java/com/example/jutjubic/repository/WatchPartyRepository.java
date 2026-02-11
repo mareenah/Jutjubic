@@ -28,4 +28,16 @@ public interface WatchPartyRepository extends JpaRepository<WatchParty, UUID> {
             "post"
     })
     Optional<WatchParty> findById(UUID id);
+
+    boolean existsByMembers_Id(UUID userId);
+
+    @EntityGraph(attributePaths = {
+            "creator",
+            "creator.address",
+            "members",
+            "members.address",
+            "post"
+    })
+    List<WatchParty> findByMembers_Id(UUID memberId);
+
 }

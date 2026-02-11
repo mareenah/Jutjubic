@@ -36,7 +36,7 @@ public class WatchPartyServiceImpl implements WatchPartyService {
         UUID creatorId = UUID.fromString(watchPartyDto.getCreatorId());
         User creator = userRepository.findById(creatorId)
                 .orElseThrow(() -> new RuntimeException("Creator not found."));
-        ;
+
         UUID postId = UUID.fromString(watchPartyDto.getPostId());
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found."));
@@ -79,6 +79,51 @@ public class WatchPartyServiceImpl implements WatchPartyService {
     @Override
     public boolean findCreatorById(UUID creatorId) {
         return watchPartyRepository.existsByCreator_Id(creatorId);
+    }
+
+    @Override
+    public boolean findMemberById(UUID userId) {
+        return watchPartyRepository.existsByMembers_Id(userId);
+    }
+
+    @Override
+    public List<WatchParty> findWatchPartiesByMember(UUID memberId) {
+        List<WatchParty> parties = watchPartyRepository.findByMembers_Id(memberId);
+        if (parties.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Watch parties not found");
+        parties.forEach(party -> {
+            if (party.getPost() != null) {
+                party.setPost(postService.mapToObject(party.getPost()));
+            }
+        });
+        return parties;
+    }
+
+    @Override
+    public User getCreatorByWatchPartyId(UUID watchPartyId) {
+        WatchParty party = watchPartyRepository.findById(watchPartyId)
+                .orElseThrow(() -> new RuntimeException("Watch party not found"));
+
+        User creator = userRepository.findById(party.getCreator().getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return mapToUser(creator);
+    }
+
+    @Override
+    public User mapToUser(User user) {
+        return new User (
+                user.getId(),
+                user.getEmail(),
+                user.getUsername(),
+                user.getPassword(),
+                user.getName(),
+                user.getLastname(),
+                user.isEnabled(),
+                user.getVerificationCode(),
+                user.getCodeCreatedAt(),
+                user.getAddress()
+        );
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.jutjubic.contorller;
 import com.example.jutjubic.dto.PostDto;
 import com.example.jutjubic.dto.WatchPartyDto;
 import com.example.jutjubic.model.Post;
+import com.example.jutjubic.model.User;
 import com.example.jutjubic.model.WatchParty;
 import com.example.jutjubic.service.PostService;
 import com.example.jutjubic.service.WatchPartyService;
@@ -52,5 +53,22 @@ public class WatchPartyController {
     @PreAuthorize("isAuthenticated()")
     public boolean isCreator(@PathVariable UUID creatorId) {
         return watchPartyService.findCreatorById(creatorId);
+    }
+
+    @GetMapping("/if-member/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    public boolean isMember(@PathVariable UUID userId) {
+        return watchPartyService.findMemberById(userId);
+    }
+
+    @GetMapping("/member/{memberId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<WatchParty>> findWatchPartiesByMember(@PathVariable UUID memberId) {
+        return ResponseEntity.ok(watchPartyService.findWatchPartiesByMember(memberId));
+    }
+
+    @GetMapping("/{id}/creator")
+    public ResponseEntity<User> getCreator(@PathVariable UUID id) {
+        return ResponseEntity.ok(watchPartyService.getCreatorByWatchPartyId(id));
     }
 }
