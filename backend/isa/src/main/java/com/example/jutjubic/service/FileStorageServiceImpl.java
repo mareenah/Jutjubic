@@ -1,7 +1,10 @@
 package com.example.jutjubic.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,12 +13,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.*;
+import java.nio.file.attribute.FileTime;
+import java.util.stream.Stream;
 
 @Service
 public class FileStorageServiceImpl implements FileStorageService{
 
     @Value("${file.upload.tmp-dir}")
     private String tmp;
+
+    private static final Logger log = LoggerFactory.getLogger(FileStorageServiceImpl.class);
 
     public Path saveToTemp(MultipartFile file, String filename) {
         try {
@@ -67,5 +74,38 @@ public class FileStorageServiceImpl implements FileStorageService{
         try {
             Files.deleteIfExists(tmpFile);
         } catch (IOException ignored) {}
+    }
+
+    @Scheduled(fixedDelay = 3600000 * 3) // svaka 3 sata
+    public void cleanOldTempFiles() throws IOException {
+
+        Path tempDir = Paths.get(tmp);
+
+        if (!Files.exists(tempDir)) {
+            return;
+        }
+
+        try (Stream<Path> files = Files.list(tempDir)) {
+            files
+                    .filter(this::isOlderThanOneHour)
+                    .filter(Files::isRegularFile)
+                    .forEach(path -> {
+                        try {
+                            Files.deleteIfExists(path);
+                        } catch (IOException e) {
+                            log.warn("Failed to delete temp file: {}", path, e);
+                        }
+                    });
+        }
+    }
+
+    private boolean isOlderThanOneHour(Path path) {
+        try {
+            FileTime lastModified = Files.getLastModifiedTime(path);
+            long threshold = System.currentTimeMillis() - (3 * 60 * 60 * 1000);
+            return lastModified.toMillis() < threshold;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }
