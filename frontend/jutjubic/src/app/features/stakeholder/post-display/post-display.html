@@ -26,18 +26,29 @@
 
       <div class="views-date-place-decription">
         <div class="views-date-place">
-          <span class="views">3<span>pregleda</span></span>
+          <span class="views">{{ post.views }}<span>pregleda</span></span>
           <span class="date"> {{ post.createdAt | date: 'dd MMM yyyy' }}</span>
           <div class="place">
             <span>{{ post.country }}</span>
-            <span *ngIf="post.city != null && post.country != null"> · </span>
+            <span
+              *ngIf="
+                post.city !== null &&
+                post.country !== null &&
+                post.country !== '' &&
+                post.city !== ''
+              "
+            >
+              ·
+            </span>
             <span>{{ post.city }}</span>
           </div>
         </div>
         <p class="description">{{ post.description }}</p>
         <div class="tags">
           <mat-chip-grid #chipGrid>
-            <mat-chip-row *ngFor="let tag of post.tags"> #{{ tag }} </mat-chip-row>
+            <mat-chip-row (clickable)="(false)" *ngFor="let tag of post.tags">
+              #{{ tag }}
+            </mat-chip-row>
           </mat-chip-grid>
         </div>
       </div>

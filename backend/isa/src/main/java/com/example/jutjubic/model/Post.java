@@ -2,6 +2,7 @@ package com.example.jutjubic.model;
 
 import com.example.jutjubic.converter.StringListJsonConverter;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,4 +52,8 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @NotNull
+    @Column(name = "views")
+    private Long views = 0L;
 }

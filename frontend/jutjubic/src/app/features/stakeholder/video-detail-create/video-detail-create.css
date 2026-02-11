@@ -186,6 +186,12 @@
   object-fit: cover;
 }
 
+.column-video-preview span {
+  width: 16rem;
+  height: 1.8rem;
+  overflow-y: auto;
+}
+
 .video-thumbnail-overlay {
   position: absolute;
   inset: 0;
