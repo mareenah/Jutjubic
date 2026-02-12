@@ -22,6 +22,7 @@ def consume_json():
         start_deser = time.perf_counter()
         data = json.loads(body)
         end_deser = time.perf_counter()
+        print(f"\nNew video uploaded on Jutjutbic: videoId={data['videoId']}, title={data['title']}, author={data['author']}, sizeMB={data['sizeMB']}")
         deserialization_times.append((end_deser - start_deser) * 1000)  # ms
 
         # Measure serialization time (re-serialize the received object)
@@ -31,16 +32,12 @@ def consume_json():
         serialization_times.append((end_ser - start_ser) * 1000)
 
         sizes.append(len(body))
-        print(f"JSON received: {data}")
 
         if len(sizes) >= 50:
             print("----JSON Stats----")
             print(f"Average message size: {mean(sizes):.2f} mb")
             print(f"Average serialization time: {mean(serialization_times):.3f} ms")
             print(f"Average deserialization time: {mean(deserialization_times):.3f} ms")
-            connection.close()
-        else: 
-            print(f"Hey, new video '{data['title']}' uploaded on Jutjutbic!")
             connection.close()
             
     channel.basic_consume(queue=JSON_QUEUE, on_message_callback=callback, auto_ack=True)
@@ -63,7 +60,7 @@ def consume_protobuf():
         proto_msg = upload_event_pb2.UploadEvent()
         proto_msg.ParseFromString(body)
         end_deser = time.perf_counter()
-        print(f"Protobuf received: videoId={proto_msg.videoId}, title={proto_msg.title}, author={proto_msg.author}, sizeMB={proto_msg.sizeMB}")
+        print(f"\nNew video uploaded on Jutjubic: videoId={proto_msg.videoId}, title={proto_msg.title}, author={proto_msg.author}, sizeMB={proto_msg.sizeMB}")
         deserialization_times.append((end_deser - start_deser) * 1000)
 
         # Serialization timing (re-serialize the received object)
@@ -73,18 +70,14 @@ def consume_protobuf():
         serialization_times.append((end_ser - start_ser) * 1000)
 
         sizes.append(len(body))
-        print(f"Protobuf received: videoId={proto_msg.videoId}, title={proto_msg.title}")
 
         if len(sizes) >= 50:
-            print("----Protobuf Stats----")
+            print("\n----Protobuf Stats----")
             print(f"Average message size: {mean(sizes):.2f} mb")
             print(f"Average serialization time: {mean(serialization_times):.3f} ms")
             print(f"Average deserialization time: {mean(deserialization_times):.3f} ms")
             connection.close()
-        else: 
-            print(f"Hey, new video '{proto_msg.title}' uploaded on Jutjutbic!")
-            connection.close()
-            
+ 
     channel.basic_consume(queue=PROTO_QUEUE, on_message_callback=callback, auto_ack=True)
     print("Waiting for Protobuf messages...")
     channel.start_consuming()
