@@ -56,6 +56,7 @@ export class Navbar implements OnInit {
       this.isLoggedIn = status;
       if (this.isLoggedIn) {
         this.isCreator(this.user!);
+        this.isMember(this.user!);
       }
     });
 
@@ -118,7 +119,6 @@ export class Navbar implements OnInit {
     this.stakeholderService.isCreator(user.id!).subscribe({
       next: (result) => {
         this.isWatchPartyCreator = result;
-        if (!this.isWatchPartyCreator) this.isMember(this.user!);
       },
       error: () => {
         console.log(console.error);

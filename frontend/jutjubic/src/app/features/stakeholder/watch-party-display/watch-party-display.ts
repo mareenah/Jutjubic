@@ -121,18 +121,14 @@ export class WatchPartyDisplayComponent implements OnInit {
     this.stakeholderService.findWatchPartyById(this.watchPartyId).subscribe({
       next: (party) => {
         this.watchParty = party;
+        this.checkIfCreator();
         this.cdr.detectChanges();
       },
     });
   }
 
   checkIfCreator() {
-    this.stakeholderService.isCreator(this.user!.id!).subscribe({
-      next: (isCreator) => {
-        this.isCreator = isCreator;
-        this.cdr.detectChanges();
-      },
-    });
+    this.isCreator = this.watchParty.creator.id === this.user?.id;
   }
 
   startParty() {
