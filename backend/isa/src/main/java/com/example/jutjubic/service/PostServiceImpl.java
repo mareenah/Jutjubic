@@ -2,8 +2,11 @@ package com.example.jutjubic.service;
 
 import com.example.jutjubic.dto.PostDto;
 import com.example.jutjubic.model.Post;
+import com.example.jutjubic.model.PostLike;
 import com.example.jutjubic.model.User;
+import com.example.jutjubic.repository.PostLikeRepository;
 import com.example.jutjubic.repository.PostRepository;
+import com.example.jutjubic.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +54,12 @@ public class PostServiceImpl implements PostService {
     @Value("${file.upload.base-dir}")
     private String baseUploadDir;
 
+    @Autowired
+    private PostLikeRepository postLikeRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     private static final Logger log = LoggerFactory.getLogger(PostService.class);
 
     @Override
@@ -58,7 +67,7 @@ public class PostServiceImpl implements PostService {
         List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))
                 .stream()
                 .map(this::mapToObject)
-                .toList();;
+                .toList();
         return posts;
     }
 
@@ -174,7 +183,9 @@ public class PostServiceImpl implements PostService {
                                 log.info("Video and thumbnail files saved.");
                             } catch (IOException e) {
                                 log.error("File move failed after DB commit: ", e);
-                                throw new RuntimeException(e);
+                                postRepository.deleteById(post.getId());
+                                fileStorageService.deleteTemp(tmpVideo);
+                                fileStorageService.deleteTemp(tmpThumbnail);
                             }
                         }
 
@@ -218,4 +229,37 @@ public class PostServiceImpl implements PostService {
                 .toList();
     }
 
+    @Override
+    public long findLikesCount(UUID postId) {
+        return postLikeRepository.countByPostId(postId);
+    }
+
+    @Override
+    public boolean hasUserLiked(UUID postId, UUID userId) {
+        return postLikeRepository.existsByPostIdAndUserId(postId, userId);
+    }
+
+    @Override
+    @Transactional
+    public void toggleLike(UUID postId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User authUser = (User) auth.getPrincipal();
+        UUID userId = authUser.getId();
+
+        if (postLikeRepository.existsByPostIdAndUserId(postId, userId)) {
+            postLikeRepository.deleteByPostIdAndUserId(postId, userId);
+        } else {
+            Post post = postRepository.findById(postId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+            PostLike like = new PostLike();
+            like.setPost(post);
+            like.setUser(user);
+
+            postLikeRepository.save(like);
+        }
+    }
 }
