@@ -73,23 +73,26 @@
 
 .title {
   display: flex;
+  height: 2.3rem;
   align-content: center;
   font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: 0.01rem;
-  margin: 0rem 0.4rem;
+  margin: 0.3rem 0.4rem;
+  overflow-x: auto;
 }
 
 .members {
   display: flex;
-  justify-content: flex-start;
+  flex-direction: row;
   margin: 0rem 0.4rem;
   flex: 1;
 }
 
 .creator {
-  display: flex;
+  margin-bottom: 0.25rem;
   font-size: 0.85rem;
+  align-self: flex-end;
 }
 
 .no-parties {

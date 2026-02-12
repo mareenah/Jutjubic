@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { StakeholderService } from '../stakeholder.service';
 import { WatchPartyResponse } from '../../../models/watchPartyResponse.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../auth/auth.service';
 import { User } from '../../../models/user.model';
 import { MatIconModule } from '@angular/material/icon';
@@ -79,6 +79,7 @@ export class WatchPartyDisplayComponent implements OnInit {
     private socketService: SocketService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -102,7 +103,6 @@ export class WatchPartyDisplayComponent implements OnInit {
     this.authService.user$.pipe(filter((user): user is User => !!user)).subscribe((user) => {
       this.user = user;
       this.findWatchParty();
-      this.checkIfCreator();
     });
   }
 
@@ -123,6 +123,10 @@ export class WatchPartyDisplayComponent implements OnInit {
         this.watchParty = party;
         this.checkIfCreator();
         this.cdr.detectChanges();
+      },
+      error: () => {
+        alert('Watch party nije dostupan.');
+        this.router.navigate(['/']);
       },
     });
   }

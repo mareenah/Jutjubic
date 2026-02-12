@@ -13,10 +13,10 @@
           <div class="party-content">
             <h4 class="title">{{ party.post.title }}</h4>
             <div class="members">
-              <p class="creator">
+              <span class="creator">
                 Organizator:
                 {{ party.creator.username }}
-              </p>
+              </span>
             </div>
           </div>
         </div>
@@ -25,6 +25,6 @@
   </div>
 
   <ng-template #noParties>
-    <p class="no-parties">Nema watch party-ja.</p>
+    <p class="no-parties">Nema dostupnih watch party-ja.</p>
   </ng-template>
 </div>

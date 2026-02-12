@@ -7,7 +7,7 @@ import { MatLabel } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { UserProfile } from '../../../models/userProfile.model';
 
 @Component({
@@ -31,12 +31,10 @@ export class WatchPartyJoinComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.user$.subscribe((user) => {
+    this.authService.user$.pipe(filter((user): user is User => !!user)).subscribe((user) => {
       this.user = user;
+      this.watchParties$ = this.stakeholderService.findWatchPartiesByMember(user.id!);
     });
-
-    if (this.user)
-      this.watchParties$ = this.stakeholderService.findWatchPartiesByMember(this.user.id!);
   }
 
   selectParty(party: WatchPartyResponse): void {
