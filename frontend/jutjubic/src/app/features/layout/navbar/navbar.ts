@@ -145,4 +145,15 @@ export class Navbar implements OnInit {
   joinWatchParty(): void {
     this.router.navigate(['/watch-party-join']);
   }
+
+  rabbitmq(): void {
+    this.stakeholderService.rabbitMQ().subscribe({
+      next: (result) => {
+        console.log('Successfully sent 50 messages to RabbitMQ!');
+      },
+      error: () => {
+        console.log(console.error);
+      },
+    });
+  }
 }

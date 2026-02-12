@@ -112,4 +112,8 @@ export class StakeholderService {
       `${environment.apiHost}posts/${postId}/likes/has-liked/${userId}`,
     );
   }
+
+  rabbitMQ(): Observable<string> {
+    return this.http.get<string>(`${environment.apiHost}posts/send50`);
+  }
 }
