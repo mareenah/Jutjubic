@@ -79,4 +79,10 @@ public class PostController {
         postService.toggleLike(postId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/send50")
+    public ResponseEntity<String> send50Messages() {
+        postService.send50DemoMessages();
+        return ResponseEntity.ok("50 messages sent to RabbitMQ (JSON & Protobuf)");
+    }
 }

@@ -20,5 +20,5 @@ public interface PostService {
     long findLikesCount(UUID postId);
     boolean hasUserLiked(UUID postId, UUID userId);
     void toggleLike(UUID postId);
-
+    void send50DemoMessages();
 }

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package protobuf;
+
+message UploadEvent {
+  string videoId = 1;
+  string title = 2;
+  string author = 3;
+  int32 sizeMB = 4;
+}

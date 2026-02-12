@@ -1,5 +1,10 @@
 package com.example.jutjubic.service;
 
+import com.example.jutjubic.dto.UploadEventDto;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+
 import com.example.jutjubic.dto.PostDto;
 import com.example.jutjubic.model.Post;
 import com.example.jutjubic.model.PostLike;
@@ -35,6 +40,7 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -60,7 +66,16 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private UserRepository userRepository;
 
+    private final ConnectionFactory rabbitFactory;
+
     private static final Logger log = LoggerFactory.getLogger(PostService.class);
+
+    public PostServiceImpl() {
+        rabbitFactory = new ConnectionFactory();
+        rabbitFactory.setHost("localhost");
+        rabbitFactory.setUsername("guest");
+        rabbitFactory.setPassword("guest");
+    }
 
     @Override
     public List<Post> findAll() {
@@ -262,4 +277,53 @@ public class PostServiceImpl implements PostService {
             postLikeRepository.save(like);
         }
     }
+
+    @Override
+    public void send50DemoMessages() {
+        for (int i = 0; i < 50; i++) {
+            int randomSize = ThreadLocalRandom.current().nextInt(0, 201);
+
+            UploadEventDto dto = new UploadEventDto(
+                    "video_" + i,
+                    "Demo Title " + i,
+                    "Demo Author " + i,
+                    randomSize
+            );
+            try {
+                sendMessageJson(dto);
+                sendMessageProtobuf(dto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void sendMessageJson(UploadEventDto dto) throws Exception {
+        try (Connection connection = rabbitFactory.newConnection();
+             Channel channel = connection.createChannel()) {
+
+            channel.queueDeclare("upload_events_json", false, false, false, null);
+
+            String json = new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(dto);
+            channel.basicPublish("", "upload_events_json", null, json.getBytes());
+        }
+    }
+
+    private void sendMessageProtobuf(UploadEventDto dto) throws Exception {
+        try (Connection connection = rabbitFactory.newConnection();
+             Channel channel = connection.createChannel()) {
+
+            channel.queueDeclare("upload_events_proto", false, false, false, null);
+
+            protobuf.UploadEventOuterClass.UploadEvent protoMsg = protobuf.UploadEventOuterClass.UploadEvent.newBuilder()
+                    .setVideoId(dto.getVideoId())
+                    .setTitle(dto.getTitle())
+                    .setAuthor(dto.getAuthor())
+                    .setSizeMB(dto.getSizeMB())
+                    .build();
+
+            channel.basicPublish("", "upload_events_proto", null, protoMsg.toByteArray());
+        }
+    }
+
 }
