@@ -90,9 +90,12 @@ public class WatchPartyServiceImpl implements WatchPartyService {
     public List<WatchParty> findWatchPartiesByMember(UUID memberId) {
         List<WatchParty> parties = watchPartyRepository.findByMembers_Id(memberId);
         if (parties.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Watch parties not found");
+            return parties;
         parties.forEach(party -> {
             if (party.getPost() != null) {
+                Post post = postRepository.findById(party.getPost().getId()).orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+                party.setPost(post);
                 party.setPost(postService.mapToObject(party.getPost()));
             }
         });
