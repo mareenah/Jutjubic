@@ -39,7 +39,10 @@ def consume_json():
             print(f"Average serialization time: {mean(serialization_times):.3f} ms")
             print(f"Average deserialization time: {mean(deserialization_times):.3f} ms")
             connection.close()
-
+        else: 
+            print(f"Hey, new video '{data['title']}' uploaded on Jutjutbic!")
+            connection.close()
+            
     channel.basic_consume(queue=JSON_QUEUE, on_message_callback=callback, auto_ack=True)
     print("Waiting for JSON messages...")
     channel.start_consuming()
@@ -78,7 +81,10 @@ def consume_protobuf():
             print(f"Average serialization time: {mean(serialization_times):.3f} ms")
             print(f"Average deserialization time: {mean(deserialization_times):.3f} ms")
             connection.close()
-
+        else: 
+            print(f"Hey, new video '{proto_msg.title}' uploaded on Jutjutbic!")
+            connection.close()
+            
     channel.basic_consume(queue=PROTO_QUEUE, on_message_callback=callback, auto_ack=True)
     print("Waiting for Protobuf messages...")
     channel.start_consuming()

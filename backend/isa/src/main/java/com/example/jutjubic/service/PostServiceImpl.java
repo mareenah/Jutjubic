@@ -196,11 +196,25 @@ public class PostServiceImpl implements PostService {
                                 fileStorageService.moveToFinal(tmpVideo, Paths.get("uploads/videos"));
                                 fileStorageService.moveToFinal(tmpThumbnail, Paths.get("uploads/thumbnails"));
                                 log.info("Video and thumbnail files saved.");
+
+                                        UploadEventDto dto = new UploadEventDto(
+                                                postResponse.getVideo(),
+                                                postResponse.getTitle(),
+                                                postResponse.getUser().getUsername(),
+                                        (int) (video.getSize() / (1024 * 1024))
+                                );
+
+                                sendMessageJson(dto);
+                                sendMessageProtobuf(dto);
+                                log.info("UploadEvent messages sent to RabbitMQ.");
+
                             } catch (IOException e) {
                                 log.error("File move failed after DB commit: ", e);
                                 postRepository.deleteById(post.getId());
                                 fileStorageService.deleteTemp(tmpVideo);
                                 fileStorageService.deleteTemp(tmpThumbnail);
+                            } catch (Exception e) {
+                                log.error("Failed to send RabbitMQ messages: ", e);
                             }
                         }
 
